@@ -23,6 +23,10 @@
                 <p class="mb-1">A Silva, Cerceda, Galicia</p>
                 <p>+34 981 123 456</p>
             </div>
+
+            <div class="d-flex justify-content-center pt-4 mt-4 borde-superior">
+                <p class="small m-0">Copyright © 2026. Todos os dereitos reservados para Alejandro Iglesias Santos e "A Dorgita".</p>
+            </div>
         </div>
     </div>
 </footer>

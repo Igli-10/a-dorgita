@@ -12,7 +12,7 @@
 
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
   <nav class="navbar navbar-dark fondo-verde">
     <div class="container-fluid d-flex align-items-center">
         

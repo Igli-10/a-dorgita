@@ -8,6 +8,14 @@
                 </span>
                 <p>Alimentación, ferretería e moito máis</p>
             </div>
+
+            <div class="col-md-4 mb-4">
+                <h5 class="mb-3 fw-bold">Ligazón legais</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Aviso Legal</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0">Política de Privacidade</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 </footer>

@@ -1,5 +1,6 @@
 .fondo-verde{
     background-color:#1B4332 ;
+    color: #FFFFFF;;
 }
 
 body{
@@ -9,3 +10,8 @@ body{
 .nav-link, .navbar-brand{
     color: #FFFFFF ;
 }
+
+footer{
+    color: #FFFFFF;
+}
+

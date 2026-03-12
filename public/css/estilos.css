@@ -88,3 +88,31 @@ footer{
 .desc-tarjeta {
     min-height: 45px; 
 }
+
+.btn-cantidade {
+    background-color: #FFFFFF;
+    color: #212529;
+    border: 1px solid #212529;
+}
+
+.btn-cantidade:hover {
+    background-color: #1B4332;
+    color: #FFFFFF;
+    border: 1px solid #1B4332;
+}
+
+.input-cantidade {
+    background-color: #FFFFFF !important;
+    color: #212529;
+    border-top: 1px solid #212529;
+    border-bottom: 1px solid #212529;
+    border-left: none;
+    border-right: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.input-cantidade:focus {
+    box-shadow: none;
+    border-color: #212529;
+}

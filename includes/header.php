@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A Dorgita</title>
-    <link rel="stylesheet" href="public/css/bootstrap.min.css">
-    <link rel="stylesheet" href="public/css/estilos.css">
+    <link rel="stylesheet" href="/a-dorgita/public/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/a-dorgita/public/css/estilos.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="icon" type="image/png" href="public/img/logo_favicon.png" alt="Favicon">
+    <link rel="icon" type="image/png" href="/a-dorgita/public/img/logo_favicon.png" alt="Favicon">
 
 </head>
 
@@ -17,8 +17,8 @@
     <div class="container-fluid d-flex align-items-center">
         
         <div style="width: 25%;">
-            <a class="navbar-brand d-flex align-items-center" href="index.php">
-                <img src="public/img/logo.png" width="50" height="50" class="me-2" alt="Logo"> 
+            <a class="navbar-brand d-flex align-items-center" href="/a-dorgita/index.php">
+                <img src="/a-dorgita/public/img/logo.png" width="50" height="50" class="me-2" alt="Logo"> 
                 A Dorgita
             </a>
         </div>

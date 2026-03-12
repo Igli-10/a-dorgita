@@ -4,7 +4,7 @@
 
             <div class="col-md-4 mb-4">
                 <span class="d-flex align-items-center  mb-3 justify-content-center">
-                    <img src="public/img/logo.png" width="40" height="40" class="me-2">
+                    <img src="/a-dorgita/public/img/logo.png" width="40" height="40" class="me-2">
                     <span class="fs-4 fw-bold">A Dorgita</span>
                 </span>
                 <p>Alimentación, ferretería e moito máis</p>

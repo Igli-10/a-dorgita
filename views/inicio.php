@@ -17,6 +17,24 @@ $productos = [
         'descripcion' => "Compacta, 2 ranuras, estilo aceiro.",
         'prezo' => "35.00 €",
         'imaxe' => "public/img/tostadora.png"
+    ],
+    [
+        'titulo' => "Xogo de Chaves Fixas",
+        'descripcion' => "8 pezas con soporte para colgar.",
+        'prezo' => "24.95 €",
+        'imaxe' => "public/img/xogo_chaves.png"
+    ],
+    [
+        'titulo' => "Mesa de Terraza 'Silva'",
+        'descripcion' => "Madeira tratada, resistente á chuvia.",
+        'prezo' => "89.00 €",
+        'imaxe' => "public/img/mesa_terraza.png"
+    ],
+    [
+        'titulo' => "Lámpada LED Industrial",
+        'descripcion' => "Alta potencia, baixo consumo A++.",
+        'prezo' => "12.50 €",
+        'imaxe' => "public/img/lampada_led_industrial.png"
     ]
 ];
 
@@ -41,7 +59,7 @@ $productos = [
                         <div class="card h-100 shadow-sm border-1" style="background-color: #FFFFFF;">
                             <img src="<?php echo $p['imaxe']; ?>" class="card-img-top p-4" alt="Producto">
                             <div class="card-body d-flex flex-column text-center">
-                                <h5 class="card-title fw-bold texto-principal"><?php echo $p['titulo']; ?></h5>
+                                <h5 class="card-title fw-bold texto-principal desc-tarjeta"><?php echo $p['titulo']; ?></h5>
                                 <p class="card-text small"><?php echo $p['descripcion']; ?></p>
 
                                 <div class="mt-auto">
@@ -55,8 +73,8 @@ $productos = [
             </div>
         </div>
 
-        <div class="col-lg-3">
-            <div class="p-4 rounded shadow-sm border-0 caixa-filtros">
+        <div class="col-lg-3 ps-lg-5">
+            <div class="p-4 rounded shadow-sm border border-1 caixa-filtros">
                 <h5 class="fw-bold mb-4 texto-dorgita">Categorías</h5>
                 <ul class="list-unstyled">
                     <li class="mb-3">

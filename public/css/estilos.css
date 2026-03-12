@@ -84,3 +84,7 @@ footer{
     color: #212529;
     font-size: 0.9em;
 }
+
+.desc-tarjeta {
+    min-height: 45px; 
+}

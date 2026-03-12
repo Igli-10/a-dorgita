@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="public/css/bootstrap.min.css">
     <link rel="stylesheet" href="public/css/estilos.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="icon" type="image/png" href="public/img/logo_favicon.png">
+    <link rel="icon" type="image/png" href="public/img/logo_favicon.png" alt="Favicon">
 
 </head>
 
@@ -18,7 +18,7 @@
         
         <div style="width: 25%;">
             <a class="navbar-brand d-flex align-items-center" href="index.php">
-                <img src="public/img/logo.png" width="50" height="50" class="me-2"> 
+                <img src="public/img/logo.png" width="50" height="50" class="me-2" alt="Logo"> 
                 A Dorgita
             </a>
         </div>

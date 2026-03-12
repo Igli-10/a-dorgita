@@ -2,6 +2,8 @@
 include 'includes/header.php';
 ?>
 
+
+<main class="flex-grow-1">
 <?php
 $vista = isset($_GET["view"]) ? $_GET["view"] : "inicio";
 
@@ -12,6 +14,7 @@ if (file_exists("views/" . $vista . ".php")) {
 }
 
 ?>
+</main>
 
 <?php
 include 'includes/footer.php';

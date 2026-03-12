@@ -43,3 +43,21 @@ footer{
     border-radius: 3px;
 }
 
+.texto-principal{
+   color: #212529;
+}
+
+.btn-engadir-carro{
+    background-color:#E07A5F;
+    color: #FFFFFF;
+    border: 1px solid #E07A5F;
+    border-radius: 3px;
+}
+
+.btn-engadir-carro:hover{
+     background-color: #FFFFFF;
+    color: #E07A5F;
+    border: 1px solid #FFFFFF;
+    border-radius: 3px;
+}
+

@@ -18,3 +18,28 @@ footer{
 .borde-superior{
     border-top: 1px solid #FFFFFF;
 }
+
+.fondo-laranxa{
+    background-color: #E07A5F;
+    color: #FFFFFF;
+
+}
+
+.btn-catalogo {
+    display: inline-block;
+    text-decoration: none;
+    border: 1px solid #FFFFFF;
+    border-radius: 3px;
+    color: #FFFFFF;
+    background-color: transparent;
+    padding: 10px 30px;
+  
+}
+
+.btn-catalogo:hover {
+    background-color: #FFFFFF;
+    color: #E07A5F;
+    border: 1px solid #FFFFFF;
+    border-radius: 3px;
+}
+

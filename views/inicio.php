@@ -56,7 +56,29 @@ $productos = [
         </div>
 
         <div class="col-lg-3">
+            <div class="p-4 rounded shadow-sm border-0 caixa-filtros">
+                <h5 class="fw-bold mb-4 texto-dorgita">Categorías</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-3">
+                        <a href="#" class="enlace-filtro">Ferretería </a>
+                    </li>
+                    <li class="mb-3">
+                        <a href="#" class="enlace-filtro"> Alimentación </a>
+                    </li>
+                    <li class="mb-3">
+                        <a href="#" class="enlace-filtro"> Fogar </a>
+                    </li>
+                </ul>
 
+                <hr class="my-4">
+
+                <h5 class="fw-bold mb-3 texto-dorgita">Prezo</h5>
+                <input type="range" class="form-range"  min="0" max="20000">
+                <div class="d-flex justify-content-between small text-muted mt-2">
+                    <span>0€</span>
+                    <span>20.000€</span>
+                </div>
+            </div>
         </div>
     </div>
 </div>

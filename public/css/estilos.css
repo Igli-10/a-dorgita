@@ -61,3 +61,26 @@ footer{
     border-radius: 3px;
 }
 
+.caixa-filtros {
+    background-color: #FFFFFF;
+}
+
+.enlace-filtro {
+    color:#212529;
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.enlace-filtro:hover {
+   background-color:#1B4332 ;
+    color: #FFFFFF;;
+}
+
+.contador-filtro {
+    color: #212529;
+    font-size: 0.9em;
+}

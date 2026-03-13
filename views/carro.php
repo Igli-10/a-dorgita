@@ -22,7 +22,7 @@
                         <tr>
                             <td class="ps-4 py-4">
                                 <div class="d-flex align-items-center">
-                                    <img src="/a-dorgita/public/img/tostadora.png" alt="Tostadora" class="me-3 rounded border p-1 img-carro">
+                                    <img src="/a-dorgita/public/img/tostadora.png" alt="Tostadora" class="me-3 rounded shadow-sm border p-1 img-carro">
                                     <div>
                                         <h6 class="mb-0 fw-bold texto-principal">Tostadora "Moulinex"</h6>
                                         <span class="small">Ref: 123</span>
@@ -39,13 +39,13 @@
                                     <button class="btn btn-cantidade">+</button>
                                 </div>
                             </td>
-                            <td class="text-end pe-4 fw-bold texto-principal">35.00 €</td>
+                            <td class="text-end pe-4 fw-bold fs-5 texto-principal">35.00 €</td>
                         </tr>
 
                         <tr>
                             <td class="ps-4 py-4">
                                 <div class="d-flex align-items-center">
-                                    <img src="/a-dorgita/public/img/aceite_oliva_virxe.png" alt="Aceite de Oliva" class="me-3 rounded border p-1 img-carro">
+                                    <img src="/a-dorgita/public/img/aceite_oliva_virxe.png" alt="Aceite de Oliva" class="me-3 rounded shadow-sm border p-1 img-carro">
                                     <div>
                                         <h6 class="mb-0 fw-bold texto-principal">Aceite de Oliva Virxe Extra</h6>
                                         <span class="small">Ref: 124</span>
@@ -54,7 +54,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="texto-principal fw-bold">9.50 €</td>
+                            <td class="texto-principal  fw-bold">9.50 €</td>
                             <td>
                                 <div class="input-group input-group-sm ancho-cantidade-carro">
                                     <button class="btn btn-cantidade">-</button>
@@ -62,7 +62,7 @@
                                     <button class="btn btn-cantidade">+</button>
                                 </div>
                             </td>
-                            <td class="text-end pe-4 fw-bold texto-principal">19.00 €</td>
+                            <td class="text-end pe-4 fs-5 fw-bold texto-principal">19.00 €</td>
                         </tr>
                     </tbody>
                 </table>
@@ -76,7 +76,7 @@
 
                 <div class="d-flex justify-content-between mb-2">
                     <span>Subtotal</span>
-                    <span class="fw-bold">54€</span>
+                    <span class="fw-bold fs-5">54€</span>
                 </div>
 
                   <div class="d-flex justify-content-between mb-2">
@@ -88,7 +88,7 @@
 
                 <div class="d-flex justify-content-between mb-2">
                     <span class="fs-5 fw-bold texto-verde">Total</span>
-                    <span class="texto-principal fw-bold">54€</span>
+                    <span class="texto-principal fs-4 fw-bold">54€</span>
                 </div>
 
                 <button class="btn btn-engadir-carro w-100">Finalizar compra</button>

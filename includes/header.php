@@ -35,7 +35,7 @@
         <div style="width: 25%;" class="d-flex justify-content-end">
             <ul class="nav">
                 <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-search"></i></a></li>
-                <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-cart3"></i></a></li>
+                <li class="nav-item"><a class="nav-link" href="/a-dorgita/views/carro.php"><i class="bi bi-cart3"></i></a></li>
                 <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-person"></i></a></li>
             </ul>
         </div>

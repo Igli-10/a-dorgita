@@ -30,9 +30,9 @@
             <hr class="my-4">
 
             <div class="d-flex align-items-center gap-3">
-                <div class="input-group" style="width: 140px;">
+                <div class="input-group ancho-cantidade-produto" >
                     <button class="btn btn-cantidade" type="button">-</button>
-                    <input type="text" class="form-control text-center input-cantidade" value="1" readonly>
+                    <input type="text" class="form-control text-center" value="1" readonly>
                     <button class="btn btn-cantidade" type="button">+</button>
                 </div>
                 <button class="btn btn-engadir-carro btn-lg px-5 w-100">

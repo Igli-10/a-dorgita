@@ -16,7 +16,7 @@ CREATE TABLE usuarios(
     
 );
 
-CREATE TABLE produtos (
+CREATE TABLE productos (
     id int auto_increment primary key,
     nome varchar(100) not null,
     descripcion varchar(500),
@@ -44,5 +44,5 @@ CREATE TABLE detalles_pedido (
     cantidade INTEGER NOT NULL,
     prezo_unitario DECIMAL(10,2) NOT NULL, 
     FOREIGN KEY (id_pedido) REFERENCES pedidos(id) ON DELETE CASCADE,
-    FOREIGN KEY (id_produto) REFERENCES produtos(id)
+    FOREIGN KEY (id_produto) REFERENCES productos(id)
 );

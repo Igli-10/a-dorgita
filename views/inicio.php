@@ -1,14 +1,3 @@
-<?php
-try{
-    $stmt=$conexion->query("SELECT * FROM produtos");
-    $produtos=$stmt->fetchAll(); // Gardamos o resultado da consulta no array produtos
-}catch(PDOException $e){
-    $produtos=[];
-    echo "Erro: ". $e->getMessage();
-}
-
-?>
-
 <div class="container-fluid fondo-laranxa">
     <div class="row justify-content-center text-center">
         <div class="col-md-8 py-5 my-5">
@@ -23,22 +12,30 @@ try{
     <div class="row">
         <div class="col-lg-9">
             <div class="row">
-                <?php foreach ($produtos as $p): ?>
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100 shadow-sm border-1" style="background-color: #FFFFFF;">
-                            <img src="public/img/<?php echo $p['imagen']; ?>" class="card-img-top p-4" alt="<?php echo $p['nome']; ?>">
-                            <div class="card-body d-flex flex-column text-center">
-                                <h5 class="card-title fw-bold texto-principal desc-tarjeta"><?php echo $p['nome']; ?></h5>
-                                <p class="card-text small"><?php echo $p['descripcion']; ?></p>
+                <?php if (!empty($productos)): ?>
+                    <?php foreach ($productos as $p): ?>
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100 shadow-sm border-1" style="background-color: #FFFFFF;">
+                                <img src="public/img/<?php echo htmlspecialchars($p->getImagen()); ?>" class="card-img-top p-4" alt="<?php echo htmlspecialchars($p->getNome()); ?>">
+                                
+                                <div class="card-body d-flex flex-column text-center">
+                                    <h5 class="card-title fw-bold texto-principal desc-tarjeta"><?php echo htmlspecialchars($p->getNome()); ?></h5>
+                                    <p class="card-text small"><?php echo htmlspecialchars($p->getDescripcion()); ?></p>
 
-                                <div class="mt-auto">
-                                    <p class="fw-bold fs-5 texto-dorgita"><?php echo $p['precio']; ?>€</p>
-                                    <a href="#" class="btn btn-engadir-carro">ENGADIR AO CARRO</a>
+                                    <div class="mt-auto">
+                                        <p class="fw-bold fs-5 texto-dorgita"><?php echo $p->getPrecio(); ?>€</p>
+                                        
+                                        <a href="index.php?c=producto&a=obtener&id=<?php echo $p->getId(); ?>" class="btn btn-engadir-carro">VER DETALLES</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="col-12 text-center">
+                        <p class="fs-5">Non se atoparon produtos dispoñibles.</p>
                     </div>
-                <?php endforeach; ?>
+                <?php endif; ?>
             </div>
         </div>
 

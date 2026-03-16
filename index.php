@@ -1,24 +1,23 @@
 <?php
-require_once __DIR__ . '/config/conexion.php';
+require_once 'config/database.php';
 
-include 'includes/header.php';
-?>
+$controller = 'producto';
 
-
-<main class="flex-grow-1">
-<?php
-$vista = isset($_GET["view"]) ? $_GET["view"] : "inicio";
-
-if (file_exists("views/" . $vista . ".php")) {
-    include "views/" . $vista . ".php";
-} else {
-    echo "<div class=container py-5><h1>Página no encontrada</h1></div>";
+if(!isset($_REQUEST['c']))
+{
+    require_once "app/controllers/$controller" . "Controller.php";
+    $controller = ucwords($controller) . 'Controller';
+    $controller = new $controller;
+    $controller->index();    
 }
-
-?>
-</main>
-
-<?php
-include 'includes/footer.php';
-?>
-
+else
+{
+    $controller = strtolower($_REQUEST['c']);
+    $accion = isset($_REQUEST['a']) ? $_REQUEST['a'] : 'index';
+    
+    require_once "app/controllers/$controller" . "Controller.php";
+    $controller = ucwords($controller) . 'Controller';
+    $controller = new $controller;
+    
+    call_user_func( array( $controller, $accion ) );
+}

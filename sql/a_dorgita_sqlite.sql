@@ -14,7 +14,7 @@ CREATE TABLE usuarios(
     rol TEXT CHECK(rol IN ('admin','cliente'))
 );
 
-CREATE TABLE produtos (
+CREATE TABLE productos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome TEXT NOT NULL,
     descripcion TEXT,
@@ -41,5 +41,6 @@ CREATE TABLE detalles_pedido (
     cantidade INTEGER NOT NULL,
     prezo_unitario REAL NOT NULL,
     FOREIGN KEY (id_pedido) REFERENCES pedidos(id) ON DELETE CASCADE,
-    FOREIGN KEY (id_produto) REFERENCES produtos(id)
+    FOREIGN KEY (id_produto) REFERENCES productos(id)
 );
+

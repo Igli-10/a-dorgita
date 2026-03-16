@@ -8,9 +8,10 @@
 
                 <p class="fs-5 mb-4">Aínda non engadiches ningun produto</p>
                 
-                <a href="/a-dorgita/index.php" class="fondo-verde px-4 py-2 rounded d-inline-block">DESCUBRIR PRODUTOS</a>
+                <a href="/a-dorgita/index.php" class="fondo-laranxa px-4 py-2 rounded d-inline-block text-decoration-none">DESCUBRIR PRODUTOS</a>
             </div>
         </div>
     </div>
 </div>
-    <?php include "../includes/footer.php"; ?>
+
+<?php include "../includes/footer.php"; ?>

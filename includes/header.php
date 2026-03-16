@@ -28,7 +28,7 @@
                 <li class="nav-item"><a class="nav-link" href="#">Alimentación</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Ferretería</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Fogar</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
+                <li class="nav-item"><a class="nav-link" href="/a-dorgita/views/contacto.php">Contacto</a></li>
             </ul>
         </div>
 

@@ -6,3 +6,6 @@ desktop.ini
 
 # Logs de error y temporales
 *.log
+
+# Ignorar o arquivo binario da base de datos SQLite
+sql/a_dorgita.db

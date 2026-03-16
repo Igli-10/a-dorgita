@@ -28,3 +28,21 @@ CREATE TABLE produtos (
                                 on delete set null
 );
 
+CREATE TABLE pedidos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_usuario INTEGER,
+    data_pedido DATETIME DEFAULT CURRENT_TIMESTAMP,
+    total DECIMAL(10,2) NOT NULL,
+    estado TEXT DEFAULT 'pendente', -- pendente, enviado, entregado
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
+);
+
+CREATE TABLE detalles_pedido (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_pedido INTEGER,
+    id_produto INTEGER,
+    cantidade INTEGER NOT NULL,
+    prezo_unitario DECIMAL(10,2) NOT NULL, 
+    FOREIGN KEY (id_pedido) REFERENCES pedidos(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_produto) REFERENCES produtos(id)
+);

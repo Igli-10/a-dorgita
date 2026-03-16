@@ -91,11 +91,16 @@ $productos = [
                 <hr class="my-4">
 
                 <h5 class="fw-bold mb-3 texto-dorgita">Prezo</h5>
-                <input type="range" class="form-range"  min="0" max="20000">
+                <input type="range" class="form-range" min="0" max="20000">
                 <div class="d-flex justify-content-between small text-muted mt-2">
                     <span>0€</span>
                     <span>20.000€</span>
                 </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-engadir-carro w-100 py-2 fs-5">Filtrar</button>
+                </div>
+
             </div>
         </div>
     </div>

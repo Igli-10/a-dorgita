@@ -21,6 +21,7 @@ class Producto {
     public function setDescripcion($descripcion) { $this->descripcion = $descripcion; }
     public function setPrecio($precio) { $this->precio = $precio; }
     public function setStock($stock) { $this->stock = $stock; }
+    
     public function setImagen($imagen) { $this->imagen = $imagen; }
     public function setIdCategoria($id_categoria) { $this->id_categoria = $id_categoria; }
 }

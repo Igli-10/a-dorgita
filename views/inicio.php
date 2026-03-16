@@ -23,9 +23,9 @@
                                     <p class="card-text small"><?php echo htmlspecialchars($p->getDescripcion()); ?></p>
 
                                     <div class="mt-auto">
-                                        <p class="fw-bold fs-5 texto-dorgita"><?php echo $p->getPrecio(); ?>€</p>
+                                        <p class="fw-bold fs-5 texto-dorgita"><?php echo $p->getPrecio(); ?> €</p>
                                         
-                                        <a href="index.php?c=producto&a=obtener&id=<?php echo $p->getId(); ?>" class="btn btn-engadir-carro">VER DETALLES</a>
+                                        <a href="index.php?c=producto&a=obter&id=<?php echo $p->getId(); ?>" class="btn btn-engadir-carro">VER DETALLES</a>
                                     </div>
                                 </div>
                             </div>

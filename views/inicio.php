@@ -1,42 +1,11 @@
 <?php
-$productos = [
-    [
-        'titulo' => "Caixa de ferramentas 'Tritón'",
-        'descripcion' => "45 pezas de aceiro cromo-vanadio.",
-        'prezo' => "18.000 €",
-        'imaxe' => "public/img/caixa_ferramentas.png"
-    ],
-    [
-        'titulo' => "Aceite de Oliva Virxe Extra",
-        'descripcion' => "Aceite 'O Noso' 1L, extracción en frío.",
-        'prezo' => "9.50 €",
-        'imaxe' => "public/img/aceite_oliva_virxe.png"
-    ],
-    [
-        'titulo' => "Tostadora 'Moulinex'",
-        'descripcion' => "Compacta, 2 ranuras, estilo aceiro.",
-        'prezo' => "35.00 €",
-        'imaxe' => "public/img/tostadora.png"
-    ],
-    [
-        'titulo' => "Xogo de Chaves Fixas",
-        'descripcion' => "8 pezas con soporte para colgar.",
-        'prezo' => "24.95 €",
-        'imaxe' => "public/img/xogo_chaves.png"
-    ],
-    [
-        'titulo' => "Mesa de Terraza 'Silva'",
-        'descripcion' => "Madeira tratada, resistente á chuvia.",
-        'prezo' => "89.00 €",
-        'imaxe' => "public/img/mesa_terraza.png"
-    ],
-    [
-        'titulo' => "Lámpada LED Industrial",
-        'descripcion' => "Alta potencia, baixo consumo A++.",
-        'prezo' => "12.50 €",
-        'imaxe' => "public/img/lampada_led_industrial.png"
-    ]
-];
+try{
+    $stmt=$conexion->query("SELECT * FROM produtos");
+    $produtos=$stmt->fetchAll(); // Gardamos o resultado da consulta no array produtos
+}catch(PDOException $e){
+    $produtos=[];
+    echo "Erro: ". $e->getMessage();
+}
 
 ?>
 
@@ -54,16 +23,16 @@ $productos = [
     <div class="row">
         <div class="col-lg-9">
             <div class="row">
-                <?php foreach ($productos as $p): ?>
+                <?php foreach ($produtos as $p): ?>
                     <div class="col-md-4 mb-4">
                         <div class="card h-100 shadow-sm border-1" style="background-color: #FFFFFF;">
-                            <img src="<?php echo $p['imaxe']; ?>" class="card-img-top p-4" alt="Producto">
+                            <img src="public/img/<?php echo $p['imagen']; ?>" class="card-img-top p-4" alt="<?php echo $p['nome']; ?>">
                             <div class="card-body d-flex flex-column text-center">
-                                <h5 class="card-title fw-bold texto-principal desc-tarjeta"><?php echo $p['titulo']; ?></h5>
+                                <h5 class="card-title fw-bold texto-principal desc-tarjeta"><?php echo $p['nome']; ?></h5>
                                 <p class="card-text small"><?php echo $p['descripcion']; ?></p>
 
                                 <div class="mt-auto">
-                                    <p class="fw-bold fs-5 texto-dorgita"><?php echo $p['prezo']; ?></p>
+                                    <p class="fw-bold fs-5 texto-dorgita"><?php echo $p['precio']; ?>€</p>
                                     <a href="#" class="btn btn-engadir-carro">ENGADIR AO CARRO</a>
                                 </div>
                             </div>

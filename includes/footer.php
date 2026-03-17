@@ -30,6 +30,9 @@
         </div>
     </div>
 </footer>
+<script src="/a-dorgita/public/js/bootstrap.bundle.min.js"></script>
+
+<script src="/a-dorgita/public/js/carro.js"></script>
 </body>
 
 </html>

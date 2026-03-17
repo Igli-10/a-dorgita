@@ -51,12 +51,15 @@ class CarroController
 
                 //Se o produto xa estaba no carro chamamos a sumar
                 if (isset($_SESSION["carro"][$id])) {
-
-                    $this->sumar($id);
+                    $this->sumar($id, false); // false evita header redirect
+                    // Devolvemos o fragmento se é AJAX
+                    if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+                        $this->get_fragment();
+                        exit;
+                    }
                     return;
-
-                    //Senon estaba no carro, rexistramolo
                 } else {
+                    //Senon estaba no carro, rexistramolo
                     $_SESSION["carro"][$id] = [
                         "nome" => $producto->getNome(),
                         "precio" => $producto->getPrecio(),
@@ -67,9 +70,15 @@ class CarroController
                 }
             }
         }
-        //Recargamos a vista do carro
-        header("Location: index.php?c=producto&a=index");
-        exit;
+
+        // Se non é AJAX, rediriximos. Se é AJAX, devolvemos o fragmento para actualizar o carrito
+        if (!isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+            header("Location: index.php?c=producto&a=index");
+            exit;
+        } else {
+            $this->get_fragment();
+            exit;
+        }
     }
 
     public function eliminar()
@@ -82,15 +91,20 @@ class CarroController
             unset($_SESSION["carro"][$id]);
         }
 
-        //Recargamos a vista do carro
-        header("Location: index.php?c=carro&a=index");
-        exit;
+        //Se é AJAX, devolvemos o fragmento sen recargar. Se non, rediriximos
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+            $this->get_fragment();
+            exit;
+        } else {
+            header("Location: index.php?c=carro&a=index");
+            exit;
+        }
     }
 
-    public function restar()
+    public function restar($id = null)
     {
         //Recollemos o ID do produto que queremos restarlle unha unidad
-        $id = $_REQUEST["id"] ?? null;
+        $id = $id ?? ($_REQUEST["id"] ?? null);
 
         //Se o produto xa existe no noso carro
         if ($id && isset($_SESSION["carro"][$id])) {
@@ -103,12 +117,18 @@ class CarroController
                 unset($_SESSION["carro"][$id]);
             }
         }
-        //Recargamos a vista do carro
-        header("Location: index.php?c=carro&a=index");
-        exit;
+
+        //Se é AJAX, devolvemos o fragmento sen recargar. Se non, rediriximos
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+            $this->get_fragment();
+            exit;
+        } else {
+            header("Location: index.php?c=carro&a=index");
+            exit;
+        }
     }
 
-    public function sumar($id = null)
+    public function sumar($id = null, $redirect = true)
     {
         //Recollemos da URL o id senon se pasa por parámetro
         $id = $id ?? ($_REQUEST["id"] ?? null);
@@ -124,15 +144,21 @@ class CarroController
             }
         }
 
-        header("Location: /a-dorgita/index.php?c=carro&a=index");
-        exit;
+        //Se é redirect normal, usamos header. Se é AJAX, devolvemos o fragmento
+        if ($redirect) {
+            header("Location: /a-dorgita/index.php?c=carro&a=index");
+            exit;
+        } elseif (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+            $this->get_fragment();
+            exit;
+        }
     }
 
     public function calcularTotal()
     {
         $total = 0;
 
-        //Recorremos cada produto guardado en la sesión
+        //Recorremos cada produto gardado na sesión
         foreach ($_SESSION["carro"] as $item) {
             //Multiplicamos o precio de cada produto pola cantidade
             $total += $item["precio"] * $item["cantidade"];
@@ -140,4 +166,15 @@ class CarroController
 
         return $total;
     }
+
+    public function get_fragment()
+    {
+        // Recuperamos os datos necesarios da sesión
+        $carro = $_SESSION["carro"];
+        $total = $this->calcularTotal();
+
+        //Cargamos só o fragmento, sen header nin footer
+        require_once __DIR__ . '/../../views/partials/carro_lateral.php';
+    }
 }
+?>

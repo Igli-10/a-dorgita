@@ -13,32 +13,62 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-  <nav class="navbar navbar-dark fondo-verde">
-    <div class="container-fluid d-flex align-items-center">
-        
-        <div style="width: 25%;">
-            <a class="navbar-brand d-flex align-items-center" href="/a-dorgita/index.php">
-                <img src="/a-dorgita/public/img/logo.png" width="50" height="50" class="me-2" alt="Logo"> 
-                A Dorgita
-            </a>
+    <nav class="navbar navbar-dark fondo-verde">
+        <div class="container-fluid d-flex align-items-center">
+
+            <div style="width: 25%;">
+                <a class="navbar-brand d-flex align-items-center" href="/a-dorgita/index.php">
+                    <img src="/a-dorgita/public/img/logo.png" width="50" height="50" class="me-2" alt="Logo">
+                    A Dorgita
+                </a>
+            </div>
+
+            <div class="flex-grow-1 d-flex justify-content-center">
+                <ul class="nav">
+                    <li class="nav-item"><a class="nav-link" href="#">Alimentación</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Ferretería</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Fogar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/a-dorgita/views/contacto.php">Contacto</a></li>
+                </ul>
+            </div>
+
+            <div style="width: 25%;" class="d-flex justify-content-end">
+                <ul class="nav">
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-search"></i></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart"><i class="bi bi-cart3"></i></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/a-dorgita/views/login.php"><i class="bi bi-person"></i></a></li>
+                </ul>
+            </div>
+
         </div>
 
-        <div class="flex-grow-1 d-flex justify-content-center">
-            <ul class="nav">
-                <li class="nav-item"><a class="nav-link" href="#">Alimentación</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Ferretería</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Fogar</a></li>
-                <li class="nav-item"><a class="nav-link" href="/a-dorgita/views/contacto.php">Contacto</a></li>
-            </ul>
-        </div>
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
+            <div class="offcanvas-header border-bottom">
+                <h5 class="offcanvas-title fw-bold texto-verde" id="offcanvasCartLabel">O teu carro</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
 
-        <div style="width: 25%;" class="d-flex justify-content-end">
-            <ul class="nav">
-                <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-search"></i></a></li>
-                <li class="nav-item"><a class="nav-link" href="/a-dorgita/index.php?c=carro&a=index"><i class="bi bi-cart3"></i></a></li>
-                <li class="nav-item"><a class="nav-link" href="/a-dorgita/views/login.php"><i class="bi bi-person"></i></a></li>
-            </ul>
-        </div>
 
-    </div>
-</nav>
+            <div class="offcanvas-body" id="cart-content">
+                <?php
+                // Usamos directamente a sesión para evitar o "salto máxico"
+                $carro_actual = $_SESSION['carro'] ?? [];
+
+                if (!empty($carro_actual)):
+                    $total = 0;
+                    // Re-calculamos para asegurar que a vista teña o dato
+                    foreach ($carro_actual as $item) {
+                        $total += $item['precio'] * $item['cantidade'];
+                    }
+                    // Pasamos a variable $carro que espera o teu fragmento
+                    $carro = $carro_actual;
+                  include __DIR__ . '/../views/partials/carro_lateral.php';
+                else: ?>
+                    <div class="text-center py-5">
+                        <p class="text-muted">O teu carro está baleiro.</p>
+                        <a href="index.php?c=producto&a=index" class="btn btn-catalogo seguir-comprando">Descubrir produtos</a>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </nav>

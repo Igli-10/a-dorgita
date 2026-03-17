@@ -151,3 +151,9 @@ input[type=number] {
     -moz-appearance: textfield;
     appearance: textfield;
 } 
+
+#cantidade-input {
+    position: relative;
+    z-index: 1060; /* Un nivel por riba do estándar de Bootstrap */
+    cursor: text;
+}

@@ -1,5 +1,11 @@
 PRAGMA foreign_keys = ON;
 
+DROP TABLE IF EXISTS detalles_pedido;
+DROP TABLE IF EXISTS pedidos;
+DROP TABLE IF EXISTS productos;
+DROP TABLE IF EXISTS usuarios;
+DROP TABLE IF EXISTS categorias;
+
 CREATE TABLE categorias (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome TEXT NOT NULL,
@@ -9,7 +15,7 @@ CREATE TABLE categorias (
 CREATE TABLE usuarios(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome TEXT NOT NULL,
-    email TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
     contrasinal TEXT NOT NULL,
     rol TEXT CHECK(rol IN ('admin','cliente'))
 );
@@ -43,4 +49,3 @@ CREATE TABLE detalles_pedido (
     FOREIGN KEY (id_pedido) REFERENCES pedidos(id) ON DELETE CASCADE,
     FOREIGN KEY (id_produto) REFERENCES productos(id)
 );
-

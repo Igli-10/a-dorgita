@@ -9,6 +9,11 @@ class ProductoController
     //Inicializa o modelo DAO para interactuar ca base de datos
     public function __construct()
     {
+        //Comprobamos se a sesión está activa e senon iniciámola
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
         $this->model = new ProductoDAO();
     }
 
@@ -22,23 +27,21 @@ class ProductoController
         //Filtra en función dos valores
         $productos = $this->model->filtrar($id_cat, $max_prezo);
 
-        include 'includes/header.php';
-
+        require_once __DIR__ . '/../../includes/header.php';
         require_once __DIR__ . '/../../views/inicio.php';
-
-        include 'includes/footer.php';
+        require_once __DIR__ . '/../../includes/footer.php';
     }
 
     //Acción pa mostrar os detalles dun producto
     public function obter()
     {
         if (isset($_REQUEST["id"])) { // Verificamos que o ID veña na URL
+
             $prod = $this->model->obter($_REQUEST["id"]);
 
-            include 'includes/header.php';
+            require_once __DIR__ . '/../../includes/header.php';
             require_once __DIR__ . '/../../views/produto.php';
-            include 'includes/footer.php';
+            require_once __DIR__ . '/../../includes/footer.php';
         }
     }
-    
 }

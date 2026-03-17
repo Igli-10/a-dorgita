@@ -157,3 +157,23 @@ input[type=number] {
     z-index: 1060; /* Un nivel por riba do estándar de Bootstrap */
     cursor: text;
 }
+
+/* Dropdown usuario logueado */
+
+.dropdown-menu{
+    background-color: #1B4332;
+    border: 1px solid #1B4332;
+}
+
+.dropdown-menu .dropdown-item{
+    color: #FFFFFF;
+}
+
+.dropdown-menu .dropdown-item:hover{
+    background-color: #E07A5F;
+    color: #FFFFFF;
+}
+
+.dropdown-divider{
+    border-color: #FFFFFF;
+}

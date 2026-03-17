@@ -7,7 +7,7 @@ class CarroController
 
     public function __construct()
     {
-        //Comprobamos se a sessión ten un id asignado e senon inciamola
+        //Comprobamos se a sesión esta activa e senon inciamola
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }

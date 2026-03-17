@@ -36,7 +36,19 @@
                 <ul class="nav">
                     <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-search"></i></a></li>
                     <li class="nav-item"><a class="nav-link" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart"><i class="bi bi-cart3"></i></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/a-dorgita/views/login.php"><i class="bi bi-person"></i></a></li>
+                    <?php if (isset($_SESSION['usuario'])): ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-check-fill me-1"></i>
+                                <?php echo htmlspecialchars($_SESSION['usuario']['nome']); ?>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="/a-dorgita/index.php?c=usuario&a=logout"><i class="bi bi-box-arrow-right me-2"></i>Pechar sesión</a></li>
+                            </ul>
+                        </li>
+                    <?php else: ?>
+                        <li class="nav-item"><a class="nav-link" href="/a-dorgita/index.php?c=usuario&a=login"><i class="bi bi-person"></i></a></li>
+                    <?php endif; ?>
                 </ul>
             </div>
 
@@ -62,7 +74,7 @@
                     }
                     // Pasamos a variable $carro que espera o teu fragmento
                     $carro = $carro_actual;
-                  include __DIR__ . '/../views/partials/carro_lateral.php';
+                    include __DIR__ . '/../views/partials/carro_lateral.php';
                 else: ?>
                     <div class="text-center py-5">
                         <p class="text-muted">O teu carro está baleiro.</p>

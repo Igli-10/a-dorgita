@@ -35,7 +35,8 @@ class ProductoDAO
         try {
             $stmt = $this->pdo->prepare("SELECT * FROM productos WHERE id = ?");
             $stmt->execute(array($id));
-            return $stmt->fetchObject("Producto"); // Devolvemos o resultado como un obxecto da clase Producto
+            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Producto'); // Recupera unha fila da base de datos e convírtea en obxecto produto
+            return $stmt->fetch();
         } catch (Exception $e) {
             die("Erro o ver detalles do produto" . $e->getMessage());
         }

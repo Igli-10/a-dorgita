@@ -139,3 +139,15 @@ footer{
 .seguir-comprando .nav-link:hover,.seguir-comprando a:hover,a.seguir-comprando:hover {
     color: #1B4332 ;
 }
+
+/* Quitar as frechas por defecto do input number */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+} 

@@ -43,9 +43,9 @@ CREATE TABLE pedidos (
 CREATE TABLE detalles_pedido (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_pedido INTEGER,
-    id_produto INTEGER,
+    id_producto INTEGER,
     cantidade INTEGER NOT NULL,
     prezo_unitario REAL NOT NULL,
     FOREIGN KEY (id_pedido) REFERENCES pedidos(id) ON DELETE CASCADE,
-    FOREIGN KEY (id_produto) REFERENCES productos(id)
+    FOREIGN KEY (id_producto) REFERENCES productos(id)
 );

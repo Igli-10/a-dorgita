@@ -78,7 +78,7 @@
                         <span class="texto-principal fs-4 fw-bold"><?php echo number_format($total, 2); ?> €</span>
                     </div>
 
-                    <button class="btn btn-engadir-carro w-100 mt-3">Finalizar compra</button>
+                    <a href="index.php?c=carro&a=finalizar" class="btn btn-engadir-carro w-100 mt-3">Finalizar compra</a>
                     <a href="index.php?c=producto&a=index" class="btn btn-link w-100 text-decoration-none mt-2 small text-center d-block seguir-comprando">Seguir mercando</a>
                 </div>
             </div>

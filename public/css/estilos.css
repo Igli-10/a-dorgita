@@ -10,6 +10,7 @@
 
 .fondo-verde .nav-link:hover,.fondo-verde a:hover,a.fondo-verde:hover {
     color: #FFFFFF ;
+    background-color: transparent !important;
 }
 
 body{
@@ -65,8 +66,8 @@ footer{
 
 .btn-engadir-carro:hover{
      background-color: #FFFFFF;
-    color: #E07A5F;
-    border: 1px solid #FFFFFF;
+    color: #E07A5F !important;
+    border: 1px solid #E07A5F !important;
     border-radius: 3px;
 }
 
@@ -170,12 +171,12 @@ input[type=number] {
 }
 
 .dropdown-menu .dropdown-item:hover{
-    background-color: #1B4332;
-    color: #FFFFFF;
+    background-color: #1B4332 !important;
+    color: #FFFFFF !important;
 }
 
 .dropdown-menu .dropdown-item.text-danger:hover{
-    background-color: #dc3545;
+    background-color: #dc3545 !important;
     color: #FFFFFF !important;
 }
 
@@ -199,3 +200,4 @@ input[type=number] {
     font-size: 80px; 
     color: #E07A5F;
 }
+

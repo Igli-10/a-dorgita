@@ -7,7 +7,7 @@
                     <p>Únete A Dorgita</p>
                 </div>
 
-                <?php if (isset($erro)): ?>
+                <?php if (!empty($erro)): ?>
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
                         <?php echo $erro; ?>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>

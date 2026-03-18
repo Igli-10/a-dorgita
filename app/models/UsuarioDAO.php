@@ -5,9 +5,14 @@ require_once __DIR__ . "/../../config/database.php";
 class UsuarioDAO {
     private $conexion;
 
-    
-    public function __construct() {
-        $this->conexion = Database::connect();
+     //Establecese a conexión a base de datos
+    public function __construct()
+    {
+        try {
+            $this->conexion = Database::connect();
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
     }
 
     // Método para buscar un usuario polo seu correo electrónico 

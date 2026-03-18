@@ -4,14 +4,14 @@ require_once __DIR__ . '/entidades/Producto.php';
 
 class ProductoDAO
 {
-    private $pdo;
+    private $conexion;
 
 
     //Establecese a conexión a base de datos
     public function __construct()
     {
         try {
-            $this->pdo = Database::connect();
+            $this->conexion = Database::connect();
         } catch (Exception $e) {
             die($e->getMessage());
         }
@@ -21,7 +21,7 @@ class ProductoDAO
     public function listar()
     {
         try {
-            $stmt = $this->pdo->prepare("SELECT * FROM productos");
+            $stmt = $this->conexion->prepare("SELECT * FROM productos");
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_CLASS, 'Producto');
         } catch (Exception $e) {
@@ -33,7 +33,7 @@ class ProductoDAO
     public function obter($id)
     {
         try {
-            $stmt = $this->pdo->prepare("SELECT * FROM productos WHERE id = ?");
+            $stmt = $this->conexion->prepare("SELECT * FROM productos WHERE id = ?");
             $stmt->execute(array($id));
             $stmt->setFetchMode(PDO::FETCH_CLASS, 'Producto'); // Recupera unha fila da base de datos e convírtea en obxecto produto
             return $stmt->fetch();
@@ -68,7 +68,7 @@ class ProductoDAO
                 $sql .= " WHERE " . implode(" AND ", $condicions);
             }
 
-            $stmt = $this->pdo->prepare($sql);
+            $stmt = $this->conexion->prepare($sql);
             $stmt->execute($params);
 
             return $stmt->fetchAll(PDO::FETCH_CLASS, "Producto");

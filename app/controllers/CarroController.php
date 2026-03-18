@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . "/../models/ProductoDAO.php";
+require_once __DIR__ . '/../models/PedidoDAO.php';
 
 class CarroController
 {
@@ -29,9 +30,9 @@ class CarroController
         $total = $this->calcularTotal();
 
         //Cargamos as vistas
-        include "includes/header.php";
+        require_once __DIR__ . '/../../includes/header.php';
         require_once __DIR__ . '/../../views/carro.php';
-        include 'includes/footer.php';
+        require_once __DIR__ . '/../../includes/footer.php';
     }
 
     public function engadir()
@@ -176,5 +177,42 @@ class CarroController
         //Cargamos só o fragmento, sen header nin footer
         require_once __DIR__ . '/../../views/partials/carro_lateral.php';
     }
+
+    //Método que mete o pedido na base de datos
+    public function finalizar()
+    {
+        // Verifico que o usuario está logueado
+        if (!isset($_SESSION["usuario"])) {
+            header("Location: index.php?c=usuario&a=login");
+            exit;
+        }
+
+        $carro = $_SESSION["carro"] ?? [];
+
+        // Se o carro está baleiro, rediriximos ao inicio
+        if (empty($carro)) {
+            header("Location: index.php?c=producto&a=index");
+            exit;
+        }
+
+        $pedidoDAO = new PedidoDAO();
+
+        $id_usuario = $_SESSION["usuario"]["id"];
+        $total = $this->calcularTotal();
+
+        // Gardo o pedido na base de datos
+        $id_pedido = $pedidoDAO->crearPedido($id_usuario, $total, $carro);
+
+        if (!$id_pedido) {
+            die("Erro crítico ao procesar a compra.");
+        }
+
+        // Se se gardou, baleirase o carro e amosamos confirmación
+        $_SESSION["carro"] = [];
+
+        require_once __DIR__ . '/../../includes/header.php';
+        require_once __DIR__ . '/../../views/confirmacion_pedido.php';
+        require_once __DIR__ . '/../../includes/footer.php';
+        exit;
+    }
 }
-?>

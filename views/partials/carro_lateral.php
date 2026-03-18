@@ -40,9 +40,7 @@
                 <span class="fs-5 fw-bold texto-verde"><?php echo number_format($total, 2); ?> €</span>
             </div>
             <a href="index.php?c=carro&a=index" class="btn seguir-comprando w-100 mb-2">Ver carro completo</a>
-            <button class="btn btn-engadir-carro w-100 fw-bold">
-                Finalizar compra
-            </button>
+             <a href="index.php?c=carro&a=finalizar" class="btn btn-engadir-carro w-100 ">Finalizar compra</a>
         </div>
     <?php endif; ?>
 </div>

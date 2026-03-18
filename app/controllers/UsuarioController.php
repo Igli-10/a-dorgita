@@ -112,6 +112,20 @@ class UsuarioController
         require_once __DIR__ . '/../../includes/footer.php';
     }
 
+    public function perfil()
+    {
+        // Comproba se o usuario está autenticado
+        if (!isset($_SESSION['usuario'])) {
+            header("Location: index.php?c=usuario&a=login");
+            exit;
+        }
+
+        // Carga de deseño dende o controlador
+        require_once __DIR__ . '/../../includes/header.php';
+        require_once __DIR__ . '/../../views/perfil.php';
+        require_once __DIR__ . '/../../includes/footer.php';
+    }
+
     public function logout()
     {
         // Destrúe toda a información gardada na sesión (incluíndo o usuario)

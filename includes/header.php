@@ -42,12 +42,16 @@
                                 <i class="bi bi-person-check-fill me-1"></i>
                                 <?php echo htmlspecialchars($_SESSION['usuario']['nome']); ?>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="/a-dorgita/index.php?c=usuario&a=logout"><i class="bi bi-box-arrow-right me-2"></i>Pechar sesión</a></li>
+                            <ul class="dropdown-menu dropdown-menu-end shadow-sm bg-white">
+                                <li><a class="dropdown-item texto-verde" href="index.php?c=usuario&a=perfil"><i class="bi bi-person me-2"></i>O meu perfil</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item text-danger" href="index.php?c=usuario&a=logout"><i class="bi bi-box-arrow-right me-2"></i>Pechar sesión</a></li>
                             </ul>
                         </li>
                     <?php else: ?>
-                        <li class="nav-item"><a class="nav-link" href="/a-dorgita/index.php?c=usuario&a=login"><i class="bi bi-person"></i></a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.php?c=usuario&a=login"><i class="bi bi-person"></i></a></li>
                     <?php endif; ?>
                 </ul>
             </div>

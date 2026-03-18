@@ -3,8 +3,19 @@
         <div class="col-md-6 col-lg-5">
             <div class="p-5 rounded shadow-sm border caixa-filtros">
                 <div class="text-center mb-4">
+
+                    <?php if (isset($_SESSION['mensaxe_aviso'])): ?>
+                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <?php
+                            echo $_SESSION['mensaxe_aviso'];
+                            unset($_SESSION['mensaxe_aviso']);
+                            ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php endif; ?>
+
                     <h2 class="fw-bold texto-principal">Iniciar Sesión</h2>
-                    <p>Benvido de novo A Dorgita</p>
                 </div>
 
                 <?php if (isset($erro)): ?>

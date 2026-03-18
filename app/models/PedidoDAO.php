@@ -32,14 +32,31 @@ class PedidoDAO
             //Preparo a consulta para os detalle dos pedidos
             $stmtDetalle = $this->conexion->prepare("INSERT INTO detalles_pedido (id_pedido, id_producto, cantidade, prezo_unitario) VALUES (?, ?, ?, ?)");
 
+            // Consulta para descontar o stock: só resta se o stock actual é maior ou igual á cantidade pedida
+            $stmtStock = $this->conexion->prepare("UPDATE productos SET stock = stock - ? WHERE id = ? AND stock >= ?");
+
             //Percorro cada produto do carro para gardalo na base de datos
             foreach ($carro as $id_producto => $item) {
+
+                // Gardo o detalle
                 $stmtDetalle->execute(array(
                     $id_pedido,
                     $id_producto,
                     $item["cantidade"],
                     $item["precio"]
                 ));
+
+                // Desconto o stock
+                $stmtStock->execute(array(
+                    $item["cantidade"],
+                    $id_producto,
+                    $item["cantidade"]
+                ));
+
+                // Verificamos se o UPDATE afectou a algunha fila
+                if ($stmtStock->rowCount() == 0) {
+                    throw new Exception("Non hai stock abondo para o produto: " . $item["nome"]);
+                }
             }
 
             //Se hasta aqui non houbo errores, confirmo os cambios
@@ -69,6 +86,4 @@ class PedidoDAO
             die("Erro o ver detalles do pedido " . $e->getMessage());
         }
     }
-
-   
 }

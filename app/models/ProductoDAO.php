@@ -76,4 +76,13 @@ class ProductoDAO
             die("Erro ao filtrar: " . $e->getMessage());
         }
     }
+
+    public function descontarStock($id, $cantidade) {
+    try {
+        $stmt = $this->conexion->prepare("UPDATE productos SET stock = stock - ? WHERE id = ? AND stock >= ?");
+        return $stmt->execute([$cantidade, $id, $cantidade]);
+    } catch (PDOException $e) {
+        return false;
+    }
+}
 }

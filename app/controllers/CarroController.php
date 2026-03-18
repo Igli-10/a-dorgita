@@ -183,6 +183,7 @@ class CarroController
     {
         // Verifico que o usuario está logueado
         if (!isset($_SESSION["usuario"])) {
+            $_SESSION['mensaxe_aviso'] = "Debes iniciar sesión para poder completar o teu pedido.";
             header("Location: index.php?c=usuario&a=login");
             exit;
         }

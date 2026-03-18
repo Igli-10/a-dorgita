@@ -7,7 +7,7 @@
                     <h2 class="fw-bold texto-principal">O meu perfil</h2>
                     <p>Xestiona os teus datos personais</p>
                     <div class="mt-3">
-                        <i class="bi bi-person-circle" style="font-size: 80px; color: #1B4332;"></i>
+                        <i class="bi bi-person-circle foto-perfil"></i>
                     </div>
                 </div>
             </div>
@@ -37,7 +37,7 @@
             </div>
 
             <div class="d-flex justify-content-center gap-3">
-                <a href="index.php?c=producto&a=index" class="btn btn-outline-dark fs-5 px-4 rounded-pill">
+                <a href="index.php?c=producto&a=index" class="btn boton-volver-tenda fs-5 px-4 rounded-pill">
                     <i class="bi bi-shop me-2"></i>Volver á tenda
                 </a>
 

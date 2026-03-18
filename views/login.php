@@ -38,7 +38,7 @@
 
                     <div class="text-center mt-3">
                         <span class="small">Aínda non tes conta?</span>
-                        <a href="/a-dorgita/index.php?c=usuario&a=rexistrar" class="text-decoration-none fw-bold ms-1">Rexístrate aquí</a>
+                        <a href="index.php?c=usuario&a=rexistrar" class="text-decoration-none fw-bold ms-1">Rexístrate aquí</a>
                     </div>
                 </form>
             </div>

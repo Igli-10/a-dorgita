@@ -74,6 +74,10 @@ class UsuarioController
 
     public function rexistrar()
     {
+        $erro = "";
+        $nome = "";
+        $email = "";
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Recolle os datos do formulario de rexistro
             $nome = $_POST['nome'] ?? '';
@@ -81,8 +85,25 @@ class UsuarioController
             $contrasinal = $_POST['contrasinal'] ?? '';
             $contrasinal2 = $_POST['contrasinal2'] ?? '';
 
-            // Comproba que os dous contrasinais introducidos sexan idénticos
-            if ($contrasinal === $contrasinal2) {
+            // Engado array que almacena os erros
+            $erros = [];
+
+            // Validacións de formulario
+            if (empty($nome) || strlen($nome) < 3) {
+                $erros[] = "- O nome debe ter polo menos 3 caracteres.";
+            }
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $erros[] = "- O formato do correo electrónico non é válido";
+            }
+            if (strlen($contrasinal) < 6) {
+                $erros[] = "- O contrasinal debe ter polo menos 6 caracteres";
+            }
+            if ($contrasinal !== $contrasinal2) {
+                $erros[] = "- Os contrasinais non coinciden";
+            }
+
+            // Comproba que non haxa erros
+            if (empty($erros)) {
                 // Cifra o contrasinal de forma segura antes de gardalo na base de datos
                 $hash = password_hash($contrasinal, PASSWORD_DEFAULT);
 
@@ -101,12 +122,11 @@ class UsuarioController
                     $erro = "Ese correo electrónico xa está rexistrado.";
                 }
             } else {
-                // Erro se o usuario non escribiu o mesmo contrasinal dúas veces
-                $erro = "Os contrasinais non coinciden.";
+                // Se hai erros, unimolos
+                $erro = implode("<br>", $erros);
             }
         }
-
-        // Carga de deseño dende o controlador
+          // Carga de deseño dende o controlador
         require_once __DIR__ . '/../../includes/header.php';
         require_once __DIR__ . '/../../views/rexistro.php';
         require_once __DIR__ . '/../../includes/footer.php';

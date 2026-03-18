@@ -182,3 +182,20 @@ input[type=number] {
 .dropdown-divider{
     border-color: #FFFFFF;
 }
+
+.boton-volver-tenda{
+     background-color: #1B4332;
+     color:#FFFFFF;
+     border:1px solid #1B4332;
+}
+
+.boton-volver-tenda:hover {
+    background-color: #FFFFFF;;
+    color: #1B4332;
+    border: 1px solid #1B4332;
+}
+
+.foto-perfil{
+    font-size: 80px; 
+    color: #E07A5F;
+}

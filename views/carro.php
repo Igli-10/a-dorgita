@@ -46,7 +46,7 @@
                                     <div class="input-group input-group-sm ancho-cantidade-carro" style="width: 100px;">
                                         <a href="index.php?c=carro&a=restar&id=<?php echo $id; ?>" class="btn btn-cantidade text-decoration-none d-flex align-items-center justify-content-center">-</a>
                                         <input type="text" class="form-control text-center input-cantidade" value="<?php echo $item['cantidade']; ?>" readonly>
-                                        <a href="index.php?c=carro&a=engadir&id=<?php echo $id; ?>" class="btn btn-cantidade text-decoration-none d-flex align-items-center justify-content-center">+</a>
+                                       <a href="index.php?c=carro&a=sumar&id=<?php echo $id; ?>" class="btn btn-cantidade text-decoration-none d-flex align-items-center justify-content-center">+</a>
                                     </div>
                                 </td>
                                 <td class="text-end pe-4 fw-bold fs-5 texto-principal"><?php echo number_format($subtotal_producto, 2); ?> €</td>

@@ -17,12 +17,12 @@
                 <form action="/a-dorgita/index.php?c=usuario&a=rexistrar" method="POST">
                     <div class="mb-3">
                         <label for="nome" class="form-label fw-bold texto-principal">Nome Completo</label>
-                        <input type="text" class="form-control" id="nome" name="nome" required>
+                       <input type="text" class="form-control" id="nome" name="nome" value="<?php echo htmlspecialchars($nome); ?>" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="email" class="form-label fw-bold texto-principal">Correo electrónico</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
+                        <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>" required>
                     </div>
 
                     <div class="mb-3">
@@ -39,7 +39,7 @@
 
                     <div class="text-center mt-3">
                         <span class="small">Xa tes unha conta?</span>
-                        <a href="/a-dorgita/index.php?c=usuario&a=login" class="text-decoration-none fw-bold ms-1">Inicia Sesión</a>
+                        <a href="index.php?c=usuario&a=login" class="text-decoration-none fw-bold ms-1">Inicia Sesión</a>
                     </div>
                 </form>
             </div>

@@ -208,3 +208,84 @@ input[type=number] {
 button[aria-expanded="true"] .icono-flecha {
     transform: rotate(180deg);
 }
+
+/* Clase para o tamaño de letra do buscador */
+.texto-buscador {
+    font-size: 0.8rem;
+}
+
+/* Estilo do input para que combine co fondo-verde */
+.input-buscador {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: #FFFFFF !important;
+    transition: all 0.3s ease;
+}
+
+.input-buscador::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Cando o usuario fai clic para escribir */
+.input-buscador:focus {
+    background-color: #FFFFFF !important;
+    color: #1B4332 !important;
+    border-color: #FFFFFF !important;
+    box-shadow: none;
+}
+
+/* Botón da lupa dentro do input */
+.btn-lupa {
+    color: #FFFFFF;
+    border: none;
+    background: transparent;
+}
+
+.btn-lupa:hover {
+    color: #E07A5F; /* Un toque laranxa ao pasar o rato */
+}
+
+/* Clase para o contenedor de suxestións do buscador */
+.caixa-suxestions {
+    top: 100%;
+    left: 0;
+    width: 280px;
+    z-index: 9999 !important; 
+    display: none; 
+    border-radius: 0 0 10px 10px;
+    overflow: hidden;
+    border: 1px solid #1B4332 !important;
+    background-color: #FFFFFF !important; 
+    position: absolute !important; /* OBRIGATORIO para que flote sobre o contido */
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+/* Estilo para cada ítem da lista de suxestións */
+.caixa-suxestions .list-group-item,
+.caixa-suxestions .list-group-item-action {
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 0.75rem;
+    color: #212529;
+}
+
+.caixa-suxestions .list-group-item-action:hover,
+.caixa-suxestions .list-group-item-action:focus {
+    background-color: #1B4332 !important;
+    color: #FFFFFF !important;
+    text-decoration: none;
+}
+
+.caixa-suxestions .list-group-item-action:hover .texto-buscador,
+.caixa-suxestions .list-group-item-action:focus .texto-buscador,
+.caixa-suxestions .list-group-item-action:hover .small,
+.caixa-suxestions .list-group-item-action:focus .small {
+    color: #FFFFFF !important;
+}
+.suxestion-img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 8px;
+}

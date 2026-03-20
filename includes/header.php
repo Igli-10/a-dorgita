@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/a-dorgita/public/css/bootstrap.min.css">
     <link rel="stylesheet" href="/a-dorgita/public/css/estilos.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="/a-dorgita/public/js/buscador.js" defer></script>
     <link rel="icon" type="image/png" href="/a-dorgita/public/img/logo_favicon.png" alt="Favicon">
 
 </head>
@@ -34,7 +35,26 @@
 
             <div style="width: 25%;" class="d-flex justify-content-end">
                 <ul class="nav">
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-search"></i></a></li>
+                    <form action="index.php" method="get" class="d-flex align-content-center me-2">
+                        <input type="hidden" name="c" value="producto">
+                        <input type="hidden" name="a" value="index">
+
+                        <div class="input-group input-group-sm position-relative" style="width: 150px;">
+
+                            <input type="text" name="q" id="input-busca"
+                                class="form-control rounded-pill ps-3 texto-buscador input-buscador"
+                                placeholder="Buscar..." autocomplete="off"
+                                value="<?php echo isset($_GET["q"]) ? htmlspecialchars($_GET["q"]) : " "; ?>">
+
+                            <button class="btn btn-lupa" type="submit">
+                                <i class="bi bi-search"></i>
+                            </button>
+
+                            <div id="suxestions-box" class="caixa-suxestions list-group"></div>
+                        
+                        </div>
+                    </form>
+
                     <li class="nav-item"><a class="nav-link" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart"><i class="bi bi-cart3"></i></a></li>
                     <?php if (isset($_SESSION['usuario'])): ?>
                         <li class="nav-item dropdown">

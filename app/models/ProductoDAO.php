@@ -77,12 +77,50 @@ class ProductoDAO
         }
     }
 
-    public function descontarStock($id, $cantidade) {
-    try {
-        $stmt = $this->conexion->prepare("UPDATE productos SET stock = stock - ? WHERE id = ? AND stock >= ?");
-        return $stmt->execute([$cantidade, $id, $cantidade]);
-    } catch (PDOException $e) {
-        return false;
+    public function descontarStock($id, $cantidade)
+    {
+        try {
+            $stmt = $this->conexion->prepare("UPDATE productos SET stock = stock - ? WHERE id = ? AND stock >= ?");
+            return $stmt->execute([$cantidade, $id, $cantidade]);
+        } catch (PDOException $e) {
+            return false;
+        }
     }
-}
+
+    //Busca produtos na base de datos que coincidan co mensaxe proporcionado.
+    //Mira tanto no nome como na descripción do produto.
+    public function buscar($mensaxe)
+    {
+        try {
+
+            $stmt = $this->conexion->prepare("SELECT * FROM productos WHERE nome LIKE :mensaxe OR descripcion LIKE :mensaxe");
+
+            // Engadimos os comodíns % para buscar coincidencias parciais
+            $mensaxe_busca = "%" . $mensaxe . "%";
+            $stmt->bindParam(":mensaxe", $mensaxe_busca);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_CLASS, "Producto");
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
+
+    // Busca coincidencias rápidas para o autocompletado 
+    public function suxerir($mensaxe)
+    {
+        try {
+            // Buscamos por nome, descrición e imaxe, limitamos a 5 resultados
+            $stmt = $this->conexion->prepare("SELECT id, nome, descripcion, imagen FROM productos WHERE nome LIKE :mensaxe OR descripcion LIKE :mensaxe LIMIT 5");
+
+            $mensaxe_busca = "%" . $mensaxe . "%";
+
+            $stmt->bindParam(':mensaxe', $mensaxe_busca);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            return [];
+        }
+    }
+
 }

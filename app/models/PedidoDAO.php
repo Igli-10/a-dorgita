@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/entidades/Producto.php';
+require_once __DIR__ . '/entidades/Pedido.php';
 
 class PedidoDAO
 {
@@ -84,6 +85,37 @@ class PedidoDAO
             return $stmt->fetch();
         } catch (PDOException $e) {
             die("Erro o ver detalles do pedido " . $e->getMessage());
+        }
+    }
+
+    public function obterPedidosPorUsuario($id_usuario)
+    {
+        try {
+            // Consulta para coller os pedidos do usuario, ordenados do máis recente ao máis antigo
+            $stmt = $this->conexion->prepare("SELECT * FROM pedidos WHERE id_usuario= ? ORDER BY id DESC");
+            $stmt->execute([$id_usuario]);
+
+            $stmt->setFetchMode(PDO::FETCH_CLASS, "Pedido");
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
+
+    public function obterDetalles($id_pedido)
+    {
+        try {
+            // Uso INNER JOIN para conectar as táboas e conseguir o nome real do produto
+            $stmt = $this->conexion->prepare("
+                SELECT dp.cantidade, dp.prezo_unitario, p.nome 
+                FROM detalles_pedido dp
+                INNER JOIN productos p ON dp.id_producto = p.id
+                WHERE dp.id_pedido = ?
+            ");
+            $stmt->execute([$id_pedido]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return [];
         }
     }
 }

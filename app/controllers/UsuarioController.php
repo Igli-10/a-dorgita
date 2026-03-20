@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . "/../models/UsuarioDAO.php";
+ require_once __DIR__ . '/../models/PedidoDAO.php';
 
 class UsuarioController
 {
@@ -126,7 +127,7 @@ class UsuarioController
                 $erro = implode("<br>", $erros);
             }
         }
-          // Carga de deseño dende o controlador
+        // Carga de deseño dende o controlador
         require_once __DIR__ . '/../../includes/header.php';
         require_once __DIR__ . '/../../views/rexistro.php';
         require_once __DIR__ . '/../../includes/footer.php';
@@ -138,6 +139,21 @@ class UsuarioController
         if (!isset($_SESSION['usuario'])) {
             header("Location: index.php?c=usuario&a=login");
             exit;
+        }
+
+       
+        $pedidoDAO = new PedidoDAO();
+
+        $pedidos_base = $pedidoDAO->obterPedidosPorUsuario($_SESSION['usuario']['id']);
+
+        $pedidos_completos=[];
+
+        foreach($pedidos_base as $pedido){
+            $detalles=$pedidoDAO->obterDetalles($pedido->getId());
+            $pedidos_completos[]=[
+                "pedido" => $pedido,
+                "detalles" => $detalles
+            ];
         }
 
         // Carga de deseño dende o controlador

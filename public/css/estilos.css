@@ -124,7 +124,7 @@ footer{
 }
 
 .texto-verde{
-    color: #1B4332 ;
+    color: #1B4332 !important;
 }
 
 .seguir-comprando{
@@ -201,3 +201,10 @@ input[type=number] {
     color: #E07A5F;
 }
 
+.icono-flecha {
+    transition: transform 0.3s ease;
+}
+
+button[aria-expanded="true"] .icono-flecha {
+    transform: rotate(180deg);
+}

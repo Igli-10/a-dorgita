@@ -50,31 +50,34 @@ class CarroController
             //Comprobamos que existe e que teña stock
             if ($producto && $producto->getStock() > 0) {
 
-                //Se o produto xa estaba no carro chamamos a sumar
-                if (isset($_SESSION["carro"][$id])) {
-                    $this->sumar($id, false); // false evita header redirect
-                    // Devolvemos o fragmento se é AJAX
-                    if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
-                        $this->get_fragment();
-                        exit;
-                    }
-                    return;
-                } else {
-                    //Senon estaba no carro, rexistramolo
+                $stock_real = $producto->getStock();
+                $cantidade_no_carro = isset($_SESSION["carro"][$id]) ? $_SESSION["carro"][$id]["cantidade"] : 0;
+                $total_final = $cantidade_no_carro + $cantidade_a_engadir;
+
+                // VALIDACIÓN DE STOCK: Comprobamos que a suma non supere o stock real
+                if ($total_final <= $stock_real) {
+                    //Se o produto xa estaba no carro ou é novo, actualizamos/creamos
                     $_SESSION["carro"][$id] = [
-                        "nome" => $producto->getNome(),
-                        "precio" => $producto->getPrecio(),
-                        "imagen" => $producto->getImagen(),
-                        'stock'     => $producto->getStock(),
-                        'cantidade' => $cantidade_a_engadir
+                        "id"        => $producto->getId(),
+                        "nome"      => $producto->getNome(),
+                        "precio"    => $producto->getPrecio(),
+                        "imagen"    => $producto->getImagen(),
+                        "stock"     => $stock_real,
+                        "cantidade" => $total_final
                     ];
+                } else {
+                    // Se a cantidade solicitada supera o stock, limitamos ao máximo posible
+                    $_SESSION["carro"][$id]["cantidade"] = $stock_real;
+                    $_SESSION['erro_stock'] = "Non se poden engadir máis unidades. Stock máximo alcanzado.";
                 }
             }
         }
 
         // Se non é AJAX, rediriximos. Se é AJAX, devolvemos o fragmento para actualizar o carrito
         if (!isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
-            header("Location: index.php?c=producto&a=index");
+            // Se hai erro, volvemos á ficha do produto para que se vexa a mensaxe
+            $url = isset($_SESSION['erro_stock']) ? "index.php?c=producto&a=obter&id=$id" : "index.php?c=producto&a=index";
+            header("Location: $url");
             exit;
         } else {
             $this->get_fragment();
@@ -142,6 +145,8 @@ class CarroController
 
                 //Engadimos 1
                 $_SESSION["carro"][$id]["cantidade"]++;
+            } else {
+                $_SESSION['erro_stock'] = "Non hai máis unidades en stock.";
             }
         }
 

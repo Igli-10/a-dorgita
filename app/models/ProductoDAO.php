@@ -77,6 +77,18 @@ class ProductoDAO
         }
     }
 
+    public function consultarStock($id)
+    {
+        try {
+            $stmt = $this->conexion->prepare("SELECT stock FROM productos WHERE id = ?");
+            $stmt->execute([$id]);
+            $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $resultado ? (int)$resultado['stock'] : 0;
+        } catch (Exception $e) {
+            return 0;
+        }
+    }
+
     public function descontarStock($id, $cantidade)
     {
         try {
@@ -122,5 +134,4 @@ class ProductoDAO
             return [];
         }
     }
-
 }

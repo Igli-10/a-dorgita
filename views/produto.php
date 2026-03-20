@@ -26,23 +26,59 @@
 
             <hr class="my-4">
 
+            <?php 
+                // Miramos se este produto xa está no carro para amosar aviso persistente
+                $id_actual = $prod->getId();
+                $unidades_no_carro = $_SESSION['carro'][$id_actual]['cantidade'] ?? 0;
+                $stock_maximo = $prod->getStock();
+            ?>
+
+            <?php if ($unidades_no_carro >= $stock_maximo && $stock_maximo > 0): ?>
+                <div class="alert alert-info py-2 small mb-3">
+                    <i class="bi bi-info-circle-fill me-2"></i>
+                    Xa tes o máximo de unidades dispoñibles no teu carro.
+                </div>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['erro_stock'])): ?>
+                <div class="alert alert-danger py-2 small mb-3">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <?php 
+                        echo $_SESSION['erro_stock']; 
+                        unset($_SESSION['erro_stock']); 
+                    ?>
+                </div>
+            <?php endif; ?>
+
             <form action="index.php?c=carro&a=engadir" method="POST">
                 <input type="hidden" name="id" value="<?php echo $prod->getId(); ?>">
 
                 <div class="d-flex align-items-center gap-3">
                     <div class="input-group ancho-cantidade-produto" style="width: 140px;">
-                        <button class="btn btn-cantidade" type="button" onclick="cambiarCantidade(-1)">-</button>
+                        <button class="btn btn-cantidade" type="button" onclick="cambiarCantidade(-1)" <?php echo ($prod->getStock() <= 0) ? 'disabled' : ''; ?>>-</button>
 
-                        <input type="number" name="cantidade" id="cantidade-input" class="form-control text-center fw-bold" value="1" min="0" max="<?php echo $prod->getStock(); ?>" oninput="validarStock(this, <?php echo $prod->getStock(); ?>)">
+                        <input type="number" name="cantidade" id="cantidade-input" class="form-control text-center fw-bold" value="<?php echo ($prod->getStock() > 0) ? '1' : '0'; ?>" min="<?php echo ($prod->getStock() > 0) ? '1' : '0'; ?>" max="<?php echo $prod->getStock(); ?>" oninput="validarStock(this, <?php echo $prod->getStock(); ?>)" readonly>
 
-                        <button class="btn btn-cantidade" type="button" onclick="cambiarCantidade(1, <?php echo $prod->getStock(); ?>)">+</button>
+                        <button class="btn btn-cantidade" type="button" onclick="cambiarCantidade(1, <?php echo $prod->getStock(); ?>)" <?php echo ($prod->getStock() <= 0) ? 'disabled' : ''; ?>>+</button>
                     </div>
 
-                    <button type="submit" class="btn btn-engadir-carro btn-lg px-5 w-100">
-                        Engadir ao carro
-                    </button>
+                    <?php if ($prod->getStock() > 0): ?>
+                        <button type="submit" class="btn btn-engadir-carro btn-lg px-5 w-100">
+                            Engadir ao carro
+                        </button>
+                    <?php else: ?>
+                        <button type="button" class="btn btn-secondary btn-lg px-5 w-100" disabled>
+                            Sen existencias
+                        </button>
+                    <?php endif; ?>
                 </div>
-                <small class="text-muted mt-2 d-block">Stock dispoñible: <?php echo $prod->getStock(); ?> unidades</small>
+                <small class="<?php echo ($prod->getStock() <= 0) ? 'text-danger' : 'text-muted'; ?> mt-2 d-block">
+                    <?php if ($prod->getStock() > 0): ?>
+                        Stock dispoñible: <?php echo $prod->getStock(); ?> unidades
+                    <?php else: ?>
+                        <i class="bi bi-x-circle me-1"></i>Actualmente fóra de stock
+                    <?php endif; ?>
+                </small>
             </form>
         </div>
     </div>
@@ -51,6 +87,10 @@
 <script>
     function cambiarCantidade(valor, stockMax) {
         const input = document.getElementById('cantidade-input');
+
+        // Obtemos canto hai xa no carro dende un atributo que meteremos no input
+        const noCarro = parseInt(input.getAttribute('data-no-carro')) || 0;
+
         let actual = parseInt(input.value);
         let nova = actual + valor;
 

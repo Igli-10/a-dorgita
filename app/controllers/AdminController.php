@@ -24,21 +24,31 @@ class AdminController
     //Método para ver todos os pedidos 
     public function pedidos()
     {
-        $pedidos = $this->pedidoDAO->obterTodos();
+        $pedidos_base = $this->pedidoDAO->obterTodos();
+        $pedidos_completos = [];
+
+        foreach ($pedidos_base as $p) {
+            $detalles = $this->pedidoDAO->obterDetalles($p["id"]);
+            $pedidos_completos[] = [
+                "pedido" => $p,
+                "detalles" => $detalles
+            ];
+        }
 
         require_once __DIR__ . '/../../includes/header.php';
         require_once __DIR__ . '/../../views/admin/pedidos.php';
         require_once __DIR__ . '/../../includes/footer.php';
     }
 
-    public function cambiarEstado(){
+    public function cambiarEstado()
+    {
         //Recollo o ID e o estado do pedido dende o formulario
-        $id=$_REQUEST["id"] ?? null;
-        $estado=$_REQUEST["estado"] ?? null;
+        $id = $_REQUEST["id"] ?? null;
+        $estado = $_REQUEST["estado"] ?? null;
 
         //Se existen eses datos, actualizase o estado
-        if($id && $estado){
-            $this->pedidoDAO->actualizarEstado($id,$estado);
+        if ($id && $estado) {
+            $this->pedidoDAO->actualizarEstado($id, $estado);
         }
 
         //Redirixo a lista de pedidos para ver os cambios aplicados

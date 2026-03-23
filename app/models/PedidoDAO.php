@@ -107,7 +107,7 @@ class PedidoDAO
         try {
             // Uso INNER JOIN para conectar as táboas e conseguir o nome real do produto
             $stmt = $this->conexion->prepare("
-                SELECT dp.cantidade, dp.prezo_unitario, p.nome 
+                SELECT dp.cantidade, dp.prezo_unitario, p.nome, p.imagen
                 FROM detalles_pedido dp
                 INNER JOIN productos p ON dp.id_producto = p.id
                 WHERE dp.id_pedido = ?
@@ -119,27 +119,94 @@ class PedidoDAO
         }
     }
 
-    public function obterTodos(){
-        try{
+    public function obterTodos()
+    {
+        try {
             //Uso INNER JOIN para conectar o nome do usuario que fixo o pedido
-            $stmt=$this->conexion->prepare("SELECT p.*, p.data_pedido as data, u.nome as nome_usuario
+            $stmt = $this->conexion->prepare(
+                "SELECT p.*, p.data_pedido as data, u.nome as nome_usuario
                                             FROM pedidos p
                                             INNER JOIN usuarios u ON p.id_usuario=u.id
-                                            ORDER BY p.data_pedido DESC"  
+                                            ORDER BY p.data_pedido DESC"
             );
 
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);   
-        }catch(PDOException $e){
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
             return [];
         }
     }
 
-    public function actualizarEstado($id_pedido,$novo_estado){
-        try{
-            $stmt=$this->conexion->prepare("UPDATE pedidos SET estado = ? WHERE id=?");
-            return $stmt->execute(array($novo_estado, $id_pedido));
-        }catch (PDOException $e) {
+    public function actualizarEstado($id_pedido, $novo_estado)
+    {
+        try {
+            // Inicio unha transacción para asegurar que se faga todo ou nada
+            $this->conexion->beginTransaction();
+
+            // Primeiro consulto o estado que ten o pedido actualmente
+            $stmtEstado = $this->conexion->prepare("SELECT estado FROM pedidos WHERE id = ?");
+            $stmtEstado->execute(array($id_pedido));
+            $estadoActual = $stmtEstado->fetchColumn();
+
+            if ($estadoActual === false) {
+                $this->conexion->rollback();
+                return false;
+            }
+
+            $estadoActual = strtolower($estadoActual);
+            $novoEstadoNormalizado = strtolower($novo_estado);
+
+            // Se non hai cambio real de estado, non facemos máis operacións.
+            if ($estadoActual === $novoEstadoNormalizado) {
+                $this->conexion->commit();
+                return true;
+            }
+
+            // Buscamos os produtos e cantidades que forman ese pedido
+            $stmtDetalles = $this->conexion->prepare("SELECT id_producto, cantidade FROM detalles_pedido WHERE id_pedido = ?");
+            $stmtDetalles->execute(array($id_pedido));
+            $detalles = $stmtDetalles->fetchAll(PDO::FETCH_ASSOC);
+
+            // Se o pedido non estaba cancelado e agora si o imos cancelar, devolvemos o stock
+            if ($estadoActual !== "cancelado" && $novoEstadoNormalizado === "cancelado") {
+
+                // Preparamos a consulta para sumar as unidades de volta ao produto
+                $stmtStock = $this->conexion->prepare("UPDATE productos SET stock = stock + ? WHERE id = ?");
+
+                // Percorremos os detalles e actualizamos o stock un por un
+                foreach ($detalles as $detalle) {
+                    $stmtStock->execute(array($detalle["cantidade"], $detalle["id_producto"]));
+                }
+            }
+
+            // Se estaba cancelado e o reactivamos, hai que volver descontar stock.
+            if ($estadoActual === "cancelado" && $novoEstadoNormalizado !== "cancelado") {
+                $stmtStock = $this->conexion->prepare("UPDATE productos SET stock = stock - ? WHERE id = ? AND stock >= ?");
+
+                foreach ($detalles as $detalle) {
+                    $cantidade = (int)$detalle["cantidade"];
+                    $idProducto = (int)$detalle["id_producto"];
+
+                    $stmtStock->execute(array($cantidade, $idProducto, $cantidade));
+
+                    if ($stmtStock->rowCount() === 0) {
+                        throw new Exception("Non hai stock abondo para reactivar o pedido");
+                    }
+                }
+            }
+
+            // Actualizamos o estado do pedido á súa nova fase (enviado, cancelado, etc.)
+            $stmtUpdate = $this->conexion->prepare("UPDATE pedidos SET estado = ? WHERE id = ?");
+            $resultado = $stmtUpdate->execute(array($novo_estado, $id_pedido));
+
+            // Se chegamos aquí sen fallos, confirmamos os cambios na base de datos
+            $this->conexion->commit();
+            return $resultado;
+        } catch (Exception $e) {
+            // Se algo falla, desfacer calquera cambio feito durante a transacción
+            if ($this->conexion->inTransaction()) {
+                $this->conexion->rollback();
+            }
             return false;
         }
     }

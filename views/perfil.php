@@ -17,7 +17,7 @@
                     <h2 class="fw-bold">O meu perfil</h2>
                     <p>Xestiona os teus datos personais</p>
                     <div class="mt-3">
-                        <i class="bi bi-person-circle  foto-perfil fs-1 "></i>
+                        <i class="bi bi-person-circle foto-perfil fs-1"></i>
                     </div>
                 </div>
             </div>
@@ -66,6 +66,7 @@
                     </div>
                 <?php endif; ?>
             </div>
+
             <div class="card border-0 p-4 mb-5 shadow-sm bg-white">
                 <button class="btn w-100 text-start d-flex justify-content-between align-items-center fw-bold texto-principal p-0 border-0 bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePedidos" aria-expanded="false" aria-controls="collapsePedidos">
                     <span class="fs-4"><i class="bi bi-box-seam me-2"></i>Historial de pedidos</span>
@@ -95,23 +96,29 @@
                                             <td class="py-3 fw-bold texto-verde">#<?php echo htmlspecialchars($pedido['pedido']->getId()); ?></td>
                                             <td class="py-3 fw-bold"><?php echo date('d/m/Y', strtotime($pedido['pedido']->getDataPedido())); ?></td>
                                             <td class="py-3">
-                                                <ul class="list-unstyled mb-0 small">
+                                                <div class="d-flex flex-column gap-3">
                                                     <?php foreach ($pedido['detalles'] as $detalle): ?>
-                                                        <li>
-                                                            <span class="fw-bold"><?php echo $detalle['cantidade']; ?>x</span>
-                                                            <?php echo htmlspecialchars($detalle['nome']); ?>
-                                                            <span class="text-muted">(<?php echo number_format($detalle['prezo_unitario'], 2); ?> €)</span>
-                                                        </li>
+                                                        <div class="d-flex align-items-center gap-2">
+                                                            <img src="public/img/<?php echo htmlspecialchars($detalle['imagen']); ?>" 
+                                                                 alt="<?php echo htmlspecialchars($detalle['nome']); ?>" 
+                                                                 class="imaxe-miniatura-pedido">
+                                                            <span class="small">
+                                                                <span class="fw-bold"><?php echo $detalle['cantidade']; ?>x</span> 
+                                                                <?php echo htmlspecialchars($detalle['nome']); ?>
+                                                            </span>
+                                                        </div>
                                                     <?php endforeach; ?>
-                                                </ul>
+                                                </div>
                                             </td>
                                             <td class="py-3 fw-bold"><?php echo number_format($pedido['pedido']->getTotal(), 2); ?> €</td>
                                             <td class="py-3 text-end">
                                                 <?php
                                                 $estado = strtolower($pedido['pedido']->getEstado());
-                                                $clase_estado = ($estado === 'pendente') ? 'bg-warning text-dark' : 'bg-success';
+                                                $clase_estado = ($estado === 'pendente') ? 'bg-warning text-dark' : (($estado === 'cancelado') ? 'bg-danger' : 'bg-success');
                                                 ?>
-                                                <span class="badge <?php echo $clase_estado; ?>"><?php echo htmlspecialchars($pedido['pedido']->getEstado()); ?></span>
+                                                <span class="badge <?php echo $clase_estado; ?> px-2 py-1 rounded-pill small">
+                                                    <?php echo htmlspecialchars($pedido['pedido']->getEstado()); ?>
+                                                </span>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
@@ -121,11 +128,11 @@
                     <?php endif; ?>
                 </div>
             </div>
+
             <div class="d-flex justify-content-center gap-3 mb-5">
                 <a href="index.php?c=producto&a=index" class="btn boton-volver-tenda fs-5 px-4 rounded-pill">
                     <i class="bi bi-shop me-2"></i>Volver á tenda
                 </a>
-
                 <a href="index.php?c=usuario&a=logout" class="btn btn-danger fs-5 px-4 rounded-pill">
                     <i class="bi bi-box-arrow-right me-2"></i>Pechar sesión
                 </a>

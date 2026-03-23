@@ -289,3 +289,13 @@ button[aria-expanded="true"] .icono-flecha {
     object-fit: cover;
     border-radius: 8px;
 }
+
+.imaxe-miniatura-pedido {
+    width: 50px !important;
+    height: 50px !important;
+    min-width: 50px !important;
+    object-fit: cover !important;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    display: inline-block;
+}

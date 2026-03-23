@@ -16,7 +16,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php if (empty($pedidos)): ?>
+                <?php if (empty($pedidos_completos)): ?>
                     <tr>
                         <td colspan="6" class="text-center py-5 text-muted">
                             <i class="bi bi-inbox fs-1 d-block mb-2"></i>
@@ -24,47 +24,81 @@
                         </td>
                     </tr>
                 <?php else: ?>
-                    <?php foreach ($pedidos as $p): ?>
+                    <?php foreach ($pedidos_completos as $item): ?>
+                        <?php $p = $item["pedido"]; ?>
                         <tr>
                             <td class="fw-bold texto-verde">#<?php echo $p["id"]; ?></td>
-                            
                             <td class="fw-bold"><?php echo htmlspecialchars($p["nome_usuario"]); ?></td>
-                            
                             <td><?php echo date("d/m/Y H:i", strtotime($p["data"])); ?></td>
-                            
                             <td class="fw-bold"><?php echo number_format($p["total"], 2); ?> €</td>
-                            
                             <td>
                                 <?php
-                                    $estado = strtolower($p["estado"]);
-                                    $clase_badge = "bg-secondary"; 
-                                    if ($estado === "pendente") $clase_badge = "bg-warning text-dark";
-                                    if ($estado === "enviado") $clase_badge = "bg-info text-dark";
-                                    if ($estado === "entregado") $clase_badge = "bg-success";
-                                    if ($estado === "cancelado") $clase_badge = "bg-danger";
+                                $estado = strtolower($p["estado"]);
+                                $clase_badge = "bg-secondary";
+                                if ($estado === "pendente") $clase_badge = "bg-warning text-dark";
+                                if ($estado === "enviado") $clase_badge = "bg-info text-dark";
+                                if ($estado === "entregado") $clase_badge = "bg-success";
+                                if ($estado === "cancelado") $clase_badge = "bg-danger";
                                 ?>
                                 <span class="badge <?php echo $clase_badge; ?> px-3 py-2 rounded-pill">
                                     <?php echo ucfirst($estado); ?>
                                 </span>
                             </td>
-                            
                             <td>
-                                <form action="index.php?c=admin&a=cambiarEstado" method="POST" class="d-flex justify-content-center gap-2">
-                                    <input type="hidden" name="id" value="<?php echo $p["id"]; ?>">
-                                    
-                                    <select name="estado" class="form-select form-select-sm shadow-sm" style="width: 140px;">
-                                        <option value="pendente" <?php if($estado == "pendente") echo "selected"; ?>>Pendente</option>
-                                        <option value="enviado" <?php if($estado == "enviado") echo "selected"; ?>>Enviado</option>
-                                        <option value="entregado" <?php if($estado == "entregado") echo "selected"; ?>>Entregado</option>
-                                        <option value="cancelado" <?php if($estado == "cancelado") echo "selected"; ?>>Cancelado</option>
-                                    </select>
-                                    
-                                    <button type="submit" class="btn seguir-comprando btn-sm px-3 shadow-sm">
-                                        Actualizar
+                                <div class="d-flex justify-content-center gap-2">
+                                    <button type="button" class="btn btn-outline-dark btn-sm shadow-sm" data-bs-toggle="modal" data-bs-target="#modalPedido<?php echo $p["id"]; ?>">
+                                        <i class="bi bi-eye"></i> Detalles
                                     </button>
-                                </form>
+                                    <form action="index.php?c=admin&a=cambiarEstado" method="POST" class="d-flex gap-2">
+                                        <input type="hidden" name="id" value="<?php echo $p["id"]; ?>">
+                                        <select name="estado" class="form-select form-select-sm shadow-sm" style="width: 140px;">
+                                            <option value="pendente" <?php if ($estado == "pendente") echo "selected"; ?>>Pendente</option>
+                                            <option value="enviado" <?php if ($estado == "enviado") echo "selected"; ?>>Enviado</option>
+                                            <option value="entregado" <?php if ($estado == "entregado") echo "selected"; ?>>Entregado</option>
+                                            <option value="cancelado" <?php if ($estado == "cancelado") echo "selected"; ?>>Cancelado</option>
+                                        </select>
+                                        <button type="submit" class="btn seguir-comprando btn-sm px-3 shadow-sm">Actualizar</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
+
+                        <div class="modal fade" id="modalPedido<?php echo $p["id"]; ?>" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content border-0 shadow">
+                                    <div class="modal-header fondo-verde text-white">
+                                        <h5 class="modal-title">
+                                            <i class="bi bi-box-seam me-2"></i>Detalles do Pedido #<?php echo $p["id"]; ?>
+                                        </h5>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body bg-white">
+                                        <ul class="list-group list-group-flush">
+                                            <?php foreach ($item["detalles"] as $detalle): ?>
+                                                <li class="list-group-item d-flex align-items-center py-3 px-0">
+                                                    <img src="public/img/<?php echo htmlspecialchars($detalle["imagen"]); ?>" 
+                                                         alt="<?php echo htmlspecialchars($detalle["nome"]); ?>" 
+                                                         class="imaxe-miniatura-pedido me-3">
+                                                    
+                                                    <div class="flex-grow-1">
+                                                        <h6 class="mb-0 fw-bold"><?php echo htmlspecialchars($detalle["nome"]); ?></h6>
+                                                        <small class="text-muted">Cantidade: <span class="texto-verde fw-bold"><?php echo $detalle["cantidade"]; ?></span></small>
+                                                    </div>
+                                                    
+                                                    <div class="text-end">
+                                                        <span class="fw-bold texto-verde"><?php echo number_format($detalle["prezo_unitario"], 2); ?> €</span>
+                                                    </div>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                        <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                                            <span class="fw-bold fs-5">Total do pedido:</span>
+                                            <span class="fs-4 fw-bold texto-principal"><?php echo number_format($p["total"], 2); ?> €</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </tbody>

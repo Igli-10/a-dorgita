@@ -118,4 +118,29 @@ class PedidoDAO
             return [];
         }
     }
+
+    public function obterTodos(){
+        try{
+            //Uso INNER JOIN para conectar o nome do usuario que fixo o pedido
+            $stmt=$this->conexion->prepare("SELECT p.*, p.data_pedido as data, u.nome as nome_usuario
+                                            FROM pedidos p
+                                            INNER JOIN usuarios u ON p.id_usuario=u.id
+                                            ORDER BY p.data_pedido DESC"  
+            );
+
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);   
+        }catch(PDOException $e){
+            return [];
+        }
+    }
+
+    public function actualizarEstado($id_pedido,$novo_estado){
+        try{
+            $stmt=$this->conexion->prepare("UPDATE pedidos SET estado = ? WHERE id=?");
+            return $stmt->execute(array($novo_estado, $id_pedido));
+        }catch (PDOException $e) {
+            return false;
+        }
+    }
 }

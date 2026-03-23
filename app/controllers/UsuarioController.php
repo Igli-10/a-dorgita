@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . "/../models/UsuarioDAO.php";
- require_once __DIR__ . '/../models/PedidoDAO.php';
+require_once __DIR__ . '/../models/PedidoDAO.php';
 
 class UsuarioController
 {
@@ -141,16 +141,16 @@ class UsuarioController
             exit;
         }
 
-       
+
         $pedidoDAO = new PedidoDAO();
 
         $pedidos_base = $pedidoDAO->obterPedidosPorUsuario($_SESSION['usuario']['id']);
 
-        $pedidos_completos=[];
+        $pedidos_completos = [];
 
-        foreach($pedidos_base as $pedido){
-            $detalles=$pedidoDAO->obterDetalles($pedido->getId());
-            $pedidos_completos[]=[
+        foreach ($pedidos_base as $pedido) {
+            $detalles = $pedidoDAO->obterDetalles($pedido->getId());
+            $pedidos_completos[] = [
                 "pedido" => $pedido,
                 "detalles" => $detalles
             ];
@@ -160,6 +160,46 @@ class UsuarioController
         require_once __DIR__ . '/../../includes/header.php';
         require_once __DIR__ . '/../../views/perfil.php';
         require_once __DIR__ . '/../../includes/footer.php';
+    }
+
+    public function cambiarRol()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!isset($_SESSION["usuario"])) {
+            header("Location: index.php?c=usuario&a=login");
+            exit;
+        }
+
+        // A conta administradora principal pode alternar entre admin/cliente.
+        // O resto de usuarios non teñen permiso para cambiar o rol.
+        $email_admin_principal = "admin@adorgita.com";
+        if (($_SESSION["usuario"]["rol"] !== "admin") && ($_SESSION["usuario"]["email"] !== $email_admin_principal)) {
+            $_SESSION['mensaxe_aviso'] = "Non tes permisos para cambiar o rol da conta.";
+            header("Location: index.php?c=usuario&a=perfil");
+            exit;
+        }
+
+        $id_usuario = $_SESSION["usuario"]["id"];
+
+        //Se o rol é admin pasará a cliente e tamen o revés
+        $novo_rol = ($_SESSION["usuario"]["rol"] === "admin") ? "cliente" : "admin";
+
+        $usuarioDAO = new UsuarioDAO();
+
+        if ($usuarioDAO->actualizarRol($id_usuario, $novo_rol)) {
+            //Actualizo a sesión para que se cambie nas vistas de maneira instantánea
+            $_SESSION["usuario"]["rol"] = $novo_rol;
+
+            $_SESSION['mensaxe_aviso'] = ($novo_rol === "admin")
+                ? "Modo administrador activado. Xa podes entrar no panel de control."
+                : "Modo cliente activado.";
+        }
+
+        header("Location: index.php?c=usuario&a=perfil");
+        exit;
     }
 
     public function logout()

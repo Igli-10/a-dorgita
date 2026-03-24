@@ -27,7 +27,16 @@ class AdminController
     // Método para listar produtos no panel de administración
     public function productos()
     {
-        $productos = $this->productoDAO->listar();
+        //Comprobo se o admin escribiu algo na barra de búsqueda
+        $mensaxe = $_GET["busca"] ?? null;
+
+        //Se hai busca, filtro os produtos; senon, amoso o catálogo completo
+        if ($mensaxe && !empty(trim($mensaxe))) {
+            $productos = $this->productoDAO->buscar($mensaxe);
+        } else {
+            $productos = $this->productoDAO->listar();
+        }
+
         $categorias = $this->productoDAO->obterCategorias();
 
         require_once __DIR__ . '/../../includes/header.php';
@@ -35,16 +44,19 @@ class AdminController
         require_once __DIR__ . '/../../includes/footer.php';
     }
 
-    // Alias para manter compatibilidade co nome en galego da acción
-    public function produtos()
-    {
-        $this->productos();
-    }
-
     //Método para ver todos os pedidos 
     public function pedidos()
     {
-        $pedidos_base = $this->pedidoDAO->obterTodos();
+        //Comprobo se o admin recibiu algo na barra de búsqueda
+        $mensaxe=$_GET["busca"] ?? null;
+
+        //Se recibe algo, uso o metodo de filtrar e senon cargo todo
+        if($mensaxe){
+            $pedidos_base=$this->pedidoDAO->buscarPedidos($mensaxe);
+        }else{
+             $pedidos_base = $this->pedidoDAO->obterTodos();
+        }
+
         $pedidos_completos = [];
 
         foreach ($pedidos_base as $p) {

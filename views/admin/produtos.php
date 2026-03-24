@@ -18,6 +18,31 @@
         </button>
     </div>
 
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form action="index.php" method="GET" class="d-flex gap-2">
+                <input type="hidden" name="c" value="admin">
+                <input type="hidden" name="a" value="productos">
+
+                <div class="input-group shadow-sm">
+                    <span class="input-group-text bg-white border-end-0 texto-verde">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="text" name="busca" class="form-control border-start-0 ps-0"
+                           placeholder="Buscar por nome ou descrición..."
+                           value="<?php echo htmlspecialchars($_GET['busca'] ?? ''); ?>">
+                    <button type="submit" class="btn btn-engadir-carro px-4">Buscar</button>
+                </div>
+
+                <?php if (!empty($_GET['busca'])): ?>
+                    <a href="index.php?c=admin&a=productos" class="btn btn-outline-secondary d-flex align-items-center rounded-pill px-3 shadow-sm">
+                        <i class="bi bi-x-lg me-1"></i>Limpar
+                    </a>
+                <?php endif; ?>
+            </form>
+        </div>
+    </div>
+
     <div class="table-responsive shadow-sm rounded border bg-white p-4">
         <table class="table table-hover align-middle mb-0">
             <thead class="borde-superior">

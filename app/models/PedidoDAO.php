@@ -54,7 +54,7 @@ class PedidoDAO
                     $item["cantidade"]
                 ));
 
-                // Verificamos se o UPDATE afectou a algunha fila
+                // Verifico se o UPDATE afectou a algunha fila
                 if ($stmtStock->rowCount() == 0) {
                     throw new Exception("Non hai stock abondo para o produto: " . $item["nome"]);
                 }
@@ -66,7 +66,7 @@ class PedidoDAO
             //Devolovo o num do pedido pa mostralo na vista de confirmacion
             return $id_pedido;
         } catch (PDOException $e) {
-            //Se hai algun erro, desfacemos todo o proceso
+            //Se hai algun erro, desfago todo o proceso
             if ($this->conexion->inTransaction()) {
                 $this->conexion->rollback();
             }
@@ -156,30 +156,30 @@ class PedidoDAO
             $estadoActual = strtolower($estadoActual);
             $novoEstadoNormalizado = strtolower($novo_estado);
 
-            // Se non hai cambio real de estado, non facemos máis operacións.
+            // Se non hai cambio real de estado, non fago máis operacións.
             if ($estadoActual === $novoEstadoNormalizado) {
                 $this->conexion->commit();
                 return true;
             }
 
-            // Buscamos os produtos e cantidades que forman ese pedido
+            // Busco os produtos e cantidades que forman ese pedido
             $stmtDetalles = $this->conexion->prepare("SELECT id_producto, cantidade FROM detalles_pedido WHERE id_pedido = ?");
             $stmtDetalles->execute(array($id_pedido));
             $detalles = $stmtDetalles->fetchAll(PDO::FETCH_ASSOC);
 
-            // Se o pedido non estaba cancelado e agora si o imos cancelar, devolvemos o stock
+            // Se o pedido non estaba cancelado e agora si o vou cancelar, devolvo o stock
             if ($estadoActual !== "cancelado" && $novoEstadoNormalizado === "cancelado") {
 
-                // Preparamos a consulta para sumar as unidades de volta ao produto
+                // Preparo a consulta para sumar as unidades de volta ao produto
                 $stmtStock = $this->conexion->prepare("UPDATE productos SET stock = stock + ? WHERE id = ?");
 
-                // Percorremos os detalles e actualizamos o stock un por un
+                // Percorro os detalles e actualizo o stock un por un
                 foreach ($detalles as $detalle) {
                     $stmtStock->execute(array($detalle["cantidade"], $detalle["id_producto"]));
                 }
             }
 
-            // Se estaba cancelado e o reactivamos, hai que volver descontar stock.
+            // Se estaba cancelado e o reactivo, hai que volver descontar stock.
             if ($estadoActual === "cancelado" && $novoEstadoNormalizado !== "cancelado") {
                 $stmtStock = $this->conexion->prepare("UPDATE productos SET stock = stock - ? WHERE id = ? AND stock >= ?");
 
@@ -195,11 +195,11 @@ class PedidoDAO
                 }
             }
 
-            // Actualizamos o estado do pedido á súa nova fase (enviado, cancelado, etc.)
+            // Actualizo o estado do pedido á súa nova fase (enviado, cancelado, etc.)
             $stmtUpdate = $this->conexion->prepare("UPDATE pedidos SET estado = ? WHERE id = ?");
             $resultado = $stmtUpdate->execute(array($novo_estado, $id_pedido));
 
-            // Se chegamos aquí sen fallos, confirmamos os cambios na base de datos
+            // Se chego aquí sen fallos, confirmo os cambios na base de datos
             $this->conexion->commit();
             return $resultado;
         } catch (Exception $e) {
@@ -208,6 +208,27 @@ class PedidoDAO
                 $this->conexion->rollback();
             }
             return false;
+        }
+    }
+
+    public function buscarPedidos($mensaxe){
+        try{
+            //Busco polo Id do pedido ou polo nome de usuario que o fixo
+           $stmt = $this->conexion->prepare(" SELECT p.*, p.data_pedido AS data, u.nome AS nome_usuario 
+                FROM pedidos p
+                INNER JOIN usuarios u ON p.id_usuario = u.id
+                WHERE p.id LIKE ? OR u.nome LIKE ?
+                ORDER BY p.data_pedido DESC
+            ");
+
+            // Engado os comodíns % para buscar coincidencias parciais
+            $busqueda="%". $mensaxe ."%";
+
+            $stmt->execute(array($busqueda,$busqueda));
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        }catch(PDOException $e){
+            return [];
         }
     }
 }

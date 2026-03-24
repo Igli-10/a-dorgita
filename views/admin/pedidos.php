@@ -13,6 +13,31 @@
         <i class="bi bi-gear-fill me-2"></i>Xestión de Pedidos
     </h2>
 
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form action="index.php" method="GET" class="d-flex gap-2">
+                <input type="hidden" name="c" value="admin">
+                <input type="hidden" name="a" value="pedidos">
+                
+                <div class="input-group shadow-sm">
+                    <span class="input-group-text bg-white border-end-0 texto-verde">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="text" name="busca" class="form-control border-start-0 ps-0" 
+                           placeholder="Buscar por ID ou nome de cliente..." 
+                           value="<?php echo htmlspecialchars($_GET['busca'] ?? ''); ?>">
+                    <button type="submit" class="btn btn-engadir-carro px-4">Buscar</button>
+                </div>
+
+                <?php if (!empty($_GET['busca'])): ?>
+                    <a href="index.php?c=admin&a=pedidos" class="btn btn-outline-secondary d-flex align-items-center rounded-pill px-3 shadow-sm">
+                        <i class="bi bi-x-lg me-1"></i>Limpar
+                    </a>
+                <?php endif; ?>
+            </form>
+        </div>
+    </div>
+
     <div class="table-responsive shadow-sm rounded border bg-white p-4">
         <table class="table table-hover align-middle mb-0">
             <thead class="borde-superior">
@@ -36,10 +61,14 @@
                 <?php else: ?>
                     <?php foreach ($pedidos_completos as $item): ?>
                         <?php $p = $item["pedido"]; ?>
+                        <?php
+                        $dataPedido = $p["data"] ?? $p["data_pedido"] ?? null;
+                        $dataFormateada = $dataPedido ? date("d/m/Y H:i", strtotime($dataPedido)) : "-";
+                        ?>
                         <tr>
                             <td class="fw-bold texto-verde">#<?php echo $p["id"]; ?></td>
                             <td class="fw-bold"><?php echo htmlspecialchars($p["nome_usuario"]); ?></td>
-                            <td><?php echo date("d/m/Y H:i", strtotime($p["data"])); ?></td>
+                            <td><?php echo $dataFormateada; ?></td>
                             <td class="fw-bold"><?php echo number_format($p["total"], 2); ?> €</td>
                             <td>
                                 <?php

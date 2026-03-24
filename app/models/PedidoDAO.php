@@ -211,6 +211,7 @@ class PedidoDAO
         }
     }
 
+    // Busca pedidos por ID ou polo nome do cliente desde o panel de administración
     public function buscarPedidos($mensaxe){
         try{
             //Busco polo Id do pedido ou polo nome de usuario que o fixo

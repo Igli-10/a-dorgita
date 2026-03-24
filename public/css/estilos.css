@@ -71,6 +71,22 @@ footer{
     border-radius: 3px;
 }
 
+.btn.btn-admin-verde{
+    background-color: #1B4332 !important;
+    color: #FFFFFF !important;
+    border: 1px solid #1B4332 !important;
+    border-radius: 3px;
+}
+
+.btn.btn-admin-verde:hover,
+.btn.btn-admin-verde:focus,
+.btn.btn-admin-verde:active{
+    background-color: #FFFFFF !important;
+    color: #1B4332 !important;
+    border: 1px solid #1B4332 !important;
+    border-radius: 3px;
+}
+
 .caixa-filtros {
     background-color: #FFFFFF;
 }

@@ -1,11 +1,13 @@
 <?php
 require_once __DIR__ . "/../models/PedidoDAO.php";
 require_once __DIR__ . "/../models/ProductoDAO.php";
+require_once __DIR__ . "/../models/CategoriaDAO.php";
 
 class AdminController
 {
     private $pedidoDAO;
     private $productoDAO;
+    private $categoriaDAO;
 
     public function __construct()
     {
@@ -22,6 +24,7 @@ class AdminController
 
         $this->pedidoDAO = new PedidoDAO();
         $this->productoDAO = new ProductoDAO();
+        $this->categoriaDAO = new CategoriaDAO();
     }
 
     // Método para listar produtos no panel de administración
@@ -48,17 +51,18 @@ class AdminController
     public function pedidos()
     {
         //Comprobo se o admin recibiu algo na barra de búsqueda
-        $mensaxe=$_GET["busca"] ?? null;
+        $mensaxe = $_GET["busca"] ?? null;
 
         //Se recibe algo, uso o metodo de filtrar e senon cargo todo
-        if($mensaxe){
-            $pedidos_base=$this->pedidoDAO->buscarPedidos($mensaxe);
-        }else{
-             $pedidos_base = $this->pedidoDAO->obterTodos();
+        if ($mensaxe) {
+            $pedidos_base = $this->pedidoDAO->buscarPedidos($mensaxe);
+        } else {
+            $pedidos_base = $this->pedidoDAO->obterTodos();
         }
 
         $pedidos_completos = [];
 
+        // Engado os detalles de cada pedido para que a vista poida amosalos no modal
         foreach ($pedidos_base as $p) {
             $detalles = $this->pedidoDAO->obterDetalles($p["id"]);
             $pedidos_completos[] = [
@@ -71,6 +75,17 @@ class AdminController
         require_once __DIR__ . '/../../views/admin/pedidos.php';
         require_once __DIR__ . '/../../includes/footer.php';
     }
+
+    public function categorias()
+    {
+        // Obtén todas as categorías para a súa xestión dende o panel
+        $categorias = $this->categoriaDAO->listar();
+
+        require_once __DIR__ . '/../../includes/header.php';
+        require_once __DIR__ . '/../../views/admin/categorias.php';
+        require_once __DIR__ . '/../../includes/footer.php';
+    }
+
 
     public function cambiarEstado()
     {
@@ -111,6 +126,21 @@ class AdminController
         }
     }
 
+    public function gardarCategoria()
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            // Recollo os datos do formulario de alta de categoría
+            $nome = $_POST["nome"];
+            $descripcion = $_POST["descripcion"];
+
+            // Creo a nova categoría e volvo ao panel
+            $this->categoriaDAO->gardar($nome, $descripcion);
+
+            header("Location: index.php?c=admin&a=categorias");
+            exit();
+        }
+    }
+
     // Método para editar e gardar a información dun produto que xa existe
     public function actualizarProducto()
     {
@@ -135,6 +165,22 @@ class AdminController
         }
     }
 
+    public function actualizarCategoria()
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            // Recollo os datos editados da categoría seleccionada
+            $id = $_POST["id"];
+            $nome = $_POST["nome"];
+            $descripcion = $_POST["descripcion"];
+
+            // Actualizo a categoría e regreso á pantalla principal do admin
+            $this->categoriaDAO->actualizar($id, $nome, $descripcion);
+
+            header("Location: index.php?c=admin&a=categorias");
+            exit();
+        }
+    }
+
     // Método para eliminar un produto definitivamente do catálogo da tenda
     public function borrarProducto()
     {
@@ -149,6 +195,20 @@ class AdminController
 
             // Refresco a lista de produtos para que desapareza da táboa
             header("Location: index.php?c=admin&a=productos");
+            exit();
+        }
+    }
+
+    public function borrarCategoria()
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            // Collo o identificador da categoría a eliminar
+            $id = $_POST["id"];
+
+            // Borro a categoría e redirixo ao panel
+            $this->categoriaDAO->borrar($id);
+
+            header("Location: index.php?c=admin&a=categorias");
             exit();
         }
     }

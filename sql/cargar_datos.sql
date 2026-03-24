@@ -1,8 +1,8 @@
 -- 1. Inserir Categorías
-INSERT INTO categorias (nome) VALUES 
-('Ferretería'), 
-('Alimentación'), 
-('Fogar');
+INSERT INTO categorias (nome, descripcion) VALUES 
+('Ferretería', 'Produtos e ferramentas para reparación, bricolaxe e mantemento.'), 
+('Alimentación', 'Artigos de consumo diario e produtos de despensa.'), 
+('Fogar', 'Electrodomésticos e accesorios para o fogar.');
 
 -- 2. Inserir Produtos
 INSERT INTO productos (nome, descripcion, precio, stock, imagen, id_categoria) VALUES 

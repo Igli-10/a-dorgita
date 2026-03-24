@@ -1,4 +1,14 @@
 <div class="container py-5 mt-5">
+    
+    <div class="d-flex gap-3 mb-4">
+        <a href="index.php?c=admin&a=pedidos" class="btn btn-engadir-carro shadow-sm px-4 rounded-pill text-white">
+            <i class="bi bi-box-seam me-2"></i>Xestión de Pedidos
+        </a>
+        <a href="index.php?c=admin&a=productos" class="btn btn-outline-dark shadow-sm px-4 rounded-pill">
+            <i class="bi bi-grid me-2"></i>Xestión de Produtos
+        </a>
+    </div>
+
     <h2 class="fw-bold texto-verde mb-4">
         <i class="bi bi-gear-fill me-2"></i>Xestión de Pedidos
     </h2>

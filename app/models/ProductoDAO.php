@@ -134,4 +134,49 @@ class ProductoDAO
             return [];
         }
     }
+
+    //Borrar un produto
+    public function borrar($id)
+    {
+        try {
+            $stmt = $this->conexion->prepare("DELETE FROM productos WHERE id=?");
+            return $stmt->execute(array($id));
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+
+    // Gardar un novo produto (incluíndo a id_categoria)
+    public function gardar($nome, $descripcion, $precio, $stock, $imagen, $id_categoria)
+    {
+        try {
+            $stmt = $this->conexion->prepare("INSERT INTO productos (nome, descripcion, precio, stock, imagen, id_categoria) VALUES (?, ?, ?, ?, ?, ?)");
+            return $stmt->execute(array($nome, $descripcion, $precio, $stock, $imagen, $id_categoria));
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    // Actualizar produto existente
+    public function actualizar($id, $nome, $descripcion, $precio, $stock, $imagen, $id_categoria)
+    {
+        try {
+            $stmt = $this->conexion->prepare("UPDATE productos SET nome = ?, descripcion = ?, precio = ?, stock = ?, imagen = ?, id_categoria = ? WHERE id = ?");
+            return $stmt->execute(array($nome, $descripcion, $precio, $stock, $imagen, $id_categoria, $id));
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    // Método extra para listar categorías (necesario para o formulario de engadir/editar)
+    public function obterCategorias()
+    {
+        try {
+            $stmt = $this->conexion->query("SELECT * FROM categorias ORDER BY nome ASC");
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return array();
+        }
+    }
 }

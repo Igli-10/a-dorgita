@@ -8,12 +8,12 @@ class CarroController
 
     public function __construct()
     {
-        //Comprobamos se a sesión esta activa e senon inciamola
+        //Comprobo se a sesión esta activa e senon inícioa
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
 
-        //Se o usuario entra por primeira vez e non ten o array carro, creamolo baleiro
+        //Se o usuario entra por primeira vez e non ten o array carro, créoo baleiro
         if (!isset($_SESSION["carro"])) {
             $_SESSION["carro"] = [];
         }
@@ -23,13 +23,13 @@ class CarroController
 
     public function index()
     {
-        //Recuperamos os datos do carro desde a sesión 
+        //Recupero os datos do carro desde a sesión 
         $carro = $_SESSION["carro"];
 
-        //Calculamos o coste total dos produtos
+        //Calculo o coste total dos produtos
         $total = $this->calcularTotal();
 
-        //Cargamos as vistas
+        //Cargo as vistas
         require_once __DIR__ . '/../../includes/header.php';
         require_once __DIR__ . '/../../views/carro.php';
         require_once __DIR__ . '/../../includes/footer.php';
@@ -37,26 +37,26 @@ class CarroController
 
     public function engadir()
     {
-        //Recollemos o id do produto que ven na URL
+        //Recollo o id do produto que ven na URL
         $id = $_REQUEST["id"] ?? null;
 
-        // Recollemos a cantidade do formulario (POST) ou da URL, por defecto 1
+        // Recollo a cantidade do formulario (POST) ou da URL, por defecto 1
         $cantidade_a_engadir = isset($_REQUEST["cantidade"]) ? (int)$_REQUEST["cantidade"] : 1;
 
         if ($id) {
-            //Buscamos o produto na base de datos
+            //Busco o produto na base de datos
             $producto = $this->productoDAO->obter($id);
 
-            //Comprobamos que existe e que teña stock
+            //Comprobo que existe e que teña stock
             if ($producto && $producto->getStock() > 0) {
 
                 $stock_real = $producto->getStock();
                 $cantidade_no_carro = isset($_SESSION["carro"][$id]) ? $_SESSION["carro"][$id]["cantidade"] : 0;
                 $total_final = $cantidade_no_carro + $cantidade_a_engadir;
 
-                // VALIDACIÓN DE STOCK: Comprobamos que a suma non supere o stock real
+                // VALIDACIÓN DE STOCK: Comprobo que a suma non supere o stock real
                 if ($total_final <= $stock_real) {
-                    //Se o produto xa estaba no carro ou é novo, actualizamos/creamos
+                    //Se o produto xa estaba no carro ou é novo, actualizo/creo
                     $_SESSION["carro"][$id] = [
                         "id"        => $producto->getId(),
                         "nome"      => $producto->getNome(),
@@ -66,16 +66,16 @@ class CarroController
                         "cantidade" => $total_final
                     ];
                 } else {
-                    // Se a cantidade solicitada supera o stock, limitamos ao máximo posible
+                    // Se a cantidade solicitada supera o stock, limítoa ao máximo posible
                     $_SESSION["carro"][$id]["cantidade"] = $stock_real;
                     $_SESSION['erro_stock'] = "Non se poden engadir máis unidades. Stock máximo alcanzado.";
                 }
             }
         }
 
-        // Se non é AJAX, rediriximos. Se é AJAX, devolvemos o fragmento para actualizar o carrito
+        // Se non é AJAX, redirixo. Se é AJAX, devolvo o fragmento para actualizar o carrito
         if (!isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
-            // Se hai erro, volvemos á ficha do produto para que se vexa a mensaxe
+            // Se hai erro, volvo á ficha do produto para que se vexa a mensaxe
             $url = isset($_SESSION['erro_stock']) ? "index.php?c=producto&a=obter&id=$id" : "index.php?c=producto&a=index";
             header("Location: $url");
             exit;
@@ -87,7 +87,7 @@ class CarroController
 
     public function eliminar()
     {
-        //Recollemos o ID do produto que o usuario quere eliminar
+        //Recollo o ID do produto que o usuario quere eliminar
         $id = $_REQUEST["id"] ?? null;
 
         //Se o id e válido e o produto está na sesión. Eliminamolo
@@ -95,7 +95,7 @@ class CarroController
             unset($_SESSION["carro"][$id]);
         }
 
-        //Se é AJAX, devolvemos o fragmento sen recargar. Se non, rediriximos
+        //Se é AJAX, devolvo o fragmento sen recargar. Se non, redirixo
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
             $this->get_fragment();
             exit;
@@ -107,7 +107,7 @@ class CarroController
 
     public function restar($id = null)
     {
-        //Recollemos o ID do produto que queremos restarlle unha unidad
+        //Recollo o ID do produto ao que quero restarlle unha unidade
         $id = $id ?? ($_REQUEST["id"] ?? null);
 
         //Se o produto xa existe no noso carro
@@ -122,7 +122,7 @@ class CarroController
             }
         }
 
-        //Se é AJAX, devolvemos o fragmento sen recargar. Se non, rediriximos
+        //Se é AJAX, devolvo o fragmento sen recargar. Se non, redirixo
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
             $this->get_fragment();
             exit;
@@ -134,23 +134,23 @@ class CarroController
 
     public function sumar($id = null, $redirect = true)
     {
-        //Recollemos da URL o id senon se pasa por parámetro
+        //Recollo da URL o id se non se pasa por parámetro
         $id = $id ?? ($_REQUEST["id"] ?? null);
 
-        //Comprobamos que existe
+        //Comprobo que existe
         if ($id && isset($_SESSION["carro"][$id])) {
 
-            //Comprobamos que a cantidad non supere o máximo de stock
+            //Comprobo que a cantidade non supere o máximo de stock
             if ($_SESSION["carro"][$id]["cantidade"] < $_SESSION["carro"][$id]["stock"]) {
 
-                //Engadimos 1
+                //Engado 1
                 $_SESSION["carro"][$id]["cantidade"]++;
             } else {
                 $_SESSION['erro_stock'] = "Non hai máis unidades en stock.";
             }
         }
 
-        //Se é redirect normal, usamos header. Se é AJAX, devolvemos o fragmento
+        //Se é redirect normal, uso header. Se é AJAX, devolvo o fragmento
         if ($redirect) {
             header("Location: /a-dorgita/index.php?c=carro&a=index");
             exit;
@@ -164,9 +164,9 @@ class CarroController
     {
         $total = 0;
 
-        //Recorremos cada produto gardado na sesión
+        //Recorro cada produto gardado na sesión
         foreach ($_SESSION["carro"] as $item) {
-            //Multiplicamos o precio de cada produto pola cantidade
+            //Multiplico o precio de cada produto pola cantidade
             $total += $item["precio"] * $item["cantidade"];
         }
 
@@ -175,11 +175,11 @@ class CarroController
 
     public function get_fragment()
     {
-        // Recuperamos os datos necesarios da sesión
+        // Recupero os datos necesarios da sesión
         $carro = $_SESSION["carro"];
         $total = $this->calcularTotal();
 
-        //Cargamos só o fragmento, sen header nin footer
+        //Cargo só o fragmento, sen header nin footer
         require_once __DIR__ . '/../../views/partials/carro_lateral.php';
     }
 
@@ -195,7 +195,7 @@ class CarroController
 
         $carro = $_SESSION["carro"] ?? [];
 
-        // Se o carro está baleiro, rediriximos ao inicio
+        // Se o carro está baleiro, redirixo ao inicio
         if (empty($carro)) {
             header("Location: index.php?c=producto&a=index");
             exit;
@@ -213,7 +213,7 @@ class CarroController
             die("Erro crítico ao procesar a compra.");
         }
 
-        // Se se gardou, baleirase o carro e amosamos confirmación
+        // Se se gardou, baleiro o carro e amoso confirmación
         $_SESSION["carro"] = [];
 
         require_once __DIR__ . '/../../includes/header.php';

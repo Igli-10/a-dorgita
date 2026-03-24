@@ -27,7 +27,7 @@
             <hr class="my-4">
 
             <?php 
-                // Miramos se este produto xa está no carro para amosar aviso persistente
+                // Miro se este produto xa está no carro para amosar aviso persistente
                 $id_actual = $prod->getId();
                 $unidades_no_carro = $_SESSION['carro'][$id_actual]['cantidade'] ?? 0;
                 $stock_maximo = $prod->getStock();

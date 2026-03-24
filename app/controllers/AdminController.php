@@ -2,12 +2,14 @@
 require_once __DIR__ . "/../models/PedidoDAO.php";
 require_once __DIR__ . "/../models/ProductoDAO.php";
 require_once __DIR__ . "/../models/CategoriaDAO.php";
+require_once __DIR__ . "/../models/UsuarioDAO.php";
 
 class AdminController
 {
     private $pedidoDAO;
     private $productoDAO;
     private $categoriaDAO;
+    private $usuarioDAO;
 
     public function __construct()
     {
@@ -25,6 +27,7 @@ class AdminController
         $this->pedidoDAO = new PedidoDAO();
         $this->productoDAO = new ProductoDAO();
         $this->categoriaDAO = new CategoriaDAO();
+        $this->usuarioDAO = new UsuarioDAO();
     }
 
     // Método para listar produtos no panel de administración
@@ -209,6 +212,63 @@ class AdminController
             $this->categoriaDAO->borrar($id);
 
             header("Location: index.php?c=admin&a=categorias");
+            exit();
+        }
+    }
+
+    // Método para cargar a interface principal da xestión de usuarios no panel
+    public function usuarios()
+    {
+        // Comprobo se o admin escribiu algo na barra de búsqueda
+        $mensaxe = $_GET["busca"] ?? null;
+
+        // Se hai busca, filtro os usuarios; senon, amoso a lista completa
+        if ($mensaxe && !empty(trim($mensaxe))) {
+            $usuarios = $this->usuarioDAO->buscar($mensaxe);
+        } else {
+            $usuarios = $this->usuarioDAO->listar();
+        }
+
+        // Cargo as vistas
+        require_once __DIR__ . "/../../includes/header.php";
+        require_once __DIR__ . "/../../views/admin/usuarios.php";
+        require_once __DIR__ . "/../../includes/footer.php";
+    }
+
+    // Método para alternar os privilexios dunha conta dende o panel de control
+    public function cambiarRolAdmin()
+    {
+        // Comprobo que a petición veña do formulario
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $id = $_POST["id"];
+            $rol = $_POST["rol"];
+
+            // Actualizo a base de datos
+            $this->usuarioDAO->actualizarRol($id, $rol);
+
+            
+            header("Location: index.php?c=admin&a=usuarios");
+            exit();
+        }
+    }
+
+    // Método para borrar usuarios dende o panel
+    public function borrarUsuarioAdmin()
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $id = $_POST["id"];
+
+            //Evito que un admin se borre a si mesmo sen querer
+            if ($id == $_SESSION["usuario"]["id"]) {
+                header("Location: index.php?c=admin&a=usuarios");
+                exit();
+            }
+
+            // Solicito o borrado ao modelo
+            $this->usuarioDAO->borrar($id);
+
+            
+            header("Location: index.php?c=admin&a=usuarios");
             exit();
         }
     }

@@ -8,7 +8,7 @@ class UsuarioController
 
     public function __construct()
     {
-        // Comprobamos se a sesión esta activa e senon inciamola
+        // Comprobo se a sesión esta activa e senon inícioa
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
@@ -36,7 +36,7 @@ class UsuarioController
             $email = $_POST["email"] ?? "";
             $contrasinal = $_POST["contrasinal"] ?? "";
 
-            // Comprobamos se o usuario marcou a casilla de lembrarme
+            // Comprobo se o usuario marcou a casilla de lembrarme
             $lembrarme = isset($_POST["lembrarme"]);
 
             // Busca o usuario na base de datos utilizando o correo
@@ -54,7 +54,7 @@ class UsuarioController
                 ];
 
                 if ($lembrarme) {
-                    // Gardamos o email durante 30 dias en segundos
+                    // Gardo o email durante 30 dias en segundos
                     setcookie("usuario_login", $email, time() + (30 * 24 * 60 * 60), "/");
                 }
 
@@ -108,7 +108,7 @@ class UsuarioController
                 // Cifra o contrasinal de forma segura antes de gardalo na base de datos
                 $hash = password_hash($contrasinal, PASSWORD_DEFAULT);
 
-                // Por defecto, asignamos o rol de 'cliente' a todos os novos rexistrados
+                // Por defecto, asigno o rol de 'cliente' a todos os novos rexistrados
                 $rol = 'cliente';
 
                 // Intenta crear o usuario a través do DAO

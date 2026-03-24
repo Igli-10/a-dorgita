@@ -87,16 +87,16 @@
 
             <div class="offcanvas-body" id="cart-content">
                 <?php
-                // Usamos directamente a sesión para evitar o "salto máxico"
+                // Uso directamente a sesión para evitar o "salto máxico"
                 $carro_actual = $_SESSION['carro'] ?? [];
 
                 if (!empty($carro_actual)):
                     $total = 0;
-                    // Re-calculamos para asegurar que a vista teña o dato
+                    // Re-calculo para asegurar que a vista teña o dato
                     foreach ($carro_actual as $item) {
                         $total += $item['precio'] * $item['cantidade'];
                     }
-                    // Pasamos a variable $carro que espera o teu fragmento
+                    // Paso a variable $carro que espera o teu fragmento
                     $carro = $carro_actual;
                     include __DIR__ . '/../views/partials/carro_lateral.php';
                 else: ?>

@@ -63,4 +63,38 @@ class UsuarioDAO
             return false;
         }
     }
+
+    public function listar()
+    {
+        try {
+            $stmt = $this->conexion->prepare("SELECT * FROM usuarios ORDER BY id DESC");
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_CLASS, "Usuario");
+        } catch (Exception $e) {
+            return [];
+        }
+    }
+
+    public function borrar($id)
+    {
+        try {
+            $stmt = $this->conexion->prepare("DELETE FROM usuarios WHERE id=?");
+            return $stmt->execute(array($id));
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    // Busco usuarios polo seu nome ou email
+    public function buscar($termo)
+    {
+        try {
+            $like = "%" . $termo . "%";
+            $stmt = $this->conexion->prepare("SELECT * FROM usuarios WHERE nome LIKE ? OR email LIKE ? ORDER BY id DESC");
+            $stmt->execute([$like, $like]);
+            return $stmt->fetchAll(PDO::FETCH_CLASS, "Usuario");
+        } catch (Exception $e) {
+            return [];
+        }
+    }
 }

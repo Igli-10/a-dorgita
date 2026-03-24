@@ -15,7 +15,7 @@ document.addEventListener('submit', function(e) {
         })
         .then(response => response.text())
         .then(html => {
-            // Mostramos o offcanvas
+            // Mostro o offcanvas
             const offcanvasElement = document.getElementById('offcanvasCart');
             const bsOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(offcanvasElement, {
                 backdrop: false, // permite seguir clicando na páxina
@@ -23,7 +23,7 @@ document.addEventListener('submit', function(e) {
             });
             bsOffcanvas.show();
 
-            // Actualizamos o contido do carrito
+            // Actualizo o contido do carrito
             document.getElementById('cart-content').innerHTML = html;
 
             // Sincronización: se estamos na vista de carro completo, recargamos a páxina
@@ -51,7 +51,7 @@ document.addEventListener('click', function(e) {
     })
     .then(response => response.text())
     .then(html => {
-        // Actualizamos o fragmento do carrito
+        // Actualizo o fragmento do carrito
         document.getElementById('cart-content').innerHTML = html;
 
         // Sincronización: se estamos na vista de carro completo, recargamos a páxina

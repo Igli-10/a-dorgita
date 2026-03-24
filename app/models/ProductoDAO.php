@@ -47,22 +47,22 @@ class ProductoDAO
     {
         try {
             $sql = "SELECT * FROM productos";
-            $condicions = []; // Aquí gardaremos os anacos do WHERE 
-            $params = [];     // Aquí gardaremos os valores para o execute
+            $condicions = []; // Aquí gardo os anacos do WHERE 
+            $params = [];     // Aquí gardo os valores para o execute
 
-            // 1. Comprobamos se hai categoría
+            // 1. Comprobo se hai categoría
             if ($id_cat !== null && $id_cat !== '') {
                 $condicions[] = "id_categoria = ?";
                 $params[] = $id_cat;
             }
 
-            // 2. Comprobamos se hai prezo
+            // 2. Comprobo se hai prezo
             if ($max_prezo !== null && $max_prezo !== '') {
                 $condicions[] = "precio <= ?";
                 $params[] = $max_prezo;
             }
 
-            // 3. Só engadimos o WHERE se realmente hai algunha condición
+            // 3. Só engado o WHERE se realmente hai algunha condición
             if (count($condicions) > 0) {
                 // Implode xunta o array cun " AND " entre cada elemento
                 $sql .= " WHERE " . implode(" AND ", $condicions);
@@ -107,7 +107,7 @@ class ProductoDAO
 
             $stmt = $this->conexion->prepare("SELECT * FROM productos WHERE nome LIKE :mensaxe OR descripcion LIKE :mensaxe");
 
-            // Engadimos os comodíns % para buscar coincidencias parciais
+            // Engado os comodíns % para buscar coincidencias parciais
             $mensaxe_busca = "%" . $mensaxe . "%";
             $stmt->bindParam(":mensaxe", $mensaxe_busca);
             $stmt->execute();
@@ -122,7 +122,7 @@ class ProductoDAO
     public function suxerir($mensaxe)
     {
         try {
-            // Buscamos por nome, descrición e imaxe, limitamos a 5 resultados
+            // Busco por nome, descrición e imaxe, e limito a 5 resultados
             $stmt = $this->conexion->prepare("SELECT id, nome, descripcion, imagen FROM productos WHERE nome LIKE :mensaxe OR descripcion LIKE :mensaxe LIMIT 5");
 
             $mensaxe_busca = "%" . $mensaxe . "%";

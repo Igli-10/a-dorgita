@@ -10,6 +10,9 @@
         <a href="index.php?c=admin&a=categorias" class="btn btn-admin-verde shadow-sm px-4 rounded-pill text-white">
             <i class="bi bi-tags me-2"></i>Xestión de Categorías
         </a>
+        <a href="index.php?c=admin&a=usuarios" class="btn btn-admin-verde shadow-sm px-4 rounded-pill text-white">
+            <i class="bi bi-people me-2"></i>Xestión de Usuarios
+        </a>
     </div>
 
     <h2 class="fw-bold texto-verde mb-4">

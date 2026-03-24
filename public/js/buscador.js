@@ -4,14 +4,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputBusca = document.querySelector('input[name="q"]');
     const box = document.getElementById('suxestions-box');
 
-    // Verificamos que os elementos existan na páxina para evitar erros de execución
+    // Verifico que os elementos existan na páxina para evitar erros de execución
     if (!inputBusca || !box) return;
 
-    // Escoitamos cada vez que o usuario escribe ou borra unha letra
+    // Escoito cada vez que o usuario escribe ou borra unha letra
     inputBusca.addEventListener('input', function(e) {
         const termo = e.target.value.trim();
 
-        // Só iniciamos a busca se o usuario escribiu polo menos 2 caracteres
+        // Só inicio a busca se o usuario escribiu polo menos 2 caracteres
         if (termo.length < 2) {
             box.style.display = 'none';
             return;
@@ -53,10 +53,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         </a>`;
                     }).join('');
                     
-                    // Amosamos o cadro de suxestións
+                    // Amoso o cadro de suxestións
                     box.style.display = 'block';
                 } else {
-                    // Se non hai resultados, amosamos unha mensaxe informativa
+                    // Se non hai resultados, amoso unha mensaxe informativa
                     box.innerHTML = '<div class="list-group-item py-3 text-muted text-center">Non hai suxestións para esta busca</div>';
                     box.style.display = 'block';
                 }
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     });
 
-    // Pechamos o cadro de suxestións se o usuario fai clic fóra do buscador
+    // Pecho o cadro de suxestións se o usuario fai clic fóra do buscador
     document.addEventListener('click', (e) => {
         if (!inputBusca.contains(e.target) && !box.contains(e.target)) {
             box.style.display = 'none';

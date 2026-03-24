@@ -9,7 +9,7 @@ class ProductoController
     //Inicializa o modelo DAO para interactuar ca base de datos
     public function __construct()
     {
-        //Comprobamos se a sesión está activa e senon iniciámola
+        //Comprobo se a sesión está activa e senon iníciase
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
@@ -20,18 +20,18 @@ class ProductoController
     //Acción por defecto que e listar os productos
     public function index()
     {
-        //Capturamos o mensaxe da búsqueda da lupa
+        //Capturo o mensaxe da búsqueda da lupa
         $mensaxe = $_GET["q"] ?? null;
 
-        //Comprobamos se existen os parámetros na URL e senon asignamoslle valor null
+        //Comprobo se existen os parámetros na URL e senon asígnolles valor null
         $id_cat = $_REQUEST['cat'] ?? null;
         $max_prezo = $_REQUEST['max_prezo'] ?? null;
 
-        //Se o usuario usa a lupa, priorizamos a búsqueda
+        //Se o usuario usa a lupa, priorizo a búsqueda
         if ($mensaxe && !empty(trim($mensaxe))) {
             $productos = $this->model->buscar($mensaxe);
         } else {
-            //Se non hai búsqueda, listamos todos ou según os filtros se hai
+            //Se non hai búsqueda, listo todos ou segundo os filtros se hai
             $productos = $this->model->filtrar($id_cat, $max_prezo);
         }
 
@@ -44,7 +44,7 @@ class ProductoController
     //Acción pa mostrar os detalles dun producto
     public function obter()
     {
-        if (isset($_REQUEST["id"])) { // Verificamos que o ID veña na URL
+        if (isset($_REQUEST["id"])) { // Verifico que o ID veña na URL
 
             $prod = $this->model->obter($_REQUEST["id"]);
 
@@ -57,13 +57,13 @@ class ProductoController
     // Acción que devolve JSON para o JavaScript
     public function suxerir()
     {
-        // Capturamos o termo da URL ou baleiro se non existe
+        // Capturo o termo da URL ou baleiro se non existe
         $mensaxe = $_GET['q'] ?? '';
 
         //O JSON vai ser a resposta
         header('Content-Type: application/json');
 
-        //Se o término non está baleiro, chamamaos o modelo e se está baleiro, enviamos un array vacío
+        //Se o término non está baleiro, chamo ao modelo e se está baleiro, envío un array vacío
         echo json_encode(!empty(trim($mensaxe)) ? $this->model->suxerir($mensaxe) : []);
         exit;
     }

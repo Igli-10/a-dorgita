@@ -89,7 +89,6 @@ class AdminController
         require_once __DIR__ . '/../../includes/footer.php';
     }
 
-
     public function cambiarEstado()
     {
         //Recollo o ID e o estado do pedido dende o formulario
@@ -98,7 +97,13 @@ class AdminController
 
         //Se existen eses datos, actualizase o estado
         if ($id && $estado) {
-            $this->pedidoDAO->actualizarEstado($id, $estado);
+            if ($this->pedidoDAO->actualizarEstado($id, $estado)) {
+                $_SESSION['mensaje'] = "O estado do pedido actualizouse correctamente.";
+                $_SESSION['tipo_mensaje'] = "success";
+            } else {
+                $_SESSION['mensaje'] = "Houbo un erro ao actualizar o estado do pedido.";
+                $_SESSION['tipo_mensaje'] = "danger";
+            }
         }
 
         //Redirixo a lista de pedidos para ver os cambios aplicados
@@ -121,7 +126,13 @@ class AdminController
             $descripcion = $_POST["descripcion"];
 
             // Gardo o novo produto na base de datos a través do DAO correspondente
-            $this->productoDAO->gardar($nome, $descripcion, $precio, $stock, $imagen, $id_categoria);
+            if ($this->productoDAO->gardar($nome, $descripcion, $precio, $stock, $imagen, $id_categoria)) {
+                $_SESSION['mensaje'] = "O produto gardouse con éxito.";
+                $_SESSION['tipo_mensaje'] = "success";
+            } else {
+                $_SESSION['mensaje'] = "Erro ao gardar o novo produto.";
+                $_SESSION['tipo_mensaje'] = "danger";
+            }
 
             // Refresco a páxina de produtos para que o novo artigo apareza na táboa
             header("Location: index.php?c=admin&a=productos");
@@ -137,7 +148,13 @@ class AdminController
             $descripcion = $_POST["descripcion"];
 
             // Creo a nova categoría e volvo ao panel
-            $this->categoriaDAO->gardar($nome, $descripcion);
+            if ($this->categoriaDAO->gardar($nome, $descripcion)) {
+                $_SESSION['mensaje'] = "Nova categoría rexistrada con éxito.";
+                $_SESSION['tipo_mensaje'] = "success";
+            } else {
+                $_SESSION['mensaje'] = "Non se puido gardar a nova categoría.";
+                $_SESSION['tipo_mensaje'] = "danger";
+            }
 
             header("Location: index.php?c=admin&a=categorias");
             exit();
@@ -160,7 +177,13 @@ class AdminController
             $descripcion = $_POST["descripcion"];
 
             // Sobrescribo a información antiga na base de datos cos novos datos
-            $this->productoDAO->actualizar($id, $nome, $descripcion, $precio, $stock, $imagen, $id_categoria);
+            if ($this->productoDAO->actualizar($id, $nome, $descripcion, $precio, $stock, $imagen, $id_categoria)) {
+                $_SESSION['mensaje'] = "A información do produto actualizouse correctamente.";
+                $_SESSION['tipo_mensaje'] = "success";
+            } else {
+                $_SESSION['mensaje'] = "Erro ao intentar modificar o produto.";
+                $_SESSION['tipo_mensaje'] = "danger";
+            }
 
             // Redirixo á vista de produtos para confirmar visualmente os cambios
             header("Location: index.php?c=admin&a=productos");
@@ -177,7 +200,13 @@ class AdminController
             $descripcion = $_POST["descripcion"];
 
             // Actualizo a categoría e regreso á pantalla principal do admin
-            $this->categoriaDAO->actualizar($id, $nome, $descripcion);
+            if ($this->categoriaDAO->actualizar($id, $nome, $descripcion)) {
+                $_SESSION['mensaje'] = "Os datos da categoría modificáronse correctamente.";
+                $_SESSION['tipo_mensaje'] = "success";
+            } else {
+                $_SESSION['mensaje'] = "Produciuse un erro ao actualizar a categoría.";
+                $_SESSION['tipo_mensaje'] = "danger";
+            }
 
             header("Location: index.php?c=admin&a=categorias");
             exit();
@@ -194,7 +223,13 @@ class AdminController
             $id = $_POST["id"];
 
             // Executo a orde de borrado na base de datos
-            $this->productoDAO->borrar($id);
+            if ($this->productoDAO->borrar($id)) {
+                $_SESSION['mensaje'] = "O produto eliminouse do catálogo definitivamente.";
+                $_SESSION['tipo_mensaje'] = "success";
+            } else {
+                $_SESSION['mensaje'] = "Houbo un problema ao intentar borrar o produto.";
+                $_SESSION['tipo_mensaje'] = "danger";
+            }
 
             // Refresco a lista de produtos para que desapareza da táboa
             header("Location: index.php?c=admin&a=productos");
@@ -209,7 +244,13 @@ class AdminController
             $id = $_POST["id"];
 
             // Borro a categoría e redirixo ao panel
-            $this->categoriaDAO->borrar($id);
+            if ($this->categoriaDAO->borrar($id)) {
+                $_SESSION['mensaje'] = "A categoría foi eliminada correctamente.";
+                $_SESSION['tipo_mensaje'] = "success";
+            } else {
+                $_SESSION['mensaje'] = "Houbo un erro ao eliminar a categoría.";
+                $_SESSION['tipo_mensaje'] = "danger";
+            }
 
             header("Location: index.php?c=admin&a=categorias");
             exit();
@@ -244,8 +285,13 @@ class AdminController
             $rol = $_POST["rol"];
 
             // Actualizo a base de datos
-            $this->usuarioDAO->actualizarRol($id, $rol);
-
+            if ($this->usuarioDAO->actualizarRol($id, $rol)) {
+                $_SESSION['mensaje'] = "Os permisos do usuario foron actualizados.";
+                $_SESSION['tipo_mensaje'] = "success";
+            } else {
+                $_SESSION['mensaje'] = "Erro ao intentar cambiar o rol do usuario.";
+                $_SESSION['tipo_mensaje'] = "danger";
+            }
 
             header("Location: index.php?c=admin&a=usuarios");
             exit();
@@ -260,13 +306,20 @@ class AdminController
 
             //Evito que un admin se borre a si mesmo sen querer
             if ($id == $_SESSION["usuario"]["id"]) {
+                $_SESSION['mensaje'] = "Acción denegada: non podes eliminar a túa propia conta de administrador.";
+                $_SESSION['tipo_mensaje'] = "danger";
                 header("Location: index.php?c=admin&a=usuarios");
                 exit();
             }
 
-            // Solicito o borrado ao modelo
-            $this->usuarioDAO->borrar($id);
-
+            // Solicito o borrado 
+            if ($this->usuarioDAO->borrar($id)) {
+                $_SESSION['mensaje'] = "O usuario eliminouse correctamente da base de datos.";
+                $_SESSION['tipo_mensaje'] = "success";
+            } else {
+                $_SESSION['mensaje'] = "Non se puido borrar o usuario.";
+                $_SESSION['tipo_mensaje'] = "danger";
+            }
 
             header("Location: index.php?c=admin&a=usuarios");
             exit();

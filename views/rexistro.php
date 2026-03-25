@@ -1,4 +1,5 @@
 <div class="container py-5 mt-5">
+    <!-- Nesta vista permito crear unha conta nova -->
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-5">
             <div class="p-5 rounded shadow-sm border caixa-filtros">
@@ -14,6 +15,7 @@
                     </div>
                 <?php endif; ?>
 
+                <!-- Este formulario envía os datos de rexistro ao controlador -->
                 <form action="/a-dorgita/index.php?c=usuario&a=rexistrar" method="POST">
                     <div class="mb-3">
                         <label for="nome" class="form-label fw-bold texto-principal">Nome Completo</label>

@@ -1,10 +1,12 @@
 <div class="cart-items">
+    <!-- Este lateral mostra un resumo rápido do carro -->
     <?php if (empty($carro)): ?>
         <div class="text-center py-5">
             <p class="text-muted">O teu carro está baleiro.</p>
             <a href="index.php?c=producto&a=index" class="btn btn-catalogo" style="background-color: #1B4332;">Descubrir</a>
         </div>
     <?php else: ?>
+        <!-- Se hai produtos, amoso cada liña e o total final -->
         <?php foreach ($carro as $id => $item):
             $subtotal = $item['precio'] * $item['cantidade']; ?>
             <div class="d-flex align-items-center mb-3 p-2 border-bottom caixa-filtros">

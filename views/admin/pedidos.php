@@ -1,6 +1,10 @@
 <div class="container py-5 mt-5">
     
+    <!-- Teño os botóns para cambiar de sección -->
     <div class="d-flex gap-3 mb-4">
+        <a href="index.php?c=admin&a=panelControl" class="btn btn-admin-verde shadow-sm px-4 rounded-pill text-white">
+            <i class="bi bi-speedometer2 me-2"></i>Panel de control
+        </a>
         <a href="index.php?c=admin&a=pedidos" class="btn btn-engadir-carro shadow-sm px-4 rounded-pill text-white">
             <i class="bi bi-box-seam me-2"></i>Xestión de Pedidos
         </a>
@@ -19,6 +23,7 @@
         <i class="bi bi-gear-fill me-2"></i>Xestión de Pedidos
     </h2>
 
+    <!-- Podo buscar pedidos -->
     <div class="row mb-4">
         <div class="col-md-6">
             <form action="index.php" method="GET" class="d-flex gap-2">
@@ -44,6 +49,7 @@
         </div>
     </div>
 
+    <!-- Vexo a lista de pedidos e podo cambiar o estado -->
     <div class="table-responsive shadow-sm rounded border bg-white p-4">
         <table class="table table-hover align-middle mb-0">
             <thead class="borde-superior">
@@ -66,6 +72,7 @@
                     </tr>
                 <?php else: ?>
                     <?php foreach ($pedidos_completos as $item): ?>
+                        <!-- Amoso cada pedido e o seu detalle -->
                         <?php $p = $item["pedido"]; ?>
                         <?php
                         $dataPedido = $p["data"] ?? $p["data_pedido"] ?? null;
@@ -150,9 +157,10 @@
         </table>
     </div>
 
+    <!-- Este botón saca do panel -->
     <div class="mt-4 text-center">
         <a href="index.php?c=producto&a=index" class="btn boton-volver-tenda px-4 rounded-pill">
-            <i class="bi bi-arrow-left me-2"></i>Saír do Panel
+            <i class="bi bi-arrow-left me-2"></i>Saír do panel
         </a>
     </div>
 </div>

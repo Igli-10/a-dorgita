@@ -1,9 +1,11 @@
 <div class="container py-5 mt-5">
+    <!-- Nesta vista permito iniciar sesión co correo e o contrasinal -->
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-5">
             <div class="p-5 rounded shadow-sm border caixa-filtros">
                 <div class="text-center mb-4">
 
+                    <!-- Amoso avisos temporais gardados na sesión -->
                     <?php if (isset($_SESSION['mensaxe_aviso'])): ?>
                         <div class="alert alert-info alert-dismissible fade show" role="alert">
                             <i class="bi bi-info-circle me-2"></i>
@@ -18,6 +20,7 @@
                     <h2 class="fw-bold texto-principal">Iniciar Sesión</h2>
                 </div>
 
+                <!-- Se hai erro de acceso, amósoo antes do formulario -->
                 <?php if (isset($erro)): ?>
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <i class="bi bi-exclamation-triangle-fill me-2"></i>
@@ -26,6 +29,7 @@
                     </div>
                 <?php endif; ?>
 
+                <!-- Este formulario envía os datos ao controlador de login -->
                 <form action="/a-dorgita/index.php?c=usuario&a=login" method="POST">
                     <div class="mb-3">
                         <label for="email" class="form-label fw-bold texto-principal">Correo electrónico</label>

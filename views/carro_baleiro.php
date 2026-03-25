@@ -1,6 +1,7 @@
 <?php include "../includes/header.php"; ?>
 
 <div class="container py-5 mt-5 text-center">
+    <!-- Nesta vista aviso de que o carro está baleiro e deixo volver ao catálogo -->
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
             <div class="p-5 rounded shadow-sm border caixa-filtros">

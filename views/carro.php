@@ -1,4 +1,5 @@
 <div class="container py-5 mt-5">
+    <!-- Nesta vista mostro o carro e permito xestionar as cantidades -->
     <?php if (empty($carro)): ?>
         <div class="row justify-content-center text-center">
             <div class="col-md-8 col-lg-6">
@@ -11,6 +12,7 @@
         </div>
 
     <?php else: ?>
+        <!-- Se o carro ten produtos, amoso a táboa e o resumo da compra -->
         <h2 class="fw-bold texto-principal mb-3">O teu carro</h2>
         <div class="row g-4">
 

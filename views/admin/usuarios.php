@@ -1,6 +1,10 @@
 <div class="container py-5 mt-5">
     
+    <!-- Teño os botóns para cambiar de sección -->
     <div class="d-flex gap-3 mb-4">
+        <a href="index.php?c=admin&a=panelControl" class="btn btn-admin-verde shadow-sm px-4 rounded-pill text-white">
+            <i class="bi bi-speedometer2 me-2"></i>Panel de control
+        </a>
         <a href="index.php?c=admin&a=pedidos" class="btn btn-admin-verde shadow-sm px-4 rounded-pill text-white">
             <i class="bi bi-box-seam me-2"></i>Xestión de Pedidos
         </a>
@@ -21,6 +25,7 @@
         </h2>
     </div>
 
+    <!-- Podo buscar usuarios -->
     <div class="row mb-4">
         <div class="col-md-6">
             <form action="index.php" method="GET" class="d-flex gap-2">
@@ -46,6 +51,7 @@
         </div>
     </div>
 
+    <!-- Vexo os usuarios e podo xestionalos -->
     <div class="table-responsive shadow-sm rounded border bg-white p-4">
         <table class="table table-hover align-middle mb-0">
             <thead class="borde-superior">
@@ -67,6 +73,7 @@
                     </tr>
                 <?php else: ?>
                     <?php foreach ($usuarios as $u): ?>
+                        <!-- Amoso os datos de cada usuario -->
                         <tr>
                             <td class="fw-bold texto-verde">#<?php echo $u->getId(); ?></td>
                             <td class="fw-bold"><?php echo htmlspecialchars($u->getNome()); ?></td>
@@ -101,5 +108,12 @@
                 <?php endif; ?>
             </tbody>
         </table>
+    </div>
+
+    <!-- Este botón saca do panel -->
+    <div class="mt-4 text-center">
+        <a href="index.php?c=producto&a=index" class="btn boton-volver-tenda px-4 rounded-pill">
+            <i class="bi bi-arrow-left me-2"></i>Saír do panel
+        </a>
     </div>
 </div>

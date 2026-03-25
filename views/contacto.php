@@ -1,6 +1,7 @@
 <?php include "../includes/header.php" ?>
 
 <div class="container py-5 mt-5">
+    <!-- Nesta vista ensino os datos de contacto e un formulario de mensaxe -->
     <div class="row g-5 justify-content-center align-items-center">
 
         <div class="col-lg-5">

@@ -246,7 +246,7 @@ class AdminController
             // Actualizo a base de datos
             $this->usuarioDAO->actualizarRol($id, $rol);
 
-            
+
             header("Location: index.php?c=admin&a=usuarios");
             exit();
         }
@@ -267,9 +267,23 @@ class AdminController
             // Solicito o borrado ao modelo
             $this->usuarioDAO->borrar($id);
 
-            
+
             header("Location: index.php?c=admin&a=usuarios");
             exit();
         }
+    }
+
+    public function panelControl()
+    {
+        $totalUsuarios = $this->usuarioDAO->contarUsuarios();
+        $totalProductos = $this->productoDAO->contarProductos();
+        $productosAgotados = $this->productoDAO->contarProductosAgotados();
+        $totalPedidos = $this->pedidoDAO->contarPedidos();
+        $pedidosPendientes = $this->pedidoDAO->contarPedidosPendientes();
+        $ingresosTotales = $this->pedidoDAO->calcularIngresos();
+
+        require_once __DIR__ . "/../../includes/header.php";
+        require_once __DIR__ . "/../../views/admin/panel_control.php";
+        require_once __DIR__ . "/../../includes/footer.php";
     }
 }

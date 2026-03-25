@@ -1,10 +1,12 @@
 <div class="container py-5 mt-5">
+    <!-- Nesta vista ensino os datos da conta e o historial de pedidos -->
     <div class="row justify-content-center">
         <div class="col-md-8">
 
             <div class="p-5 rounded shadow-sm border caixa-filtros mb-4 bg-white">
                 <div class="text-center mb-4">
                     <?php if (isset($_SESSION['mensaxe_aviso'])): ?>
+                        <!-- Se existe un aviso en sesión, amósoo no perfil -->
                         <div class="alert alert-info alert-dismissible fade show" role="alert">
                             <?php
                             echo $_SESSION['mensaxe_aviso'];
@@ -58,7 +60,7 @@
                 <?php if ($_SESSION['usuario']['rol'] === 'admin'): ?>
                     <div class="row mt-3">
                         <div class="col-12 text-center">
-                            <a href="index.php?c=admin&a=pedidos" class="btn boton-volver-tenda btn-sm rounded-pill shadow-sm px-4">
+                            <a href="index.php?c=admin&a=panelControl" class="btn boton-volver-tenda btn-sm rounded-pill shadow-sm px-4">
                                 <i class="bi bi-speedometer2 me-1"></i>
                                 Ir ao panel de control
                             </a>
@@ -68,6 +70,7 @@
             </div>
 
             <div class="card border-0 p-4 mb-5 shadow-sm bg-white">
+                <!-- Este bloque desprega a listaxe de pedidos do usuario -->
                 <button class="btn w-100 text-start d-flex justify-content-between align-items-center fw-bold texto-principal p-0 border-0 bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePedidos" aria-expanded="false" aria-controls="collapsePedidos">
                     <span class="fs-4"><i class="bi bi-box-seam me-2"></i>Historial de pedidos</span>
                     <i class="bi bi-chevron-down fs-4 icono-flecha"></i>

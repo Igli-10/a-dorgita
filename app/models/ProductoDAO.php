@@ -179,4 +179,20 @@ class ProductoDAO
             return array();
         }
     }
+
+    public function contarProductos()
+    {
+        $stmt = $this->conexion->prepare("SELECT COUNT(*) AS total FROM productos");
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado["total"];
+    }
+
+    public function contarProductosAgotados()
+    {
+        $stmt = $this->conexion->prepare("SELECT COUNT(*) AS total FROM productos WHERE stock <= 0");
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado["total"];
+    }
 }

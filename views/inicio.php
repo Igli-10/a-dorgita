@@ -1,4 +1,5 @@
 <div class="container-fluid fondo-laranxa">
+    <!-- Amoso a portada principal da tenda -->
     <div class="row justify-content-center text-center">
         <div class="col-md-8 py-5 my-5">
             <h1 class="display-3 fw-bold mb-3">Benvidos A Dorgita</h1>
@@ -9,6 +10,7 @@
 </div>
 
 <div class="container py-5">
+    <!-- Mostro o catálogo de produtos e os filtros -->
     <div class="row">
         <div class="col-lg-9">
             <div class="row">
@@ -40,6 +42,7 @@
         </div>
 
         <div class="col-lg-3 ps-lg-5">
+            <!-- Este bloque déixame filtrar por categoría e prezo -->
             <div class="p-4 rounded shadow-sm border border-1 caixa-filtros">
                 <form action="index.php" method="GET">
 
@@ -72,6 +75,7 @@
             </div>
             </form>
         </div>
+        <!-- Este script actualiza o valor do rango de prezo mentres movo o control -->
         <script>
             const inputRango = document.getElementById('rangoPrezo');
             const displayPrezo = document.getElementById('valorPrezo');

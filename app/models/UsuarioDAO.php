@@ -97,4 +97,11 @@ class UsuarioDAO
             return [];
         }
     }
+
+    public function contarUsuarios(){
+        $stmt=$this->conexion->prepare("SELECT COUNT(*) AS total FROM usuarios");
+        $stmt->execute();
+        $resultado=$stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado["total"];
+    }
 }

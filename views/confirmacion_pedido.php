@@ -1,4 +1,5 @@
 <div class="container py-5 mt-5">
+    <!-- Nesta vista confirmo que o pedido foi creado correctamente -->
     <div class="row justify-content-center">
         <div class="col-md-8 text-center">
             <div class="p-5 rounded shadow-sm border caixa-filtros">

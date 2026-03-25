@@ -1,6 +1,10 @@
 <div class="container py-5 mt-5">
     
+    <!-- Teño os botóns para cambiar de sección -->
     <div class="d-flex gap-3 mb-4">
+        <a href="index.php?c=admin&a=panelControl" class="btn btn-admin-verde shadow-sm px-4 rounded-pill text-white">
+            <i class="bi bi-speedometer2 me-2"></i>Panel de control
+        </a>
         <a href="index.php?c=admin&a=pedidos" class="btn btn-admin-verde shadow-sm px-4 rounded-pill text-white">
             <i class="bi bi-box-seam me-2"></i>Xestión de Pedidos
         </a>
@@ -24,6 +28,7 @@
         </button>
     </div>
 
+    <!-- Vexo as categorías e podo editalas ou borralas -->
     <div class="table-responsive shadow-sm rounded border bg-white p-4">
         <table class="table table-hover align-middle mb-0">
             <thead class="borde-superior">
@@ -44,6 +49,7 @@
                     </tr>
                 <?php else: ?>
                     <?php foreach ($categorias as $c): ?>
+                        <!-- Amoso cada categoría e a súa edición -->
                         <tr>
                             <td class="fw-bold texto-verde">#<?php echo $c["id"]; ?></td>
                             <td class="fw-bold"><?php echo htmlspecialchars($c["nome"]); ?></td>
@@ -98,8 +104,16 @@
             </tbody>
         </table>
     </div>
+
+    <!-- Este botón saca do panel -->
+    <div class="mt-4 text-center">
+        <a href="index.php?c=producto&a=index" class="btn boton-volver-tenda px-4 rounded-pill">
+            <i class="bi bi-arrow-left me-2"></i>Saír do panel
+        </a>
+    </div>
 </div>
 
+<!-- Esta ventá serve para crear unha categoría nova -->
 <div class="modal fade" id="modalEngadirCategoria" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow">

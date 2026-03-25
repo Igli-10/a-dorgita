@@ -101,6 +101,9 @@
                                     <button type="button" class="btn btn-outline-dark btn-sm shadow-sm" data-bs-toggle="modal" data-bs-target="#modalPedido<?php echo $p["id"]; ?>">
                                         <i class="bi bi-eye"></i> Detalles
                                     </button>
+                                    <a href="index.php?c=admin&a=descargarFactura&id=<?php echo $p['id']; ?>" class="btn btn-sm btn-factura-pdf">
+                                        <i class="bi bi-file-earmark-pdf"></i> PDF
+                                    </a>
                                     <form action="index.php?c=admin&a=cambiarEstado" method="POST" class="d-flex gap-2">
                                         <input type="hidden" name="id" value="<?php echo $p["id"]; ?>">
                                         <select name="estado" class="form-select form-select-sm shadow-sm" style="width: 140px;">

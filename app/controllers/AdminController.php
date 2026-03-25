@@ -339,9 +339,102 @@ class AdminController
         $totalPedidos = $this->pedidoDAO->contarPedidos();
         $pedidosPendientes = $this->pedidoDAO->contarPedidosPendientes();
         $ingresosTotales = $this->pedidoDAO->calcularIngresos();
+        $productoMaisVendido = $this->pedidoDAO->obterProductoMaisVendido();
 
         require_once __DIR__ . "/../../includes/header.php";
         require_once __DIR__ . "/../../views/admin/panel_control.php";
         require_once __DIR__ . "/../../includes/footer.php";
+    }
+
+    public function descargarFactura()
+    {
+        $id_pedido = $_GET["id"] ?? null;
+
+        if (!$id_pedido) {
+            header("Location: index.php?c=admin&a=pedidos");
+            exit;
+        }
+
+        // Collemos os datos do pedido e os seus produtos
+        $pedido = $this->pedidoDAO->obter($id_pedido);
+        $detalles = $this->pedidoDAO->obterDetalles($id_pedido);
+
+        // Importante: A ruta debe coincidir con onde gardaches a carpeta libs
+        require_once __DIR__ . '/../../libs/fpdf/fpdf.php';
+
+        $pdf = new FPDF();
+        $pdf->AddPage();
+        $toLatin1 = function ($texto) {
+            if (function_exists('mb_convert_encoding')) {
+                return mb_convert_encoding($texto, 'ISO-8859-1', 'UTF-8');
+            }
+
+            return iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $texto);
+        };
+
+        // Paleta (verde + laranxa)
+        $verdeR = 40;
+        $verdeG = 122;
+        $verdeB = 72;
+        $laranxaR = 214;
+        $laranxaG = 122;
+        $laranxaB = 47;
+
+        // Cabeceira 
+        $pdf->SetFont('Times', 'B', 22);
+        $pdf->SetTextColor($verdeR, $verdeG, $verdeB);
+        $pdf->Cell(0, 12, $toLatin1('A Dorgita'), 0, 1, 'C');
+        $pdf->SetFont('Times', 'B', 14);
+        $pdf->SetTextColor(60, 60, 60);
+        $pdf->Cell(0, 8, $toLatin1('FACTURA'), 0, 1, 'C');
+
+        $pdf->SetDrawColor($verdeR, $verdeG, $verdeB);
+        $pdf->SetLineWidth(0.6);
+        $pdf->Line(15, $pdf->GetY() + 1, 195, $pdf->GetY() + 1);
+        $pdf->Ln(6);
+
+        // Datos básicos
+        $pdf->SetFont('Times', '', 11);
+        $pdf->SetTextColor(40, 40, 40);
+        $pdf->Cell(95, 8, $toLatin1('Pedido: #' . $id_pedido), 0, 0, 'L');
+        $pdf->Cell(95, 8, $toLatin1('Data: ' . date('d/m/Y H:i')), 0, 1, 'R');
+        $pdf->Ln(4);
+
+        // Táboa de produtos
+        $pdf->SetFillColor(233, 242, 235);
+        $pdf->SetDrawColor(190, 210, 194);
+        $pdf->SetFont('Times', 'B', 11);
+        $pdf->Cell(95, 10, $toLatin1('Produto'), 1, 0, 'C', true);
+        $pdf->Cell(25, 10, 'Cant.', 1, 0, 'C', true);
+        $pdf->Cell(35, 10, 'Prezo Un.', 1, 0, 'C', true);
+        $pdf->Cell(35, 10, 'Subtotal', 1, 1, 'C', true);
+
+        $pdf->SetFont('Times', '', 11);
+        $rowFill = false;
+        foreach ($detalles as $d) {
+            $subtotal = $d['cantidade'] * $d['prezo_unitario'];
+            $pdf->SetFillColor(248, 250, 248);
+            $pdf->Cell(95, 9, $toLatin1($d['nome']), 1, 0, 'L', $rowFill);
+            $pdf->Cell(25, 9, $d['cantidade'], 1, 0, 'C', $rowFill);
+            $pdf->Cell(35, 9, number_format($d['prezo_unitario'], 2) . ' EUR', 1, 0, 'C', $rowFill);
+            $pdf->Cell(35, 9, number_format($subtotal, 2) . ' EUR', 1, 1, 'C', $rowFill);
+            $rowFill = !$rowFill;
+        }
+
+        // Total final destacado
+        $pdf->SetFont('Times', 'B', 13);
+        $pdf->SetFillColor(255, 245, 235);
+        $pdf->SetTextColor($laranxaR, $laranxaG, $laranxaB);
+        $pdf->Cell(155, 12, 'TOTAL A PAGAR:', 1, 0, 'R', true);
+        $pdf->Cell(35, 12, number_format($pedido->getTotal(), 2) . ' EUR', 1, 1, 'C', true);
+
+        $pdf->Ln(6);
+        $pdf->SetFont('Times', 'I', 10);
+        $pdf->SetTextColor(90, 90, 90);
+        $pdf->Cell(0, 8, $toLatin1('Grazas por confiar en A Dorgita.'), 0, 1, 'C');
+
+        // Forzamos a descarga do arquivo
+        $pdf->Output('D', 'Factura_Dorgita_' . $id_pedido . '.pdf');
+        exit;
     }
 }

@@ -113,6 +113,20 @@
     $offsetUsuarios = -($segPedidos + $segProdutos);
     ?>
 
+    <!-- Produto máis vendido -->
+    <?php if (!empty($productoMaisVendido)): ?>
+        <div class="card border-0 shadow-sm rounded-4 mt-4 panel-graficos-card">
+            <div class="card-body p-4 text-center">
+                <h5 class="fw-bold texto-verde mb-4">
+                    <i class="bi bi-star-fill text-success me-2"></i>Produto máis vendido
+                </h5>
+                <img src="public/img/<?php echo htmlspecialchars($productoMaisVendido['imagen']); ?>" alt="<?php echo htmlspecialchars($productoMaisVendido['nome']); ?>" class="panel-produto-mais-vendido-img">
+                <p class="mt-3 fw-bold mb-1"><?php echo htmlspecialchars($productoMaisVendido['nome']); ?></p>
+                <p class="text-muted mb-0">Vendidas: <strong><?php echo (int)$productoMaisVendido['total_vendido']; ?></strong> unidades</p>
+            </div>
+        </div>
+    <?php endif; ?>
+
     <!-- Poño dous gráficos sinxelos para ver os datos mellor -->
     <div class="row g-4 mb-4">
         <div class="col-lg-6">

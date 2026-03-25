@@ -256,4 +256,18 @@ class PedidoDAO
         $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
         return $resultado["ingresos"] ?? 0;
     }
+
+    public function obterProductoMaisVendido()
+    {
+        $stmt = $this->conexion->prepare("
+            SELECT p.id, p.nome, p.imagen, SUM(dp.cantidade) AS total_vendido
+            FROM detalles_pedido dp
+            INNER JOIN productos p ON dp.id_producto = p.id
+            GROUP BY p.id, p.nome, p.imagen
+            ORDER BY total_vendido DESC
+            LIMIT 1
+        ");
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+    }
 }

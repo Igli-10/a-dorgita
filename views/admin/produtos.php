@@ -1,3 +1,13 @@
+<?php
+$produtoValor = function ($produto, $campo, $metodo) {
+    if (is_array($produto)) {
+        return $produto[$campo] ?? null;
+    }
+
+    return method_exists($produto, $metodo) ? $produto->$metodo() : null;
+};
+?>
+
 <div class="container py-5 mt-5">
 
     <!-- Teño os botóns para cambiar de sección -->
@@ -79,30 +89,30 @@
                     <?php foreach ($productos as $p): ?>
                         <!-- Amoso cada produto e a súa edición -->
                         <tr>
-                            <td class="fw-bold texto-verde">#<?php echo $p->getId(); ?></td>
+                            <td class="fw-bold texto-verde">#<?php echo $produtoValor($p, 'id', 'getId'); ?></td>
                             <td>
-                                <img src="public/img/<?php echo htmlspecialchars($p->getImagen()); ?>" 
-                                     alt="<?php echo htmlspecialchars($p->getNome()); ?>" 
+                                <img src="public/img/<?php echo htmlspecialchars($produtoValor($p, 'imagen', 'getImagen')); ?>" 
+                                     alt="<?php echo htmlspecialchars($produtoValor($p, 'nome', 'getNome')); ?>" 
                                      class="imaxe-miniatura-pedido">
                             </td>
-                            <td class="fw-bold"><?php echo htmlspecialchars($p->getNome()); ?></td>
-                            <td class="fw-bold"><?php echo number_format($p->getPrecio(), 2); ?> €</td>
+                            <td class="fw-bold"><?php echo htmlspecialchars($produtoValor($p, 'nome', 'getNome')); ?></td>
+                            <td class="fw-bold"><?php echo number_format($produtoValor($p, 'precio', 'getPrecio'), 2); ?> €</td>
                             <td class="text-center">
-                                <?php if ($p->getStock() <= 0): ?>
+                                <?php if ($produtoValor($p, 'stock', 'getStock') <= 0): ?>
                                     <span class="badge bg-danger px-3 py-2 rounded-pill">Esgotado</span>
-                                <?php elseif ($p->getStock() <= 5): ?>
-                                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill"><?php echo $p->getStock(); ?> en stock</span>
+                                <?php elseif ($produtoValor($p, 'stock', 'getStock') <= 5): ?>
+                                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill"><?php echo $produtoValor($p, 'stock', 'getStock'); ?> en stock</span>
                                 <?php else: ?>
-                                    <span class="badge bg-success px-3 py-2 rounded-pill"><?php echo $p->getStock(); ?> en stock</span>
+                                    <span class="badge bg-success px-3 py-2 rounded-pill"><?php echo $produtoValor($p, 'stock', 'getStock'); ?> en stock</span>
                                 <?php endif; ?>
                             </td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
-                                    <button type="button" class="btn btn-outline-primary btn-sm shadow-sm" data-bs-toggle="modal" data-bs-target="#modalEditarProducto<?php echo $p->getId(); ?>">
+                                    <button type="button" class="btn btn-outline-primary btn-sm shadow-sm" data-bs-toggle="modal" data-bs-target="#modalEditarProducto<?php echo $produtoValor($p, 'id', 'getId'); ?>">
                                         <i class="bi bi-pencil"></i>
                                     </button>
                                     <form action="index.php?c=admin&a=borrarProducto" method="POST" class="d-inline" onsubmit="return confirm('Estás seguro de que desexas borrar este produto de xeito definitivo?');">
-                                        <input type="hidden" name="id" value="<?php echo $p->getId(); ?>">
+                                        <input type="hidden" name="id" value="<?php echo $produtoValor($p, 'id', 'getId'); ?>">
                                         <button type="submit" class="btn btn-outline-danger btn-sm shadow-sm">
                                             <i class="bi bi-trash"></i>
                                         </button>
@@ -111,29 +121,29 @@
                             </td>
                         </tr>
 
-                        <div class="modal fade" id="modalEditarProducto<?php echo $p->getId(); ?>" tabindex="-1" aria-hidden="true">
+                        <div class="modal fade" id="modalEditarProducto<?php echo $produtoValor($p, 'id', 'getId'); ?>" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered modal-lg">
                                 <div class="modal-content border-0 shadow">
                                     <div class="modal-header fondo-verde text-white">
                                         <h5 class="modal-title">
-                                            <i class="bi bi-pencil-square me-2"></i>Editar Produto #<?php echo $p->getId(); ?>
+                                            <i class="bi bi-pencil-square me-2"></i>Editar Produto #<?php echo $produtoValor($p, 'id', 'getId'); ?>
                                         </h5>
                                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <form action="index.php?c=admin&a=actualizarProducto" method="POST">
                                         <div class="modal-body bg-white">
-                                            <input type="hidden" name="id" value="<?php echo $p->getId(); ?>">
+                                            <input type="hidden" name="id" value="<?php echo $produtoValor($p, 'id', 'getId'); ?>">
                                             
                                             <div class="row g-3">
                                                 <div class="col-md-6">
                                                     <label class="form-label fw-bold texto-verde">Nome</label>
-                                                    <input type="text" name="nome" class="form-control" value="<?php echo htmlspecialchars($p->getNome()); ?>" required>
+                                                    <input type="text" name="nome" class="form-control" value="<?php echo htmlspecialchars($produtoValor($p, 'nome', 'getNome')); ?>" required>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="form-label fw-bold texto-verde">Categoría</label>
                                                     <select name="id_categoria" class="form-select" required>
                                                         <?php foreach ($categorias as $c): ?>
-                                                            <option value="<?php echo $c["id"]; ?>" <?php if($p->getIdCategoria() == $c["id"]) echo "selected"; ?>>
+                                                            <option value="<?php echo $c["id"]; ?>" <?php if($produtoValor($p, 'id_categoria', 'getIdCategoria') == $c["id"]) echo "selected"; ?>>
                                                                 <?php echo htmlspecialchars($c["nome"]); ?>
                                                             </option>
                                                         <?php endforeach; ?>
@@ -141,19 +151,19 @@
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="form-label fw-bold texto-verde">Prezo (€)</label>
-                                                    <input type="number" step="0.01" name="precio" class="form-control" value="<?php echo $p->getPrecio(); ?>" required>
+                                                    <input type="number" step="0.01" name="precio" class="form-control" value="<?php echo $produtoValor($p, 'precio', 'getPrecio'); ?>" required>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="form-label fw-bold texto-verde">Stock</label>
-                                                    <input type="number" name="stock" class="form-control" value="<?php echo $p->getStock(); ?>" required>
+                                                    <input type="number" name="stock" class="form-control" value="<?php echo $produtoValor($p, 'stock', 'getStock'); ?>" required>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="form-label fw-bold texto-verde">Nome Imaxe</label>
-                                                    <input type="text" name="imagen" class="form-control" value="<?php echo htmlspecialchars($p->getImagen()); ?>" required>
+                                                    <input type="text" name="imagen" class="form-control" value="<?php echo htmlspecialchars($produtoValor($p, 'imagen', 'getImagen')); ?>" required>
                                                 </div>
                                                 <div class="col-12">
                                                     <label class="form-label fw-bold texto-verde">Descrición</label>
-                                                    <textarea name="descripcion" class="form-control" rows="3"><?php echo htmlspecialchars($p->getDescripcion()); ?></textarea>
+                                                    <textarea name="descripcion" class="form-control" rows="3"><?php echo htmlspecialchars($produtoValor($p, 'descripcion', 'getDescripcion')); ?></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -170,6 +180,28 @@
             </tbody>
         </table>
     </div>
+
+    <?php if (isset($totalPaginas) && $totalPaginas > 1): ?>
+        <nav aria-label="Paxinación de produtos" class="mt-4">
+            <ul class="pagination justify-content-center">
+                
+                <li class="page-item <?php echo $pagina <= 1 ? 'disabled' : ''; ?>">
+                    <a class="page-link text-success shadow-sm rounded-start-pill px-3" href="index.php?c=admin&a=productos&pagina=<?php echo $pagina - 1; ?><?php echo $mensaxe ? '&busca=' . urlencode($mensaxe) : ''; ?>">Anterior</a>
+                </li>
+
+                <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
+                    <li class="page-item <?php echo $pagina == $i ? 'active' : ''; ?>">
+                        <a class="page-link shadow-sm <?php echo $pagina == $i ? 'bg-success border-success text-white' : 'text-success'; ?>" href="index.php?c=admin&a=productos&pagina=<?php echo $i; ?><?php echo $mensaxe ? '&busca=' . urlencode($mensaxe) : ''; ?>"><?php echo $i; ?></a>
+                    </li>
+                <?php endfor; ?>
+
+                <li class="page-item <?php echo $pagina >= $totalPaginas ? 'disabled' : ''; ?>">
+                    <a class="page-link text-success shadow-sm rounded-end-pill px-3" href="index.php?c=admin&a=productos&pagina=<?php echo $pagina + 1; ?><?php echo $mensaxe ? '&busca=' . urlencode($mensaxe) : ''; ?>">Seguinte</a>
+                </li>
+                
+            </ul>
+        </nav>
+    <?php endif; ?>
 
     <!-- Este botón saca do panel -->
     <div class="mt-4 text-center">

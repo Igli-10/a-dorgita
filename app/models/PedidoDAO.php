@@ -33,8 +33,8 @@ class PedidoDAO
             //Preparo a consulta para os detalle dos pedidos
             $stmtDetalle = $this->conexion->prepare("INSERT INTO detalles_pedido (id_pedido, id_producto, cantidade, prezo_unitario) VALUES (?, ?, ?, ?)");
 
-            // Consulta para descontar o stock: só resta se o stock actual é maior ou igual á cantidade pedida
-            $stmtStock = $this->conexion->prepare("UPDATE pedidos SET stock = stock - ? WHERE id = ? AND stock >= ?");
+            // Consulta para descontar o stock no produto: só resta se hai unidades suficientes
+            $stmtStock = $this->conexion->prepare("UPDATE productos SET stock = stock - ? WHERE id = ? AND stock >= ?");
 
             //Percorro cada produto do carro para gardalo na base de datos
             foreach ($carro as $id_producto => $item) {
@@ -109,7 +109,7 @@ class PedidoDAO
             $stmt = $this->conexion->prepare("
                 SELECT dp.cantidade, dp.prezo_unitario, p.nome, p.imagen
                 FROM detalles_pedido dp
-                INNER JOIN pedidos p ON dp.id_producto = p.id
+                INNER JOIN productos p ON dp.id_producto = p.id
                 WHERE dp.id_pedido = ?
             ");
             $stmt->execute([$id_pedido]);
@@ -171,7 +171,7 @@ class PedidoDAO
             if ($estadoActual !== "cancelado" && $novoEstadoNormalizado === "cancelado") {
 
                 // Preparo a consulta para sumar as unidades de volta ao produto
-                $stmtStock = $this->conexion->prepare("UPDATE pedidos SET stock = stock + ? WHERE id = ?");
+                $stmtStock = $this->conexion->prepare("UPDATE productos SET stock = stock + ? WHERE id = ?");
 
                 // Percorro os detalles e actualizo o stock un por un
                 foreach ($detalles as $detalle) {
@@ -181,7 +181,7 @@ class PedidoDAO
 
             // Se estaba cancelado e o reactivo, hai que volver descontar stock.
             if ($estadoActual === "cancelado" && $novoEstadoNormalizado !== "cancelado") {
-                $stmtStock = $this->conexion->prepare("UPDATE pedidos SET stock = stock - ? WHERE id = ? AND stock >= ?");
+                $stmtStock = $this->conexion->prepare("UPDATE productos SET stock = stock - ? WHERE id = ? AND stock >= ?");
 
                 foreach ($detalles as $detalle) {
                     $cantidade = (int)$detalle["cantidade"];

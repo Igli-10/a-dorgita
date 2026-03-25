@@ -33,15 +33,20 @@ class AdminController
     // Método para listar produtos no panel de administración
     public function productos()
     {
-        //Comprobo se o admin escribiu algo na barra de búsqueda
         $mensaxe = $_GET["busca"] ?? null;
+        $pagina = isset($_GET["pagina"]) ? (int)$_GET["pagina"] : 1;
+        $limite = 10;
+        $offset = ($pagina - 1) * $limite;
 
-        //Se hai busca, filtro os produtos; senon, amoso o catálogo completo
         if ($mensaxe && !empty(trim($mensaxe))) {
-            $productos = $this->productoDAO->buscar($mensaxe);
+            $totalRegistros = $this->productoDAO->contarBusqueda($mensaxe);
+            $productos = $this->productoDAO->buscarPaginado($mensaxe, $limite, $offset);
         } else {
-            $productos = $this->productoDAO->listar();
+            $totalRegistros = $this->productoDAO->contarProductos();
+            $productos = $this->productoDAO->listarPaginado($limite, $offset);
         }
+
+        $totalPaginas = ceil($totalRegistros / $limite);
 
         $categorias = $this->productoDAO->obterCategorias();
 

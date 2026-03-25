@@ -77,6 +77,76 @@ class ProductoDAO
         }
     }
 
+    //Filtrado con paxinación para a portada
+    public function filtrarPaginadoCatalogo($id_cat = null, $max_prezo = null, $limite = 9, $offset = 0)
+    {
+        try {
+            //Constrúo a consulta de forma dinámica para reutilizar os filtros
+            $sql = "SELECT * FROM productos";
+            $condicions = [];
+            $params = [];
+
+            if ($id_cat !== null && $id_cat !== '') {
+                $condicions[] = "id_categoria = ?";
+                $params[] = $id_cat;
+            }
+
+            if ($max_prezo !== null && $max_prezo !== '') {
+                $condicions[] = "precio <= ?";
+                $params[] = $max_prezo;
+            }
+
+            if (count($condicions) > 0) {
+                $sql .= " WHERE " . implode(" AND ", $condicions);
+            }
+
+            $sql .= " ORDER BY id DESC LIMIT ? OFFSET ?";
+            //Engado os parámetros de paxinación ao final
+            $params[] = (int)$limite;
+            $params[] = (int)$offset;
+
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->execute($params);
+
+            return $stmt->fetchAll(PDO::FETCH_CLASS, "Producto");
+        } catch (Exception $e) {
+            return [];
+        }
+    }
+
+    //Conta produtos para calcular páxinas na portada
+    public function contarFiltradosCatalogo($id_cat = null, $max_prezo = null)
+    {
+        try {
+            //Esta conta úsase para calcular o número total de páxinas
+            $sql = "SELECT COUNT(*) AS total FROM productos";
+            $condicions = [];
+            $params = [];
+
+            if ($id_cat !== null && $id_cat !== '') {
+                $condicions[] = "id_categoria = ?";
+                $params[] = $id_cat;
+            }
+
+            if ($max_prezo !== null && $max_prezo !== '') {
+                $condicions[] = "precio <= ?";
+                $params[] = $max_prezo;
+            }
+
+            if (count($condicions) > 0) {
+                $sql .= " WHERE " . implode(" AND ", $condicions);
+            }
+
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->execute($params);
+            $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            return (int)($resultado['total'] ?? 0);
+        } catch (Exception $e) {
+            return 0;
+        }
+    }
+
     public function consultarStock($id)
     {
         try {
@@ -110,6 +180,23 @@ class ProductoDAO
             // Engado os comodíns % para buscar coincidencias parciais
             $mensaxe_busca = "%" . $mensaxe . "%";
             $stmt->bindParam(":mensaxe", $mensaxe_busca);
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_CLASS, "Producto");
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
+
+    //Busca con paxinación para a portada
+    public function buscarPaginadoCatalogo($mensaxe, $limite, $offset)
+    {
+        try {
+            //Mesma lóxica da búsqueda normal pero devolvendo só un bloque de resultados
+            $stmt = $this->conexion->prepare("SELECT * FROM productos WHERE nome LIKE :mensaxe OR descripcion LIKE :mensaxe ORDER BY id DESC LIMIT :limite OFFSET :offset");
+            $stmt->bindValue(':mensaxe', '%' . $mensaxe . '%', PDO::PARAM_STR);
+            $stmt->bindValue(':limite', (int)$limite, PDO::PARAM_INT);
+            $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
             $stmt->execute();
 
             return $stmt->fetchAll(PDO::FETCH_CLASS, "Producto");
@@ -186,6 +273,37 @@ class ProductoDAO
         $stmt->execute();
         $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
         return $resultado["total"];
+    }
+
+    public function listarPaginado($limite, $offset)
+    {
+        $stmt = $this->conexion->prepare("SELECT * FROM productos ORDER BY id DESC LIMIT :limite OFFSET :offset");
+        $stmt->bindValue(':limite', (int)$limite, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function buscarPaginado($mensaxe, $limite, $offset)
+    {
+        $stmt = $this->conexion->prepare("SELECT * FROM productos WHERE nome LIKE :mensaxe OR descripcion LIKE :mensaxe ORDER BY id DESC LIMIT :limite OFFSET :offset");
+        $stmt->bindValue(':mensaxe', '%' . $mensaxe . '%', PDO::PARAM_STR);
+        $stmt->bindValue(':limite', (int)$limite, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function contarBusqueda($mensaxe)
+    {
+        $stmt = $this->conexion->prepare("SELECT COUNT(*) as total FROM productos WHERE nome LIKE :mensaxe OR descripcion LIKE :mensaxe");
+        $stmt->bindValue(':mensaxe', '%' . $mensaxe . '%', PDO::PARAM_STR);
+        $stmt->execute();
+
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado['total'];
     }
 
     public function contarProductosAgotados()

@@ -22,6 +22,10 @@ class ProductoController
     {
         //Capturo o mensaxe da búsqueda da lupa
         $mensaxe = $_GET["q"] ?? null;
+        //Datos base da paxinación na portada
+        $pagina = isset($_GET["pagina"]) ? max(1, (int)$_GET["pagina"]) : 1;
+        $limite = 9;
+        $offset = ($pagina - 1) * $limite;
 
         //Comprobo se existen os parámetros na URL e senon asígnolles valor null
         $id_cat = $_REQUEST['cat'] ?? null;
@@ -29,10 +33,28 @@ class ProductoController
 
         //Se o usuario usa a lupa, priorizo a búsqueda
         if ($mensaxe && !empty(trim($mensaxe))) {
-            $productos = $this->model->buscar($mensaxe);
+            //Conta e trae só os produtos da páxina actual para a búsqueda
+            $totalRegistros = $this->model->contarBusqueda($mensaxe);
+            $productos = $this->model->buscarPaginadoCatalogo($mensaxe, $limite, $offset);
         } else {
-            //Se non hai búsqueda, listo todos ou segundo os filtros se hai
-            $productos = $this->model->filtrar($id_cat, $max_prezo);
+            //Se non hai búsqueda, aplico filtros con paxinación
+            $totalRegistros = $this->model->contarFiltradosCatalogo($id_cat, $max_prezo);
+            $productos = $this->model->filtrarPaginadoCatalogo($id_cat, $max_prezo, $limite, $offset);
+        }
+
+        //Número total de botóns de páxina para a vista
+        $totalPaginas = max(1, (int)ceil($totalRegistros / $limite));
+
+        //Se se pide unha páxina fora de rango, recárgase coa última válida
+        if ($pagina > $totalPaginas) {
+            $pagina = $totalPaginas;
+            $offset = ($pagina - 1) * $limite;
+
+            if ($mensaxe && !empty(trim($mensaxe))) {
+                $productos = $this->model->buscarPaginadoCatalogo($mensaxe, $limite, $offset);
+            } else {
+                $productos = $this->model->filtrarPaginadoCatalogo($id_cat, $max_prezo, $limite, $offset);
+            }
         }
 
 

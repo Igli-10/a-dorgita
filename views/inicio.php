@@ -39,6 +39,30 @@
                     </div>
                 <?php endif; ?>
             </div>
+
+            <?php if (isset($totalPaginas) && $totalPaginas > 1): ?>
+                <!-- Navegación entre páxinas mantendo búsqueda e filtros activos -->
+                <nav aria-label="Paxinación do catálogo" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        <!-- Botón anterior -->
+                        <li class="page-item <?php echo $pagina <= 1 ? 'disabled' : ''; ?>">
+                            <a class="page-link text-success shadow-sm rounded-start-pill px-3" href="index.php?c=producto&a=index&pagina=<?php echo $pagina - 1; ?><?php echo !empty($_GET['q']) ? '&q=' . urlencode($_GET['q']) : ''; ?><?php echo !empty($_GET['cat']) ? '&cat=' . urlencode($_GET['cat']) : ''; ?><?php echo isset($_GET['max_prezo']) && $_GET['max_prezo'] !== '' ? '&max_prezo=' . urlencode($_GET['max_prezo']) : ''; ?>">Anterior</a>
+                        </li>
+
+                        <!-- Números de páxina -->
+                        <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
+                            <li class="page-item <?php echo $pagina == $i ? 'active' : ''; ?>">
+                                <a class="page-link shadow-sm <?php echo $pagina == $i ? 'bg-success border-success text-white' : 'text-success'; ?>" href="index.php?c=producto&a=index&pagina=<?php echo $i; ?><?php echo !empty($_GET['q']) ? '&q=' . urlencode($_GET['q']) : ''; ?><?php echo !empty($_GET['cat']) ? '&cat=' . urlencode($_GET['cat']) : ''; ?><?php echo isset($_GET['max_prezo']) && $_GET['max_prezo'] !== '' ? '&max_prezo=' . urlencode($_GET['max_prezo']) : ''; ?>"><?php echo $i; ?></a>
+                            </li>
+                        <?php endfor; ?>
+
+                        <!-- Botón seguinte -->
+                        <li class="page-item <?php echo $pagina >= $totalPaginas ? 'disabled' : ''; ?>">
+                            <a class="page-link text-success shadow-sm rounded-end-pill px-3" href="index.php?c=producto&a=index&pagina=<?php echo $pagina + 1; ?><?php echo !empty($_GET['q']) ? '&q=' . urlencode($_GET['q']) : ''; ?><?php echo !empty($_GET['cat']) ? '&cat=' . urlencode($_GET['cat']) : ''; ?><?php echo isset($_GET['max_prezo']) && $_GET['max_prezo'] !== '' ? '&max_prezo=' . urlencode($_GET['max_prezo']) : ''; ?>">Seguinte</a>
+                        </li>
+                    </ul>
+                </nav>
+            <?php endif; ?>
         </div>
 
         <div class="col-lg-3 ps-lg-5">

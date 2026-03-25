@@ -33,6 +33,16 @@ class UsuarioDAO
         return $stmt->fetch() ?: null;
     }
 
+    // Método para obter un usuario polo seu id
+    public function obter($id)
+    {
+        $stmt = $this->conexion->prepare("SELECT * FROM usuarios WHERE id = ?");
+        $stmt->bindParam(1, $id);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, 'Usuario');
+        $stmt->execute();
+        return $stmt->fetch() ?: null;
+    }
+
     // Método para rexistrar un novo usuario na base de datos
     public function crear($nome, $email, $contrasinal, $rol)
     {

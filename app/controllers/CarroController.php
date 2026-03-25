@@ -1,10 +1,12 @@
 <?php
 require_once __DIR__ . "/../models/ProductoDAO.php";
 require_once __DIR__ . '/../models/PedidoDAO.php';
+require_once __DIR__ . '/../models/UsuarioDAO.php';
 
 class CarroController
 {
     private $productoDAO;
+    private $usuarioDAO;
 
     public function __construct()
     {
@@ -19,6 +21,7 @@ class CarroController
         }
 
         $this->productoDAO = new ProductoDAO();
+        $this->usuarioDAO = new UsuarioDAO();
     }
 
     public function index()
@@ -242,6 +245,9 @@ class CarroController
 
         $detalles = $pedidoDAO->obterDetalles($id_pedido);
 
+        // Obter os datos do usuario
+        $usuario = $this->usuarioDAO->obter($pedido->getIdUsuario());
+
         require_once __DIR__ . '/../../libs/fpdf/fpdf.php';
 
         $toLatin1 = function ($texto) {
@@ -254,6 +260,13 @@ class CarroController
 
         $pdf = new FPDF();
         $pdf->AddPage();
+
+        // Logo
+        $logoPath = __DIR__ . '/../../public/img/logo_favicon.png';
+        if (file_exists($logoPath)) {
+            $pdf->Image($logoPath, 10, 8, 18);
+            $pdf->Ln(6);
+        }
 
         // Paleta (verde + laranxa)
         $verdeR = 40;
@@ -283,9 +296,15 @@ class CarroController
         $pdf->Cell(95, 8, $toLatin1('Data: ' . date('d/m/Y H:i')), 0, 1, 'R');
         $pdf->Ln(4);
 
+        // Subliña cos datos do cliente
+        $pdf->SetFont('Times', '', 10);
+        $pdf->Cell(95, 7, $toLatin1('Cliente: ' . ($usuario ? $usuario->getNome() : 'Non dispoñible')), 0, 0, 'L');
+        $pdf->Cell(95, 7, $toLatin1('Email: ' . ($usuario ? $usuario->getEmail() : '')), 0, 1, 'R');
+        $pdf->Ln(2);
+
         // Táboa de produtos
         $pdf->SetFillColor(233, 242, 235);
-        $pdf->SetDrawColor(190, 210, 194);
+        $pdf->SetDrawColor($verdeR, $verdeG, $verdeB);
         $pdf->SetFont('Times', 'B', 11);
         $pdf->Cell(95, 10, $toLatin1('Produto'), 1, 0, 'C', true);
         $pdf->Cell(25, 10, 'Cant.', 1, 0, 'C', true);

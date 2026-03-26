@@ -46,7 +46,7 @@
                             <input type="checkbox" class="form-check-input" id="lembrarme" name="lembrarme">
                             <label class="form-check-label small texto-principal" for="lembrarme">Lembrarme</label>
                         </div>
-                        <a href="#" class="small text-decoration-none fw-bold texto-laranxa">Esqueceches o contrasinal?</a>
+                        <a href="index.php?c=recuperar&a=solicitar" class="small text-decoration-none fw-bold texto-laranxa">Esqueceches o contrasinal?</a>
                     </div>
 
                     <button type="submit" class="btn btn-engadir-carro w-100 py-2 fs-5 mb-3">Acceder</button>

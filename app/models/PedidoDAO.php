@@ -65,12 +65,13 @@ class PedidoDAO
 
             //Devolovo o num do pedido pa mostralo na vista de confirmacion
             return $id_pedido;
-        } catch (PDOException $e) {
+        } catch (Exception $e) {
             //Se hai algun erro, desfago todo o proceso
             if ($this->conexion->inTransaction()) {
                 $this->conexion->rollback();
             }
-            die("Erro o procesar o pedido " . $e->getMessage());
+            // Lanzamos a excepción cara ao controlador
+            throw new Exception($e->getMessage());
         }
     }
 

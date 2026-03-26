@@ -57,7 +57,7 @@ class CarroController
                 $cantidade_no_carro = isset($_SESSION["carro"][$id]) ? $_SESSION["carro"][$id]["cantidade"] : 0;
                 $total_final = $cantidade_no_carro + $cantidade_a_engadir;
 
-                // VALIDACIÓN DE STOCK: Comprobo que a suma non supere o stock real
+                // Comprobo que a suma non supere o stock dispoñible
                 if ($total_final <= $stock_real) {
                     //Se o produto xa estaba no carro ou é novo, actualizo/creo
                     $_SESSION["carro"][$id] = [
@@ -93,7 +93,7 @@ class CarroController
         //Recollo o ID do produto que o usuario quere eliminar
         $id = $_REQUEST["id"] ?? null;
 
-        //Se o id e válido e o produto está na sesión. Eliminamolo
+        //Se o id é válido e o produto está na sesión, elimínoo
         if ($id && isset($_SESSION["carro"][$id])) {
             unset($_SESSION["carro"][$id]);
         }
@@ -113,13 +113,13 @@ class CarroController
         //Recollo o ID do produto ao que quero restarlle unha unidade
         $id = $id ?? ($_REQUEST["id"] ?? null);
 
-        //Se o produto xa existe no noso carro
+        //Se o produto xa existe no meu carro
         if ($id && isset($_SESSION["carro"][$id])) {
 
-            //Restamoslle 1
+            //Réstoll 1
             $_SESSION["carro"][$id]["cantidade"]--;
 
-            //Se a cantidade o restarlle e igual ou menor que 0 eliminamolo
+            //Se a cantidade ao restarlle é igual ou menor que 0, elimínoo
             if ($_SESSION["carro"][$id]["cantidade"] <= 0) {
                 unset($_SESSION["carro"][$id]);
             }
@@ -189,40 +189,52 @@ class CarroController
     //Método que mete o pedido na base de datos
     public function finalizar()
     {
-        // Verifico que o usuario está logueado
+        // Verificación de seguridade
         if (!isset($_SESSION["usuario"])) {
-            $_SESSION['mensaxe_aviso'] = "Debes iniciar sesión para poder completar o teu pedido.";
+            $_SESSION['mensaje'] = "Debes iniciar sesión para completar a compra.";
+            $_SESSION['tipo_mensaje'] = "danger";
             header("Location: index.php?c=usuario&a=login");
             exit;
         }
 
         $carro = $_SESSION["carro"] ?? [];
-
-        // Se o carro está baleiro, redirixo ao inicio
         if (empty($carro)) {
+            $_SESSION['mensaje'] = "O teu carro está baleiro.";
+            $_SESSION['tipo_mensaje'] = "warning";
             header("Location: index.php?c=producto&a=index");
             exit;
         }
 
-        $pedidoDAO = new PedidoDAO();
+        try {
+            $pedidoDAO = new PedidoDAO();
+            $id_usuario = $_SESSION["usuario"]["id"];
+            $total = $this->calcularTotal();
 
-        $id_usuario = $_SESSION["usuario"]["id"];
-        $total = $this->calcularTotal();
+            // Intento crear o pedido (se non hai stock abondo, o DAO avisará)
+            $id_pedido = $pedidoDAO->crearPedido($id_usuario, $total, $carro);
 
-        // Gardo o pedido na base de datos
-        $id_pedido = $pedidoDAO->crearPedido($id_usuario, $total, $carro);
+            if (!$id_pedido) {
+                throw new Exception("Non se puido xerar o número de pedido.");
+            }
 
-        if (!$id_pedido) {
-            die("Erro crítico ao procesar a compra.");
+            // Se todo foi ben, baleiro o carro e amoso a confirmación
+            $_SESSION["carro"] = [];
+
+            require_once __DIR__ . '/../../includes/header.php';
+            require_once __DIR__ . '/../../views/confirmacion_pedido.php';
+            require_once __DIR__ . '/../../includes/footer.php';
+            exit;
+
+        } catch (Exception $e) {
+            // Se algo fallou, gárdoo no log e aviso ao usuario
+            error_log("Fallo en compra: " . $e->getMessage());
+
+            $_SESSION['mensaje'] = "Houbo un problema: " . $e->getMessage();
+            $_SESSION['tipo_mensaje'] = "danger";
+
+            header("Location: index.php?c=carro&a=index");
+            exit;
         }
-
-        // Se se gardou, baleiro o carro e amoso confirmación
-        $_SESSION["carro"] = [];
-
-        require_once __DIR__ . '/../../includes/header.php';
-        require_once __DIR__ . '/../../views/confirmacion_pedido.php';
-        require_once __DIR__ . '/../../includes/footer.php';
-        exit;
     }
 
     public function descargarFactura()

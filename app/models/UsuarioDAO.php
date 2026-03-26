@@ -114,4 +114,74 @@ class UsuarioDAO
         $resultado=$stmt->fetch(PDO::FETCH_ASSOC);
         return $resultado["total"];
     }
+
+    // Gardo un token de recuperación de contrasinal para o usuario co email indicado
+    public function gardarTokenRecuperacion($email, $tokenHash, $caducaEn)
+    {
+        try {
+            $stmtUser = $this->conexion->prepare("SELECT id FROM usuarios WHERE email = ? LIMIT 1");
+            $stmtUser->execute([$email]);
+            $usuario = $stmtUser->fetch(PDO::FETCH_ASSOC);
+
+            if (!$usuario) {
+                return false; // Usuario non existe, non hai token que gardar
+            }
+
+            $idUsuario = (int)$usuario['id'];
+
+            // Marco como usados os tokens anteriores non consumidos
+            $stmtInvalida = $this->conexion->prepare(
+                "UPDATE recuperacion_contrasinal SET usado = 1 WHERE id_usuario = ? AND usado = 0"
+            );
+            $stmtInvalida->execute([$idUsuario]);
+
+            $stmtToken = $this->conexion->prepare(
+                "INSERT INTO recuperacion_contrasinal (id_usuario, token, caduca_en, usado) VALUES (?, ?, ?, 0)"
+            );
+            return $stmtToken->execute([$idUsuario, $tokenHash, $caducaEn]);
+        } catch (PDOException $e) {
+            error_log("Erro gardarTokenRecuperacion: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    // Comprob se o token existe, non foi usado e non caducou
+    public function validarTokenRecuperacion($tokenHash)
+    {
+        try {
+            $sql = "SELECT id, id_usuario FROM recuperacion_contrasinal
+                    WHERE token = ? AND usado = 0 AND caduca_en > datetime('now')
+                    LIMIT 1";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->execute([$tokenHash]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Erro validarTokenRecuperacion: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    // Actualizo o contrasinal dun usuario polo seu id
+    public function actualizarContrasinalPorId($idUsuario, $novoHash)
+    {
+        try {
+            $stmt = $this->conexion->prepare("UPDATE usuarios SET contrasinal = ? WHERE id = ?");
+            return $stmt->execute([$novoHash, $idUsuario]);
+        } catch (PDOException $e) {
+            error_log("Erro actualizarContrasinalPorId: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    // Marco o token como usado para que non poida reutilizarse
+    public function marcarTokenComoUsado($idToken)
+    {
+        try {
+            $stmt = $this->conexion->prepare("UPDATE recuperacion_contrasinal SET usado = 1 WHERE id = ?");
+            return $stmt->execute([$idToken]);
+        } catch (PDOException $e) {
+            error_log("Erro marcarTokenComoUsado: " . $e->getMessage());
+            return false;
+        }
+    }
 }

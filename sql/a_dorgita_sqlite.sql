@@ -49,3 +49,13 @@ CREATE TABLE detalles_pedido (
     FOREIGN KEY (id_pedido) REFERENCES pedidos(id) ON DELETE CASCADE,
     FOREIGN KEY (id_producto) REFERENCES productos(id)
 );
+
+CREATE TABLE IF NOT EXISTS recuperacion_contrasinal (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_usuario INTEGER NOT NULL,
+    token TEXT NOT NULL,
+    caduca_en DATETIME NOT NULL,
+    usado INTEGER NOT NULL DEFAULT 0,
+    creado_en DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE
+);

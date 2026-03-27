@@ -133,6 +133,28 @@ class UsuarioController
         require_once __DIR__ . '/../../includes/footer.php';
     }
 
+    // Carga os favoritos do usuario autenticado e móstrallos na vista
+    public function favoritos()
+    {
+        // Só os usuarios autenticados poden ver os seus favoritos
+        if (!isset($_SESSION['usuario'])) {
+            header("Location: index.php?c=usuario&a=login");
+            exit;
+        }
+
+        $id_user = (int)$_SESSION['usuario']['id'];
+
+        // Instancio o DAO de produto para obter a lista de favoritos
+        require_once __DIR__ . '/../models/ProductoDAO.php';
+        $productoDAO = new ProductoDAO();
+        $meusFavoritos = $productoDAO->obterFavoritos($id_user);
+
+        // Cargo as vistas co listado de favoritos
+        require_once __DIR__ . '/../../includes/header.php';
+        require_once __DIR__ . '/../../views/favoritos.php';
+        require_once __DIR__ . '/../../includes/footer.php';
+    }
+
     public function perfil()
     {
         // Comproba se o usuario está autenticado

@@ -71,6 +71,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end shadow-sm bg-white">
                                 <li><a class="dropdown-item texto-verde" href="index.php?c=usuario&a=perfil"><i class="bi bi-person me-2"></i>O meu perfil</a></li>
+                                <li><a class="dropdown-item texto-verde" href="index.php?c=usuario&a=favoritos"><i class="bi bi-heart-fill me-2"></i>Os meus favoritos</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
@@ -117,15 +118,30 @@
         </div>
     </nav>
 
-    <!-- Mensaxes flash en sesión -->
+    <!-- Mensaxes flash en sesión como toast fixo na esquina inferior dereita -->
     <?php if (isset($_SESSION['mensaje'])): ?>
-        <div class="container mt-4" style="position: relative; z-index: 1050;">
-            <div class="alert alert-<?php echo $_SESSION['tipo_mensaje'] === 'success' ? 'success' : 'danger'; ?> alert-dismissible fade show shadow border-0 rounded-4 bg-white" role="alert">
-                <i class="bi <?php echo $_SESSION['tipo_mensaje'] === 'success' ? 'bi-check-circle-fill text-success' : 'bi-exclamation-triangle-fill text-danger'; ?> me-2"></i>
-                <span class="fw-bold"><?php echo $_SESSION['mensaje']; ?></span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1090;">
+            <div id="toastMensaxe" class="toast align-items-center text-white border-0 shadow
+                <?php echo $_SESSION['tipo_mensaje'] === 'success' ? 'bg-success' : 'bg-danger'; ?>"
+                role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body fw-bold">
+                        <i class="bi <?php echo $_SESSION['tipo_mensaje'] === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'; ?> me-2"></i>
+                        <?php echo htmlspecialchars($_SESSION['mensaje'], ENT_QUOTES, 'UTF-8'); ?>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
             </div>
         </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var toastEl = document.getElementById('toastMensaxe');
+                if (toastEl) {
+                    var toast = new bootstrap.Toast(toastEl, { delay: 3500 });
+                    toast.show();
+                }
+            });
+        </script>
         <?php
         unset($_SESSION['mensaje']);
         unset($_SESSION['tipo_mensaje']);

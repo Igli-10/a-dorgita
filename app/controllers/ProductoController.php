@@ -45,6 +45,12 @@ class ProductoController
         //Número total de botóns de páxina para a vista
         $totalPaginas = max(1, (int)ceil($totalRegistros / $limite));
 
+        //Obteño os IDs de favoritos do usuario autenticado para marcar os corazóns na vista
+        $idsFavoritos = [];
+        if (isset($_SESSION['usuario'])) {
+            $idsFavoritos = $this->model->obterIdsFavoritos((int)$_SESSION['usuario']['id']);
+        }
+
         //Se se pide unha páxina fora de rango, recárgase coa última válida
         if ($pagina > $totalPaginas) {
             $pagina = $totalPaginas;
@@ -61,6 +67,38 @@ class ProductoController
         require_once __DIR__ . '/../../includes/header.php';
         require_once __DIR__ . '/../../views/inicio.php';
         require_once __DIR__ . '/../../includes/footer.php';
+    }
+
+    // Alterna o estado de favorito dun produto para o usuario autenticado
+    public function toggleFavorito()
+    {
+        // Só os usuarios autenticados poden usar favoritos
+        if (!isset($_SESSION['usuario'])) {
+            header("Location: index.php?c=usuario&a=login");
+            exit;
+        }
+
+        $id_prod = isset($_GET['id']) ? (int)$_GET['id'] : null;
+        $id_user = (int)$_SESSION['usuario']['id'];
+        $accion  = $_GET['accion'] ?? 'engadir';
+
+        // Valido que o ID do produto sexa un enteiro positivo
+        if ($id_prod && $id_prod > 0) {
+            if ($accion === 'engadir') {
+                $this->model->engadirFavorito($id_user, $id_prod);
+                $_SESSION['mensaje']      = "Produto engadido a favoritos.";
+                $_SESSION['tipo_mensaje'] = "success";
+            } else {
+                $this->model->quitarFavorito($id_user, $id_prod);
+                $_SESSION['mensaje']      = "Produto eliminado de favoritos.";
+                $_SESSION['tipo_mensaje'] = "danger";
+            }
+        }
+
+        // Volvo á páxina anterior
+        $referer = $_SERVER['HTTP_REFERER'] ?? 'index.php?c=producto&a=index';
+        header("Location: " . $referer);
+        exit;
     }
 
     //Acción pa mostrar os detalles dun producto

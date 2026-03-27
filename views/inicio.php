@@ -27,7 +27,18 @@
                                     <div class="mt-auto">
                                         <p class="fw-bold fs-5 texto-dorgita"><?php echo $p->getPrecio(); ?> €</p>
 
-                                        <a href="index.php?c=producto&a=obter&id=<?php echo $p->getId(); ?>" class="btn btn-engadir-carro">VER DETALLES</a>
+                                        <div class="d-flex gap-2 justify-content-center">
+                                            <a href="index.php?c=producto&a=obter&id=<?php echo $p->getId(); ?>" class="btn btn-engadir-carro">VER DETALLES</a>
+
+                                            <?php if (isset($_SESSION['usuario'])): ?>
+                                                <?php $esFavorito = in_array($p->getId(), $idsFavoritos ?? []); ?>
+                                                <a href="index.php?c=producto&a=toggleFavorito&id=<?php echo $p->getId(); ?>&accion=<?php echo $esFavorito ? 'quitar' : 'engadir'; ?>"
+                                                   class="btn <?php echo $esFavorito ? 'btn-danger' : 'btn-outline-danger'; ?>"
+                                                   title="<?php echo $esFavorito ? 'Quitar de favoritos' : 'Engadir a favoritos'; ?>">
+                                                    <i class="bi <?php echo $esFavorito ? 'bi-heart-fill' : 'bi-heart'; ?>"></i>
+                                                </a>
+                                            <?php endif; ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

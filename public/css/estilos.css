@@ -157,6 +157,12 @@ footer{
     color: #1B4332 ;
 }
 
+.btn-catalogo.seguir-comprando:hover {
+    background-color: #FFFFFF;
+    color: #1B4332;
+    border: 1px solid #1B4332;
+}
+
 /* Quitar as frechas por defecto do input number */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

@@ -313,4 +313,60 @@ class ProductoDAO
         $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
         return $resultado["total"];
     }
+
+    // Engado un produto á lista de favoritos dun usuario
+    public function engadirFavorito($id_usuario, $id_producto)
+    {
+        try {
+            $sql = "INSERT OR IGNORE INTO favoritos (id_usuario, id_producto) VALUES (?, ?)";
+            $stmt = $this->conexion->prepare($sql);
+            return $stmt->execute([$id_usuario, $id_producto]);
+        } catch (PDOException $e) {
+            error_log("Erro ao engadir favorito: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    // Elimino un produto da lista de favoritos dun usuario
+    public function quitarFavorito($id_usuario, $id_producto)
+    {
+        try {
+            $sql = "DELETE FROM favoritos WHERE id_usuario = ? AND id_producto = ?";
+            $stmt = $this->conexion->prepare($sql);
+            return $stmt->execute([$id_usuario, $id_producto]);
+        } catch (PDOException $e) {
+            error_log("Erro ao quitar favorito: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    // Obteño a lista completa de produtos favoritos dun usuario
+    public function obterFavoritos($id_usuario)
+    {
+        try {
+            $sql = "SELECT p.* FROM productos p
+                    JOIN favoritos f ON p.id = f.id_producto
+                    WHERE f.id_usuario = ?";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->execute([$id_usuario]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Erro ao obter favoritos: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    // Obteño só os IDs dos produtos favoritos dun usuario para comparar na vista
+    public function obterIdsFavoritos($id_usuario)
+    {
+        try {
+            $sql = "SELECT id_producto FROM favoritos WHERE id_usuario = ?";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->execute([$id_usuario]);
+            return array_map('intval', array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'id_producto'));
+        } catch (PDOException $e) {
+            error_log("Erro ao obter IDs favoritos: " . $e->getMessage());
+            return [];
+        }
+    }
 }

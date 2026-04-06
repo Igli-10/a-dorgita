@@ -150,7 +150,7 @@ class UsuarioDAO
     {
         try {
             $sql = "SELECT id, id_usuario FROM recuperacion_contrasinal
-                    WHERE token = ? AND usado = 0 AND caduca_en > datetime('now')
+                    WHERE token = ? AND usado = 0 AND caduca_en > NOW()
                     LIMIT 1";
             $stmt = $this->conexion->prepare($sql);
             $stmt->execute([$tokenHash]);

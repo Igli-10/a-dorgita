@@ -100,10 +100,7 @@ class ProductoDAO
                 $sql .= " WHERE " . implode(" AND ", $condicions);
             }
 
-            $sql .= " ORDER BY id DESC LIMIT ? OFFSET ?";
-            //Engado os parámetros de paxinación ao final
-            $params[] = (int)$limite;
-            $params[] = (int)$offset;
+            $sql .= " ORDER BY id DESC LIMIT " . (int)$limite . " OFFSET " . (int)$offset;
 
             $stmt = $this->conexion->prepare($sql);
             $stmt->execute($params);
@@ -193,10 +190,8 @@ class ProductoDAO
     {
         try {
             //Mesma lóxica da búsqueda normal pero devolvendo só un bloque de resultados
-            $stmt = $this->conexion->prepare("SELECT * FROM productos WHERE nome LIKE :mensaxe OR descripcion LIKE :mensaxe ORDER BY id DESC LIMIT :limite OFFSET :offset");
+            $stmt = $this->conexion->prepare("SELECT * FROM productos WHERE nome LIKE :mensaxe OR descripcion LIKE :mensaxe ORDER BY id DESC LIMIT " . (int)$limite . " OFFSET " . (int)$offset);
             $stmt->bindValue(':mensaxe', '%' . $mensaxe . '%', PDO::PARAM_STR);
-            $stmt->bindValue(':limite', (int)$limite, PDO::PARAM_INT);
-            $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
             $stmt->execute();
 
             return $stmt->fetchAll(PDO::FETCH_CLASS, "Producto");
@@ -277,9 +272,7 @@ class ProductoDAO
 
     public function listarPaginado($limite, $offset)
     {
-        $stmt = $this->conexion->prepare("SELECT * FROM productos ORDER BY id DESC LIMIT :limite OFFSET :offset");
-        $stmt->bindValue(':limite', (int)$limite, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt = $this->conexion->prepare("SELECT * FROM productos ORDER BY id DESC LIMIT " . (int)$limite . " OFFSET " . (int)$offset);
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -287,10 +280,8 @@ class ProductoDAO
 
     public function buscarPaginado($mensaxe, $limite, $offset)
     {
-        $stmt = $this->conexion->prepare("SELECT * FROM productos WHERE nome LIKE :mensaxe OR descripcion LIKE :mensaxe ORDER BY id DESC LIMIT :limite OFFSET :offset");
+        $stmt = $this->conexion->prepare("SELECT * FROM productos WHERE nome LIKE :mensaxe OR descripcion LIKE :mensaxe ORDER BY id DESC LIMIT " . (int)$limite . " OFFSET " . (int)$offset);
         $stmt->bindValue(':mensaxe', '%' . $mensaxe . '%', PDO::PARAM_STR);
-        $stmt->bindValue(':limite', (int)$limite, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -318,7 +309,7 @@ class ProductoDAO
     public function engadirFavorito($id_usuario, $id_producto)
     {
         try {
-            $sql = "INSERT OR IGNORE INTO favoritos (id_usuario, id_producto) VALUES (?, ?)";
+            $sql = "INSERT IGNORE INTO favoritos (id_usuario, id_producto) VALUES (?, ?)";
             $stmt = $this->conexion->prepare($sql);
             return $stmt->execute([$id_usuario, $id_producto]);
         } catch (PDOException $e) {

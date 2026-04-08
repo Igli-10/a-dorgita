@@ -106,7 +106,17 @@ class ProductoController
     {
         if (isset($_REQUEST["id"])) { // Verifico que o ID veña na URL
 
-            $prod = $this->model->obter($_REQUEST["id"]);
+            $id_prod = $_REQUEST["id"];
+            $prod = $this->model->obter($id_prod);
+
+            // Cargo as reseñas e se o usuario pode comentar
+            $resenas = $this->model->obterResenas($id_prod);
+            $podeComentar = false;
+            if (isset($_SESSION['usuario'])) {
+                $id_user = (int)$_SESSION['usuario']['id'];
+                // Aquí comprobo eu se este usuario xa mercou este produto para activar o formulario de reseña
+                $podeComentar = $this->model->usuarioMercouProducto($id_user, $id_prod);
+            }
 
             require_once __DIR__ . '/../../includes/header.php';
             require_once __DIR__ . '/../../views/produto.php';
@@ -126,5 +136,28 @@ class ProductoController
         //Se o término non está baleiro, chamo ao modelo e se está baleiro, envío un array vacío
         echo json_encode(!empty(trim($mensaxe)) ? $this->model->suxerir($mensaxe) : []);
         exit;
+    }
+
+    public function engadirResena()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_SESSION['usuario'])) {
+            $id_prod = $_POST['id_producto'];
+            $id_user = $_SESSION['usuario']['id'];
+            $puntos = $_POST['puntuacion'];
+            $comentario = htmlspecialchars($_POST['comentario']);
+
+            if ($this->model->usuarioMercouProducto($id_user, $id_prod)) {
+                $this->model->gardarResena($id_prod, $id_user, $puntos, $comentario);
+                $_SESSION['mensaje'] = "Grazas pola túa valoración!";
+                $_SESSION['tipo_mensaje'] = "success";
+            } else {
+                // Se non o mercou, aviso eu claramente para que saiba por que non se publica
+                $_SESSION['mensaje'] = "Só podes valorar produtos que xa mercaches.";
+                $_SESSION['tipo_mensaje'] = "danger";
+            }
+
+            header("Location: index.php?c=producto&a=obter&id=" . $id_prod);
+            exit;
+        }
     }
 }

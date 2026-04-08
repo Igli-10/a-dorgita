@@ -29,9 +29,14 @@
 
                         <!-- Accións: engadir ao carro ou quitar de favoritos -->
                         <div class="card-footer bg-white border-0 d-grid gap-2 pb-3">
-                            <a href="index.php?c=carro&a=engadir&id=<?php echo (int)$p['id']; ?>" class="btn btn-engadir-carro">
-                                <i class="bi bi-cart-plus"></i> Engadir ao carro
-                            </a>
+                            <!-- Aquí envío eu por POST para que o carro lateral se abra igual ca na ficha de produto -->
+                            <form action="index.php?c=carro&a=engadir" method="POST" class="m-0">
+                                <input type="hidden" name="id" value="<?php echo (int)$p['id']; ?>">
+                                <input type="hidden" name="cantidade" value="1">
+                                <button type="submit" class="btn btn-engadir-carro w-100">
+                                    <i class="bi bi-cart-plus"></i> Engadir ao carro
+                                </button>
+                            </form>
                             <a href="index.php?c=producto&a=toggleFavorito&id=<?php echo (int)$p['id']; ?>&accion=quitar" class="btn btn-sm btn-link text-danger text-decoration-none">
                                 <i class="bi bi-trash"></i> Quitar dos meus favoritos
                             </a>

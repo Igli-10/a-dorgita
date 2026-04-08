@@ -66,6 +66,17 @@ CREATE TABLE IF NOT EXISTS favoritos (
     FOREIGN KEY (id_producto) REFERENCES productos(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS resenas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_producto INT NOT NULL,
+    id_usuario INT NOT NULL,
+    comentario TEXT,
+    puntuacion INT CHECK(puntuacion BETWEEN 1 AND 5),
+    data_resena DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_producto) REFERENCES productos(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE
+);
+
 -- 1. Inserir Categorías
 INSERT INTO categorias (nome, descripcion) VALUES 
 ('Ferretería', 'Produtos e ferramentas para reparación, bricolaxe e mantemento.'), 
@@ -112,3 +123,8 @@ INSERT INTO detalles_pedido (id_pedido, id_producto, cantidade, prezo_unitario) 
 INSERT INTO pedidos (id_usuario, total, estado) VALUES (1, 54.00, 'pendente');
 INSERT INTO detalles_pedido (id_pedido, id_producto, cantidade, prezo_unitario) VALUES (2, 2, 2, 9.50);
 INSERT INTO detalles_pedido (id_pedido, id_producto, cantidade, prezo_unitario) VALUES (2, 3, 1, 35.00);
+
+-- 5. Inserir algunhas reseñas de proba para Carlos (ID 1)
+INSERT INTO resenas (id_producto, id_usuario, puntuacion, comentario) VALUES 
+(1, 1, 5, 'A caixa de ferramentas é espectacular, moi completa e de boa calidade.'),
+(2, 1, 4, 'O aceite ten moi bo sabor, aínda que o prezo subiu un pouco ultimamente.');

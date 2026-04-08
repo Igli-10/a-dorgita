@@ -82,6 +82,58 @@
             </form>
         </div>
     </div>
+
+    <hr class="my-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h3 class="mb-4 text-center texto-dorgita fw-bold">Opinións dos clientes</h3>
+            
+            <?php if (isset($podeComentar) && $podeComentar): ?>
+                <div class="card mb-5 shadow-sm border-0 caixa-filtros">
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold mb-3">Deixa a túa reseña</h5>
+                        <form action="index.php?c=producto&a=engadirResena" method="POST">
+                            <input type="hidden" name="id_producto" value="<?php echo $prod->getId(); ?>">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold small">Puntuación:</label>
+                                <select name="puntuacion" class="form-select w-50 shadow-sm">
+                                    <option value="5">⭐⭐⭐⭐⭐ (Excelente)</option>
+                                    <option value="4">⭐⭐⭐⭐ (Moi bo)</option>
+                                    <option value="3">⭐⭐⭐ (Normal)</option>
+                                    <option value="2">⭐⭐ (Malo)</option>
+                                    <option value="1">⭐ (Moi malo)</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold small">O teu comentario:</label>
+                                <textarea name="comentario" class="form-control shadow-sm" rows="3" placeholder="Que che pareceu este produto?" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-engadir-carro">Publicar opinión</button>
+                        </form>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <?php if (empty($resenas)): ?>
+                <div class="text-center py-4">
+                    <p class="text-muted">Aínda non hai opinións para este produto.</p>
+                </div>
+            <?php else: ?>
+                <?php foreach ($resenas as $r): ?>
+                    <div class="border-bottom mb-4 pb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <strong class="texto-dorgita fs-5"><?php echo htmlspecialchars($r['nome_usuario']); ?></strong>
+                            <span class="text-warning h5 mb-0"><?php echo str_repeat('⭐', $r['puntuacion']); ?></span>
+                        </div>
+                        <p class="text-muted small mb-3">
+                            <i class="bi bi-calendar3 me-1"></i> Publicado o <?php echo date("d/m/Y", strtotime($r['data_resena'])); ?>
+                        </p>
+                        <p class="mb-0 text-dark"><?php echo nl2br(htmlspecialchars($r['comentario'])); ?></p>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
 </div>
 
 <script>

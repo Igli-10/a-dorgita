@@ -1,10 +1,52 @@
 // Captura o envío do formulario de engadir produtos e evita recargar a páxina (AJAX)
+// Aquí capturo eu clicks en ligazóns de engadir ao carro (ex: vista de favoritos)
+document.addEventListener('click', function(e) {
+    const link = e.target.closest('a[href*="c=carro&a=engadir"]');
+    if (!link) return;
+
+    e.preventDefault();
+
+    fetch(link.href, {
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(response => response.text())
+    .then(html => {
+        // Mostro o offcanvas
+        const offcanvasElement = document.getElementById('offcanvasCart');
+        const bsOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(offcanvasElement, {
+            backdrop: false,
+            scroll: true
+        });
+        bsOffcanvas.show();
+
+        // Actualizo o contido do carrito
+        document.getElementById('cart-content').innerHTML = html;
+
+        // Sincronización: se estamos na vista de carro completo, recargamos a páxina
+        if (window.location.href.includes('c=carro&a=index')) {
+            window.location.reload();
+        }
+    })
+    .catch(error => console.error('Erro engadir produto:', error));
+});
+
+// Captura o envío do formulario de engadir produtos e evita recargar a páxina (AJAX)
 document.addEventListener('submit', function(e) {
-    // Se o formulario é de engadir
-    if (e.target && e.target.closest('form[action*="a=engadir"]')) {
+    const form = e.target && e.target.closest('form[action]');
+    if (!form) return;
+
+    let isCarroEngadir = false;
+    try {
+        const actionUrl = new URL(form.getAttribute('action'), window.location.origin);
+        isCarroEngadir = actionUrl.searchParams.get('c') === 'carro' && actionUrl.searchParams.get('a') === 'engadir';
+    } catch (error) {
+        isCarroEngadir = false;
+    }
+
+    // Aquí só intercepto eu o formulario real de engadir ao carro
+    if (isCarroEngadir) {
         e.preventDefault(); // Evita que a páxina recargue
-        
-        const form = e.target;
+
         const formData = new FormData(form);
 
         // Envío vía Fetch

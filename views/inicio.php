@@ -25,7 +25,20 @@
                                     <p class="card-text small"><?php echo htmlspecialchars($p->getDescripcion()); ?></p>
 
                                     <div class="mt-auto">
-                                        <p class="fw-bold fs-5 texto-dorgita"><?php echo $p->getPrecio(); ?> €</p>
+                                        <p class="fw-bold fs-5 texto-dorgita mb-1"><?php echo $p->getPrecio(); ?> €</p>
+
+                                        <div class="mb-2">
+                                            <?php 
+                                            // Aquí calculo eu a media en estrelas co valor que xa traio da SQL
+                                            $puntos = isset($p->media_puntos) ? round($p->media_puntos) : 0;
+                                            if ($puntos > 0): ?>
+                                                <span class="text-warning small">
+                                                    <?php echo str_repeat('★', $puntos) . str_repeat('☆', 5 - $puntos); ?>
+                                                </span>
+                                            <?php else: ?>
+                                                <span class="text-muted small">Sen valoracións</span>
+                                            <?php endif; ?>
+                                        </div>
 
                                         <div class="d-flex gap-2 justify-content-center">
                                             <a href="index.php?c=producto&a=obter&id=<?php echo $p->getId(); ?>" class="btn btn-engadir-carro">VER DETALLES</a>

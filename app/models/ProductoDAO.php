@@ -82,17 +82,18 @@ class ProductoDAO
     {
         try {
             //Constrúo a consulta de forma dinámica para reutilizar os filtros
-            $sql = "SELECT * FROM productos";
+            // Inclúo a media de puntuación das reseñas directamente na SQL para evitar consultas extra por produto
+            $sql = "SELECT p.*, AVG(r.puntuacion) as media_puntos FROM productos p LEFT JOIN resenas r ON p.id = r.id_producto";
             $condicions = [];
             $params = [];
 
             if ($id_cat !== null && $id_cat !== '') {
-                $condicions[] = "id_categoria = ?";
+                $condicions[] = "p.id_categoria = ?";
                 $params[] = $id_cat;
             }
 
             if ($max_prezo !== null && $max_prezo !== '') {
-                $condicions[] = "precio <= ?";
+                $condicions[] = "p.precio <= ?";
                 $params[] = $max_prezo;
             }
 
@@ -100,7 +101,7 @@ class ProductoDAO
                 $sql .= " WHERE " . implode(" AND ", $condicions);
             }
 
-            $sql .= " ORDER BY id DESC LIMIT " . (int)$limite . " OFFSET " . (int)$offset;
+            $sql .= " GROUP BY p.id ORDER BY p.id DESC LIMIT " . (int)$limite . " OFFSET " . (int)$offset;
 
             $stmt = $this->conexion->prepare($sql);
             $stmt->execute($params);
@@ -190,7 +191,8 @@ class ProductoDAO
     {
         try {
             //Mesma lóxica da búsqueda normal pero devolvendo só un bloque de resultados
-            $stmt = $this->conexion->prepare("SELECT * FROM productos WHERE nome LIKE :mensaxe OR descripcion LIKE :mensaxe ORDER BY id DESC LIMIT " . (int)$limite . " OFFSET " . (int)$offset);
+            // Inclúo a media de puntuación das reseñas directamente na SQL para evitar consultas extra por produto
+            $stmt = $this->conexion->prepare("SELECT p.*, AVG(r.puntuacion) as media_puntos FROM productos p LEFT JOIN resenas r ON p.id = r.id_producto WHERE p.nome LIKE :mensaxe OR p.descripcion LIKE :mensaxe GROUP BY p.id ORDER BY p.id DESC LIMIT " . (int)$limite . " OFFSET " . (int)$offset);
             $stmt->bindValue(':mensaxe', '%' . $mensaxe . '%', PDO::PARAM_STR);
             $stmt->execute();
 
@@ -359,5 +361,45 @@ class ProductoDAO
             error_log("Erro ao obter IDs favoritos: " . $e->getMessage());
             return [];
         }
+    }
+
+    // Obter reseñas dun produto cos nomes dos usuarios
+    public function obterResenas($id_producto)
+    {
+        try {
+            $sql = "SELECT r.*, u.nome as nome_usuario 
+                FROM resenas r 
+                JOIN usuarios u ON r.id_usuario = u.id 
+                WHERE r.id_producto = ? 
+                ORDER BY r.data_resena DESC";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->execute([$id_producto]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            return [];
+        }
+    }
+
+    // Gardar unha nova reseña
+    public function gardarResena($id_prod, $id_user, $puntos, $comentario)
+    {
+        try {
+            $sql = "INSERT INTO resenas (id_producto, id_usuario, puntuacion, comentario) VALUES (?, ?, ?, ?)";
+            $stmt = $this->conexion->prepare($sql);
+            return $stmt->execute([$id_prod, $id_user, $puntos, $comentario]);
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    // Función estrella: Comprobar se o usuario mercou o produto
+    public function usuarioMercouProducto($id_user, $id_prod)
+    {
+        $sql = "SELECT COUNT(*) FROM pedidos p 
+            JOIN detalles_pedido dp ON p.id = dp.id_pedido 
+            WHERE p.id_usuario = ? AND dp.id_producto = ? AND p.estado != 'cancelado'";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->execute([$id_user, $id_prod]);
+        return $stmt->fetchColumn() > 0;
     }
 }

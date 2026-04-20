@@ -22,10 +22,40 @@ class UsuarioController
                     "id" => $usuario->getId(),
                     "nome" => $usuario->getNome(),
                     "email" => $usuario->getEmail(),
-                    "rol" => $usuario->getRol()
+                    "rol" => $usuario->getRol(),
+                    "foto_perfil" => $usuario->getFotoPerfil() // Supoñendo que o modelo ten este getter
                 ];
             }
         }
+    }
+
+    // Método para xestionar a subida da foto de perfil do usuario
+    public function subirFoto()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['foto']) && isset($_SESSION['usuario'])) {
+            $id_usuario = $_SESSION['usuario']['id'];
+            $ficheiro = $_FILES['foto'];
+            
+            // Validacións básicas do arquivo
+            $ext = strtolower(pathinfo($ficheiro['name'], PATHINFO_EXTENSION));
+            $permitidos = ['jpg', 'jpeg', 'png'];
+
+            if (in_array($ext, $permitidos) && $ficheiro['size'] < 2000000) {
+                $novoNome = "perfil_" . $id_usuario . "." . $ext;
+                $rutaDestino = $_SERVER['DOCUMENT_ROOT'] . "/a-dorgita/public/img/" . $novoNome;
+
+                // Movemos o ficheiro da zona temporal ao destino definitivo
+                if (move_uploaded_file($ficheiro['tmp_name'], $rutaDestino)) {
+                    $this->usuarioDAO->actualizarFotoPerfil($id_usuario, $novoNome);
+                    $_SESSION['usuario']['foto_perfil'] = $novoNome;
+                    $_SESSION['mensaxe_aviso'] = "Foto de perfil actualizada.";
+                }
+            } else {
+                $_SESSION['mensaxe_aviso'] = "Erro: Imaxe non válida (max 2MB, só JPG/PNG).";
+            }
+        }
+        header("Location: index.php?c=usuario&a=perfil");
+        exit;
     }
 
     public function login()
@@ -50,7 +80,8 @@ class UsuarioController
                     "id" => $usuario->getId(),
                     "nome" => $usuario->getNome(),
                     "email" => $usuario->getEmail(),
-                    "rol" => $usuario->getRol()
+                    "rol" => $usuario->getRol(),
+                    "foto_perfil" => $usuario->getFotoPerfil()
                 ];
 
                 if ($lembrarme) {
@@ -163,9 +194,7 @@ class UsuarioController
             exit;
         }
 
-
         $pedidoDAO = new PedidoDAO();
-
         $pedidos_base = $pedidoDAO->obterPedidosPorUsuario($_SESSION['usuario']['id']);
 
         $pedidos_completos = [];

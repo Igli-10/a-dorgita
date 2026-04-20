@@ -1,12 +1,10 @@
 <div class="container py-5 mt-5">
-    <!-- Nesta vista ensino os datos da conta e o historial de pedidos -->
     <div class="row justify-content-center">
         <div class="col-md-8">
 
             <div class="p-5 rounded shadow-sm border caixa-filtros mb-4 bg-white">
                 <div class="text-center mb-4">
                     <?php if (isset($_SESSION['mensaxe_aviso'])): ?>
-                        <!-- Se existe un aviso en sesión, amósoo no perfil -->
                         <div class="alert alert-info alert-dismissible fade show" role="alert">
                             <?php
                             echo $_SESSION['mensaxe_aviso'];
@@ -18,8 +16,23 @@
 
                     <h2 class="fw-bold">O meu perfil</h2>
                     <p>Xestiona os teus datos personais</p>
+
                     <div class="mt-3">
-                        <i class="bi bi-person-circle foto-perfil fs-1"></i>
+                        <?php
+                        // Recupero a foto ou poñemos unha por defecto
+                        $foto = $_SESSION['usuario']['foto_perfil'] ?? 'default.png';
+                        ?>
+                        <img src="/a-dorgita/public/img/<?php echo htmlspecialchars($foto); ?>"
+                            class="rounded-circle shadow-sm border mb-3"
+                            width="120" height="120"
+                            style="object-fit: cover;">
+
+                        <form action="index.php?c=usuario&a=subirFoto" method="POST" enctype="multipart/form-data">
+                            <div class="input-group input-group-sm w-50 mx-auto">
+                                <input type="file" name="foto" class="form-control" accept="image/*" required>
+                                <button type="submit" class="btn btn-sm btn-success">Subir foto</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -70,7 +83,6 @@
             </div>
 
             <div class="card border-0 p-4 mb-5 shadow-sm bg-white">
-                <!-- Este bloque desprega a listaxe de pedidos do usuario -->
                 <button class="btn w-100 text-start d-flex justify-content-between align-items-center fw-bold texto-principal p-0 border-0 bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePedidos" aria-expanded="false" aria-controls="collapsePedidos">
                     <span class="fs-4"><i class="bi bi-box-seam me-2"></i>Historial de pedidos</span>
                     <i class="bi bi-chevron-down fs-4 icono-flecha"></i>
@@ -102,11 +114,11 @@
                                                 <div class="d-flex flex-column gap-3">
                                                     <?php foreach ($pedido['detalles'] as $detalle): ?>
                                                         <div class="d-flex align-items-center gap-2">
-                                                            <img src="public/img/<?php echo htmlspecialchars($detalle['imagen']); ?>" 
-                                                                 alt="<?php echo htmlspecialchars($detalle['nome']); ?>" 
-                                                                 class="imaxe-miniatura-pedido">
+                                                            <img src="public/img/<?php echo htmlspecialchars($detalle['imagen']); ?>"
+                                                                alt="<?php echo htmlspecialchars($detalle['nome']); ?>"
+                                                                class="imaxe-miniatura-pedido">
                                                             <span class="small">
-                                                                <span class="fw-bold"><?php echo $detalle['cantidade']; ?>x</span> 
+                                                                <span class="fw-bold"><?php echo $detalle['cantidade']; ?>x</span>
                                                                 <?php echo htmlspecialchars($detalle['nome']); ?>
                                                             </span>
                                                         </div>

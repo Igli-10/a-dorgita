@@ -12,7 +12,8 @@ CREATE TABLE usuarios (
     nome VARCHAR(50) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     contrasinal VARCHAR(250) NOT NULL,
-    rol ENUM('admin', 'cliente')
+    rol ENUM('admin', 'cliente'),
+    foto_perfil VARCHAR(255) DEFAULT 'default.png'
 );
 
 CREATE TABLE productos (
@@ -112,9 +113,9 @@ INSERT INTO productos (nome, descripcion, precio, stock, imagen, id_categoria) V
 ('Chave inglesa axustable', 'Apertura máxima de 30 mm.', 11.75, 40, 'xogo_chaves.png', 1);
 
 -- 3. Inserir Usuarios
-INSERT INTO usuarios (nome, email, contrasinal, rol) VALUES 
-('Carlos Cliente', 'carlos@gmail.com', '$2y$10$5xgACm45hH7Y6SAOZLf5/uyIwLBBgC.55aHuIe6V66JJ4PXmntqHC', 'cliente'),
-('Admin Dorgita', 'admin@adorgita.com', '$2y$10$foRz/BZ0h7Jy3/CFMeKDs.zNptDYed8mrCQz12p9zCWgmyYWVtvOG', 'admin');
+INSERT INTO usuarios (nome, email, contrasinal, rol, foto_perfil) VALUES 
+('Carlos Cliente', 'carlos@gmail.com', '$2y$10$5xgACm45hH7Y6SAOZLf5/uyIwLBBgC.55aHuIe6V66JJ4PXmntqHC', 'cliente', 'default.png'),
+('Admin Dorgita', 'admin@adorgita.com', '$2y$10$foRz/BZ0h7Jy3/CFMeKDs.zNptDYed8mrCQz12p9zCWgmyYWVtvOG', 'admin', 'default.png');
 
 -- 4. Inserir Pedidos
 INSERT INTO pedidos (id_usuario, total, estado) VALUES (1, 180.00, 'enviado');

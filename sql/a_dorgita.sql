@@ -90,32 +90,35 @@ INSERT INTO productos (nome, descripcion, precio, stock, imagen, id_categoria) V
 ('Aceite de Oliva Virxe Extra', 'Aceite O Noso 1L, extracción en frío.', 9.50, 50, 'aceite_oliva_virxe.png', 2),
 ('Tostadora Moulinex', 'Compacta, 2 ranuras, estilo aceiro.', 35.00, 15, 'tostadora.png', 3),
 ('Xogo de Chaves Fixas', '8 pezas con soporte para colgar.', 24.95, 20, 'xogo_chaves.png', 1),
-('Martelo Profesional', 'Cabeza de aceiro temperado e mango ergonómico.', 14.90, 30, 'caixa_ferramentas.png', 1),
-('Destornillador Phillips', 'Punta imantada para parafusos de estrela.', 6.20, 45, 'xogo_chaves.png', 1),
-('Taladro Eléctrico 650W', 'Velocidade variable e maletín incluído.', 79.99, 12, 'caixa_ferramentas.png', 1),
-('Silicona Universal', 'Selado resistente para interior e exterior.', 5.80, 60, 'xogo_chaves.png', 1),
-('Arroz Redondo 1kg', 'Ideal para receitas tradicionais.', 2.30, 80, 'aceite_oliva_virxe.png', 2),
-('Pasta Espagueti 500g', 'Sémola de trigo duro, cocción 9 minutos.', 1.45, 90, 'aceite_oliva_virxe.png', 2),
-('Leite Entero 1L', 'Leite galego UHT.', 1.10, 120, 'aceite_oliva_virxe.png', 2),
-('Conserva de Atún', 'Pack de 3 latas en aceite vexetal.', 3.95, 70, 'aceite_oliva_virxe.png', 2),
-('Galletas Mariñeiras', 'Textura crocante, formato familiar.', 2.75, 55, 'aceite_oliva_virxe.png', 2),
-('Microondas 20L', '700W con función desconxelado.', 89.00, 10, 'tostadora.png', 3),
-('Cafeteira Italiana', 'Capacidade para 6 cuncas.', 21.50, 22, 'tostadora.png', 3),
-('Aspiradora Compacta', 'Potente e lixeira para uso diario.', 109.00, 9, 'tostadora.png', 3),
-('Lámpada de Mesa LED', 'Baixo consumo e luz cálida.', 18.90, 35, 'tostadora.png', 3),
-('Plancha de Vapor', 'Base cerámica antiaherente.', 42.00, 17, 'tostadora.png', 3),
-('Broca para metal 6mm', 'Aceiro rápido HSS para perforación precisa.', 3.40, 65, 'xogo_chaves.png', 1),
-('Cinta americana reforzada', 'Alta adherencia para reparacións rápidas.', 4.95, 50, 'caixa_ferramentas.png', 1),
-('Azucre branco 1kg', 'Granulado fino para cociña e repostaría.', 1.65, 85, 'aceite_oliva_virxe.png', 2),
-('Sal mariña fina 1kg', 'Sal refinada de uso alimentario.', 0.95, 100, 'aceite_oliva_virxe.png', 2),
-('Robot de cociña básico', '3 velocidades e vaso de 1.5L.', 129.00, 8, 'tostadora.png', 3),
-('Sartén antiadherente 24cm', 'Revestimento resistente e mango frío.', 19.90, 28, 'tostadora.png', 3),
-('Chave inglesa axustable', 'Apertura máxima de 30 mm.', 11.75, 40, 'xogo_chaves.png', 1);
+('Martelo Profesional', 'Cabeza de aceiro temperado e mango ergonómico.', 14.90, 30, 'martelo_profesional.png', 1),
+('Destornillador Phillips', 'Punta imantada para parafusos de estrela.', 6.20, 45, 'destornillador_phillips.png', 1),
+('Taladro Eléctrico 650W', 'Velocidade variable e maletín incluído.', 79.99, 12, 'taladro_electrico.png', 1),
+('Silicona Universal', 'Selado resistente para interior e exterior.', 5.80, 60, 'silicona_universal.png', 1),
+('Arroz Redondo 1kg', 'Ideal para receitas tradicionais.', 2.30, 80, 'arroz_redondo.png', 2),
+('Pasta Espagueti 500g', 'Sémola de trigo duro, cocción 9 minutos.', 1.45, 90, 'pasta_espagueti.png', 2),
+('Leite Enteiro 1L', 'Leite galego UHT.', 1.10, 120, 'leite_entero.png', 2),
+('Conserva de Atún', 'Pack de 3 latas en aceite vexetal.', 3.95, 70, 'conserva_atun.png', 2),
+('Galletas Mariñeiras', 'Textura crocante, formato familiar.', 2.75, 55, 'galletas_marineiras.png', 2),
+('Microondas 20L', '700W con función desconxelado.', 89.00, 10, 'microondas.png', 3),
+('Cafeteira Italiana', 'Capacidade para 6 cuncas.', 21.50, 22, 'cafeteira_italiana.png', 3),
+('Aspiradora Compacta', 'Potente e lixeira para uso diario.', 109.00, 9, 'aspiradora_compacta.png', 3),
+('Lámpada de Mesa LED', 'Baixo consumo e luz cálida.', 18.90, 35, 'lampada_mesa_led.png', 3),
+('Plancha de Vapor', 'Base cerámica antiaherente.', 42.00, 17, 'plancha_vapor.png', 3),
+('Broca para metal 6mm', 'Aceiro rápido HSS para perforación precisa.', 3.40, 65, 'broca_metal_6mm.png', 1),
+('Cinta americana reforzada', 'Alta adherencia para reparacións rápidas.', 4.95, 50, 'cinta_americana.png', 1),
+('Azucre branco 1kg', 'Granulado fino para cociña e repostaría.', 1.65, 85, 'azucre_branco.png', 2),
+('Sal mariña fina 1kg', 'Sal refinada de uso alimentario.', 0.95, 100, 'sal_marina_fina.png', 2),
+('Robot de cociña básico', '3 velocidades e vaso de 1.5L.', 129.00, 8, 'robot_cocina.png', 3),
+('Sartén antiadherente 24cm', 'Revestimento resistente e mango frío.', 19.90, 28, 'sarten_antiadherente.png', 3),
+('Chave inglesa axustable', 'Apertura máxima de 30 mm.', 11.75, 40, 'chave_inglesa_axustable.png', 1);
 
 -- 3. Inserir Usuarios
 INSERT INTO usuarios (nome, email, contrasinal, rol, foto_perfil) VALUES 
 ('Carlos Cliente', 'carlos@gmail.com', '$2y$10$5xgACm45hH7Y6SAOZLf5/uyIwLBBgC.55aHuIe6V66JJ4PXmntqHC', 'cliente', 'default.png'),
-('Admin Dorgita', 'admin@adorgita.com', '$2y$10$foRz/BZ0h7Jy3/CFMeKDs.zNptDYed8mrCQz12p9zCWgmyYWVtvOG', 'admin', 'default.png');
+('Admin Dorgita', 'admin@adorgita.com', '$2y$10$foRz/BZ0h7Jy3/CFMeKDs.zNptDYed8mrCQz12p9zCWgmyYWVtvOG', 'admin', 'default.png'),
+('Lucía Silva', 'lucia@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'cliente', 'default.png'),
+('Marcos Pérez', 'marcos@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'cliente', 'default.png'),
+('Elena Varela', 'elena@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'cliente', 'default.png');
 
 -- 4. Inserir Pedidos
 INSERT INTO pedidos (id_usuario, total, estado) VALUES (1, 180.00, 'enviado');
@@ -127,5 +130,32 @@ INSERT INTO detalles_pedido (id_pedido, id_producto, cantidade, prezo_unitario) 
 
 -- 5. Inserir algunhas reseñas de proba para Carlos (ID 1)
 INSERT INTO resenas (id_producto, id_usuario, puntuacion, comentario) VALUES 
-(1, 1, 5, 'A caixa de ferramentas é espectacular, moi completa e de boa calidade.'),
-(2, 1, 4, 'O aceite ten moi bo sabor, aínda que o prezo subiu un pouco ultimamente.');
+-- Ferramentas
+(1, 1, 5, 'Excelente calidade, moi robusta.'),
+(4, 3, 4, 'Cumpre a súa función perfectamente.'),
+(5, 4, 5, 'Un imprescindible no fogar.'),
+(6, 1, 3, 'Está ben, pero o mango resbala un pouco.'),
+(7, 5, 5, 'Potencia incrible, moi contento.'),
+(19, 3, 4, 'Bo material, non se despuntan fácil.'),
+(20, 4, 4, 'Adhírese con moita forza.'),
+(25, 1, 5, 'Robusta e cómoda de usar.'),
+
+-- Alimentación
+(2, 3, 5, 'Sabor auténtico, repetiría sen dúbida.'),
+(9, 4, 4, 'Queda moi solto, ideal para paella.'),
+(10, 5, 4, 'Boa textura, non se pasa de cocción.'),
+(11, 1, 5, 'O mellor leite que probamos.'),
+(12, 3, 3, 'Están ben, pero esperaba un pouco máis de calidade.'),
+(13, 4, 5, 'Crocantes e naturais, encántanme.'),
+(21, 5, 4, 'O prezo é competitivo para a cantidade que trae.'),
+(22, 1, 4, 'Sal fina de boa calidade.'),
+
+-- Fogar
+(3, 4, 5, 'Dourado uniforme, moi rápida.'),
+(14, 5, 4, 'Fácil de usar e moi intuitivo.'),
+(15, 1, 5, 'O café sae cun aroma marabilloso.'),
+(16, 3, 5, 'Pesa pouco e aspira moi ben.'),
+(17, 4, 4, 'Luz moi agradable, non cansa a vista.'),
+(18, 5, 3, 'Cumpre, pero o cable podería ser máis longo.'),
+(23, 1, 4, 'Axúdame moito coas receitas de repostaría.'),
+(24, 3, 5, 'Non se pega nada, moi fácil de limpar.');

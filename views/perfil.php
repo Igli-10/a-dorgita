@@ -20,7 +20,7 @@
                     <div class="mt-3">
                         <?php
                         // Recupero a foto ou poñemos unha por defecto
-                        $foto = $_SESSION['usuario']['foto_perfil'] ?? 'default.png';
+                        $foto = $_SESSION['usuario']['foto_perfil'] ?? 'default.jpg';
                         ?>
                         <img src="/a-dorgita/public/img/<?php echo htmlspecialchars($foto); ?>"
                             class="rounded-circle shadow-sm border mb-3"

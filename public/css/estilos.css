@@ -35,6 +35,30 @@ footer{
 
 }
 
+.hero {
+   
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                url('/a-dorgita/public/img/hero.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    /* Altura mínima e centrado do contido */
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Padding para separar os elementos */
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
+/* Opcional: sombreiro para o texto principal */
+.hero h1 {
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
 .btn-catalogo {
     display: inline-block;
     text-decoration: none;

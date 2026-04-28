@@ -38,7 +38,7 @@ footer{
 .hero {
    
     background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
-                url('/a-dorgita/public/img/hero.jpg');
+                url('../img/hero.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

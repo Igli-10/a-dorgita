@@ -4,7 +4,7 @@ require_once __DIR__ . '/../models/entidades/Producto.php';
 
 class ProductoController
 {
-    private $model;
+    private ProductoDAO $model;
 
     //Inicializa o modelo DAO para interactuar ca base de datos
     public function __construct()

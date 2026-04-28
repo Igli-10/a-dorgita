@@ -78,6 +78,14 @@ CREATE TABLE IF NOT EXISTS resenas (
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS contacto (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    mensaxe TEXT NOT NULL,
+    data_creacion DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
 -- 1. Inserir Categorías
 INSERT INTO categorias (nome, descripcion) VALUES 
 ('Ferretería', 'Produtos e ferramentas para reparación, bricolaxe e mantemento.'), 

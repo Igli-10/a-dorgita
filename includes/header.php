@@ -30,10 +30,8 @@
             <!-- Menú central de navegación -->
             <div class="flex-grow-1 d-flex justify-content-center">
                 <ul class="nav">
-                    <li class="nav-item"><a class="nav-link" href="#">Alimentación</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Ferretería</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Fogar</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/a-dorgita/views/contacto.php">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.php?c=producto&a=index">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.php?c=contacto&a=index">Contacto</a></li>
                 </ul>
             </div>
 

@@ -9,6 +9,14 @@
     </div>
 </div>
 
+<?php
+// Define variables por defecto se non están definidas
+$pagina = $pagina ?? 1;
+$totalPaginas = $totalPaginas ?? 1;
+$productos = $productos ?? [];
+$idsFavoritos = $idsFavoritos ?? [];
+?>
+
 <div class="container py-5">
     <!-- Mostro o catálogo de produtos e os filtros -->
     <div class="row">

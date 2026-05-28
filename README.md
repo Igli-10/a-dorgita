@@ -1,59 +1,26 @@
-# A Dorgita - Plataforma de Comercio Electrónico Local
+# A Dorgita - Tenda Online (Proxecto DAW)
 
-Este proxecto consiste no desenvolvemento dunha aplicación web e-commerce destinada á dixitalización e modernización da actividade comercial da tenda tradicional **"A Dorgita"**, situada na Silva, no concello de Cerceda (A Coruña). O sistema centraliza nun único almacén de datos unha zona pública de catálogo para clientes e un panel de control privado para a xestión integral do negocio.
+Este é o repositorio do meu proxecto de fin de ciclo superior de Desenvolvemento de Aplicacións Web (DAW) [1]. Fixen unha aplicación web completa para dixitalizar unha tenda tradicional da miña zona chamada "A Dorgita", que está situada na aldea da Silva, en Cerceda [2]. A idea era construír un e-commerce real que conectase a tenda física de toda a vida co mundo dixital.
 
-##  Características Principais
+## Que fai a aplicación?
 
-### Zona Pública (Interface de Usuario)
-* **Catálogo Dinámico:** Navegación por categorías con ferramentas de filtrado por rango de prezos.
-* **Buscador Asíncrono (AJAX):** Caixa de procura intelixente que ofrece suxestións con imaxes en tempo real mentres o usuario escribe.
-* **Carro da Compra Lateral:** Engadido e actualización dinámica de produtos mediante un panel *offcanvas* asíncrono.
-* **Lista de Favoritos:** Espacio persoal para gardar e xestionar artigos de interese sem necesidade de recargar a páxina.
-* **Autenticación Segura:** Sistema de rexistro, inicio de sesión e módulo de recuperación de contrasinais mediante token por correo electrónico.
-* **Perfil Privado:** Historial completo de pedidos co seu estado en tempo real e funcionalidade para subir unha foto de perfil.
-* **Sistema de Reseñas:** Valoracións con comentarios e puntuacións de 1 a 5 estrelas para os produtos adquiridos.
+A web ten dúas partes separadas. Por un lado está a tenda pública onde os clientes poden mercar [3]. Ten un buscador con AJAX que vai mostrando os resultados en tempo real e un catálogo onde se pode filtrar por prezo ou categoría [3, 4]. Tamén programei un carro da compra asíncrono, o que significa que podes ir engadindo cousas dende un panel lateral sen que a páxina teña que recargar [4, 5]. Calquera persoa pode crearse unha conta, recuperar o seu contrasinal se o esquece, deixar reseñas de 1 a 5 estrelas nos produtos e revisar o historial dos seus pedidos no seu perfil privado [5-7]. Ademais, ao rematar unha compra, o sistema xera automaticamente a factura do cliente en formato PDF [5].
 
-### Zona Privada (Panel de Administración)
-* **Dashboard de Control:** Resumo visual con estatísticas clave sobre produtos esgotados, pedidos pendentes e artigos máis vendidos.
-* **Xestión de Catálogo (CRUD):** Ferramentas completas para crear, editar, visualizar e eliminar produtos e categorías.
-* **Xestión de Pedidos:** Control de fluxos comerciais, alteración de estados de envío e actualización automática de stock.
-* **Algoritmo de Stock Automatizado:** O sistema de forma autónoma desconta o inventario coas compras e devolve as unidades correspondentes ao almacén se un pedido se marca como 'cancelado'.
-* **Control de Usuarios:** Listaxe de contas rexistradas con capacidade para alterar roles en tempo real.
+Por outro lado, programei un panel de administración protexido ao que só acceden as contas con rol de administrador [8, 9]. Dende aí pódense engadir, modificar ou borrar produtos e categorías moi facilmente [10]. O que máis me gusta desta parte é que o stock da tenda é totalmente automático [11]. Cando un cliente fai unha compra, o inventario descóntase só da base de datos. E se desde o panel de control eu decido cancelar un pedido porque houbo algún problema, o sistema encárgase automaticamente de devolver esas unidades ao stock dispoñible para que non haxa erros no almacén [11, 12].
 
-## 🛠️ Tecnoloxías e Librarías Empregadas
+## Como está programado?
 
-* **Back-end:** PHP (Versión 8.2.12)
-* **Base de Datos:** MySQL / MariaDB (Versión 10.4.32)
-* **Front-end:** HTML5, CSS3, JavaScript Nativo (AJAX) e Bootstrap (Versión 5.3.8)
-* **Arquitectura:** Patrón de deseño Modelo-Vista-Controlador (MVC) e Data Access Object (DAO)
-* **Seguridade:** Conexión PDO con sentenzas preparadas e cifrado de contrasinais co algoritmo HASH BCRYPT
-* **Librarías Externas:**
-  * **PHPMailer (Versión 5.5):** Xestión e envío seguro de correos electrónicos para o fluxo de recuperación de claves.
-  * **FPDF (Versión 1.86):** Xeración automatizada en servidor de facturas en formato PDF para cada pedido.
+Para non ter un código caótico, estruturei todo o proxecto baixo o patrón MVC (Modelo-Vista-Controlador) [13]. 
 
-## Estrutura do Proxecto (Patrón MVC)
+- No frontend usei HTML5, CSS3, Javascript nativo para as peticións AJAX e o framework Bootstrap (5.3.8) para que a web se vexa perfectamente dende o móbil [14, 15].
+- O backend está feito en PHP (8.2.12) e a base de datos é MySQL [15, 16].
+- A nivel de seguridade, blindei o acceso á base de datos usando obxectos PDO con sentenzas preparadas, evitando así inxeccións SQL, e encriptei todos os contrasinais [16].
+- A maiores utilicei dúas librarías externas: FPDF para poder xerar as facturas en PDF, e PHPMailer para automatizar os correos [16, 17].
 
-```plaintext
-a-dorgita/
-├── app/
-│   ├── controllers/      # Controladores da lóxica de negocio (Ex: ContactoController)
-│   ├── models/           # Entidades e Clases de Acceso a Datos (DAOs)
-│   └── views/            # Vistas estruturadas en ficheiros PHP e subcarpetas
-│       ├── partials/     # Fragmentos de interface reutilizables
-│       └── contacto.php  # Vista do formulario autónomo de contacto
-├── config/
-│   ├── database.php      # Clase de conexão estática PDO
-│   └── inicializador.php # Script de montaxe automática da base de datos
-├── includes/
-│   ├── header.php        # Barra de navegación corporativa superior (Verde Dorgita)
-│   └── footer.php        # Peche de páxina legal institucional
-├── public/
-│   ├── css/
-│   │   ├── bootstrap.min.css # Framework de deseño responsivo
-│   │   └── estilos.css       # Guía de estilos personalizada (Times New Roman, Nextgal Red)
-│   ├── js/
-│   │   └── buscador.js       # Captura de eventos e lóxica asíncrona AJAX
-│   └── img/                  # Almacén de imaxes de produtos e fotos de usuario
-├── sql/
-│   └── a_dorgita.sql     # Script de estrutura relacional e inserts de proba
-└── index.php             # Enrutador principal (Front Controller) da aplicación
+## Como probalo no teu ordenador
+
+Se queres clonar o proxecto e darlle unha volta, o proceso de instalación é súper sinxelo porque automaticei a base de datos. 
+
+1. O único que necesitas é ter instalado XAMPP (ou calquera servidor local) e acender os servizos de Apache e MySQL [18].
+2. Abre a túa terminal dentro da carpeta `htdocs` do teu XAMPP e descarga o proxecto con este comando: `git clone https://github.com/Igli-10/a-dorgita.git` [18, 19].
+3. Non tes que ir a phpMyAdmin para importar bases de datos a man nin nada diso. Simplemente arranca a aplicación abrindo o navegador na ruta `http://localhost/a-dorgita`. Cando carga por primeira vez, o propio código encárgase de construír as táboas en MySQL e de meter todos os datos de proba automaticamente. 

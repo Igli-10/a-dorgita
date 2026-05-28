@@ -7,7 +7,7 @@
                     <?php if (isset($_SESSION['mensaxe_aviso'])): ?>
                         <div class="alert alert-info alert-dismissible fade show" role="alert">
                             <?php
-                            echo $_SESSION['mensaxe_aviso'];
+                            echo htmlspecialchars($_SESSION['mensaxe_aviso'], ENT_QUOTES, 'UTF-8');
                             unset($_SESSION['mensaxe_aviso']);
                             ?>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -19,18 +19,17 @@
 
                     <div class="mt-3">
                         <?php
-                        // Recupero a foto ou poñemos unha por defecto
-                        $foto = $_SESSION['usuario']['foto_perfil'] ?? 'default.jpg';
+                        $foto = $_SESSION['usuario']['foto_perfil'] ?? 'default.png';
                         ?>
                         <img src="/a-dorgita/public/img/<?php echo htmlspecialchars($foto); ?>"
-                            class="rounded-circle shadow-sm border mb-3"
-                            width="120" height="120"
-                            style="object-fit: cover;">
+                             class="rounded-circle shadow-sm border mb-3"
+                             width="120" height="120"
+                             style="object-fit: cover;">
 
                         <form action="index.php?c=usuario&a=subirFoto" method="POST" enctype="multipart/form-data">
                             <div class="input-group input-group-sm w-50 mx-auto">
                                 <input type="file" name="foto" class="form-control" accept="image/*" required>
-                                <button type="submit" class="btn btn-sm btn-success">Subir foto</button>
+                                <button type="submit" class="btn btn-sm btn-engadir-carro">Subir foto</button>
                             </div>
                         </form>
                     </div>
@@ -57,9 +56,11 @@
                         <i class="bi bi-shield-fill me-2"></i>Rol da conta
                     </div>
                     <div class="col-sm-8 d-flex align-items-center gap-3 flex-wrap">
-                        <span class="badge <?php echo ($_SESSION['usuario']['rol'] === 'admin') ? 'bg-danger' : 'bg-primary'; ?> px-3 py-2 rounded-pill">
-                            <?php echo strtoupper(htmlspecialchars($_SESSION['usuario']['rol'])); ?>
-                        </span>
+                        <?php if ($_SESSION['usuario']['rol'] === 'admin'): ?>
+                            <span class="badge-rol badge-admin">ADMIN</span>
+                        <?php else: ?>
+                            <span class="badge-rol badge-cliente">CLIENTE</span>
+                        <?php endif; ?>
 
                         <?php if ($_SESSION['usuario']['email'] === 'admin@adorgita.com'): ?>
                             <a href="index.php?c=usuario&a=cambiarRol" class="btn btn-engadir-carro btn-sm rounded-pill shadow-sm">
@@ -115,8 +116,8 @@
                                                     <?php foreach ($pedido['detalles'] as $detalle): ?>
                                                         <div class="d-flex align-items-center gap-2">
                                                             <img src="public/img/<?php echo htmlspecialchars($detalle['imagen']); ?>"
-                                                                alt="<?php echo htmlspecialchars($detalle['nome']); ?>"
-                                                                class="imaxe-miniatura-pedido">
+                                                                 alt="<?php echo htmlspecialchars($detalle['nome']); ?>"
+                                                                 class="imaxe-miniatura-pedido">
                                                             <span class="small">
                                                                 <span class="fw-bold"><?php echo $detalle['cantidade']; ?>x</span>
                                                                 <?php echo htmlspecialchars($detalle['nome']); ?>
@@ -129,7 +130,7 @@
                                             <td class="py-3 text-end">
                                                 <?php
                                                 $estado = strtolower($pedido['pedido']->getEstado());
-                                                $clase_estado = ($estado === 'pendente') ? 'bg-warning text-dark' : (($estado === 'cancelado') ? 'bg-danger' : 'bg-success');
+                                                $clase_estado = ($estado === 'pendente') ? 'bg-warning text-dark' : (($estado === 'cancelado') ? 'badge-estado-cancelado' : 'badge-estado-success');
                                                 ?>
                                                 <span class="badge <?php echo $clase_estado; ?> px-2 py-1 rounded-pill small">
                                                     <?php echo htmlspecialchars($pedido['pedido']->getEstado()); ?>

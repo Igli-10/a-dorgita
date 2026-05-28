@@ -43,18 +43,15 @@ footer{
     background-position: center;
     background-repeat: no-repeat;
     
-    /* Altura mínima e centrado do contido */
     min-height: 400px;
     display: flex;
     align-items: center;
     justify-content: center;
     
-    /* Padding para separar os elementos */
     padding-top: 3rem;
     padding-bottom: 3rem;
 }
 
-/* Opcional: sombreiro para o texto principal */
 .hero h1 {
     text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
 }
@@ -126,7 +123,7 @@ footer{
 }
 
 .enlace-filtro:hover {
-   background-color:#1B4332 ;
+    background-color:#1B4332 ;
     color: #FFFFFF;;
 }
 
@@ -187,7 +184,6 @@ footer{
     border: 1px solid #1B4332;
 }
 
-/* Quitar as frechas por defecto do input number */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -201,11 +197,9 @@ input[type=number] {
 
 #cantidade-input {
     position: relative;
-    z-index: 1060; /* Un nivel por riba do estándar de Bootstrap */
+    z-index: 1060;
     cursor: text;
 }
-
-/* Dropdown usuario logueado */
 
 .dropdown-menu{
     background-color: #FFFFFF;
@@ -255,12 +249,10 @@ button[aria-expanded="true"] .icono-flecha {
     transform: rotate(180deg);
 }
 
-/* Clase para o tamaño de letra do buscador */
 .texto-buscador {
     font-size: 0.8rem;
 }
 
-/* Estilo do input para que combine co fondo-verde */
 .input-buscador {
     background-color: rgba(255, 255, 255, 0.15) !important;
     border: 1px solid rgba(255, 255, 255, 0.3) !important;
@@ -272,7 +264,6 @@ button[aria-expanded="true"] .icono-flecha {
     color: rgba(255, 255, 255, 0.7);
 }
 
-/* Cando o usuario fai clic para escribir */
 .input-buscador:focus {
     background-color: #FFFFFF !important;
     color: #1B4332 !important;
@@ -280,7 +271,6 @@ button[aria-expanded="true"] .icono-flecha {
     box-shadow: none;
 }
 
-/* Botón da lupa dentro do input */
 .btn-lupa {
     color: #FFFFFF;
     border: none;
@@ -288,10 +278,9 @@ button[aria-expanded="true"] .icono-flecha {
 }
 
 .btn-lupa:hover {
-    color: #E07A5F; /* Un toque laranxa ao pasar o rato */
+    color: #E07A5F;
 }
 
-/* Clase para o contenedor de suxestións do buscador */
 .caixa-suxestions {
     top: 100%;
     left: 0;
@@ -302,12 +291,11 @@ button[aria-expanded="true"] .icono-flecha {
     overflow: hidden;
     border: 1px solid #1B4332 !important;
     background-color: #FFFFFF !important; 
-    position: absolute !important; /* OBRIGATORIO para que flote sobre o contido */
+    position: absolute !important;
     max-height: 320px;
     overflow-y: auto;
 }
 
-/* Estilo para cada ítem da lista de suxestións */
 .caixa-suxestions .list-group-item,
 .caixa-suxestions .list-group-item-action {
     border: none;
@@ -453,11 +441,6 @@ button[aria-expanded="true"] .icono-flecha {
     margin-top: 0.5rem;
 }
 
-.panel-donut-chart {
-    width: 200px;
-    height: 200px;
-}
-
 .panel-donut-track {
     fill: none;
     stroke: #e9ecef;
@@ -535,4 +518,36 @@ button[aria-expanded="true"] .icono-flecha {
     color: #dc3545 !important;
     border: 1px solid #dc3545 !important;
     border-radius: 3px;
+}
+
+
+.badge-rol {
+    padding: 0.45em 0.85em;
+    font-size: 0.75em;
+    font-weight: 700;
+    border-radius: 50rem;
+    display: inline-block;
+    letter-spacing: 0.5px;
+}
+
+.badge-admin {
+    background-color: #E2231A; 
+    color: #FFFFFF;
+}
+
+.badge-cliente {
+    background-color: #1B4332; 
+    color: #FFFFFF;
+}
+
+.badge-estado-success {
+    background-color: rgba(27, 67, 50, 0.15) !important;
+    color: #1B4332 !important;
+    border: 1px solid rgba(27, 67, 50, 0.3);
+}
+
+.badge-estado-cancelado {
+    background-color: rgba(226, 35, 26, 0.1) !important;
+    color: #E2231A !important;
+    border: 1px solid rgba(226, 35, 26, 0.2);
 }

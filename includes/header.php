@@ -16,6 +16,7 @@
 
 <body class="d-flex flex-column min-vh-100">
     <!-- Barra superior principal -->
+
     <nav class="navbar navbar-dark fondo-verde">
         <div class="container-fluid d-flex align-items-center">
 

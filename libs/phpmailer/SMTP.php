@@ -290,11 +290,11 @@ class SMTP
             return;
         }
         //Is this a PSR-3 logger?
-        if ($this->Debugoutput instanceof \Psr\Log\LoggerInterface) {
+        if (class_exists('\\Psr\\Log\\LoggerInterface') && $this->Debugoutput instanceof \Psr\Log\LoggerInterface) {
             //Remove trailing line breaks potentially added by calls to SMTP::client_send()
             $this->Debugoutput->debug(rtrim($str, "\r\n"));
 
-            return;
+            return;     
         }
         //Avoid clash with built-in function names
         if (is_callable($this->Debugoutput) && !in_array($this->Debugoutput, ['error_log', 'html', 'echo'])) {

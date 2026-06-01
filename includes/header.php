@@ -18,18 +18,18 @@
     <!-- Barra superior principal -->
 
     <nav class="navbar navbar-dark fondo-verde">
-        <div class="container-fluid d-flex align-items-center">
+        <div class="container-fluid d-flex align-items-center w-100">
 
             <!-- Marca e acceso ao inicio -->
-            <div style="width: 25%;">
+            <div class="navbar-left d-flex align-items-center" style="width: 25%;">
                 <a class="navbar-brand d-flex align-items-center" href="/a-dorgita/index.php">
                     <img src="/a-dorgita/public/img/logo.png" width="50" height="50" class="me-2" alt="Logo">
-                    A Dorgita
+                    <span class="d-none d-md-inline">A Dorgita</span>
                 </a>
             </div>
 
             <!-- Menú central de navegación -->
-            <div class="flex-grow-1 d-flex justify-content-center">
+            <div class="flex-grow-1 d-flex justify-content-center d-none d-md-flex">
                 <ul class="nav">
                     <li class="nav-item"><a class="nav-link" href="index.php?c=producto&a=index">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link" href="index.php?c=contacto&a=index">Contacto</a></li>
@@ -37,7 +37,7 @@
             </div>
 
             <!-- Zona dereita: busca, carro e usuario -->
-            <div style="width: 25%;" class="d-flex justify-content-end">
+            <div class="navbar-right d-flex justify-content-end align-items-center" style="width: 25%;">
                 <ul class="nav">
                     <!-- Formulario de busca con suxestións -->
                     <form action="index.php" method="get" class="d-flex align-content-center me-2">
@@ -49,7 +49,7 @@
                             <input type="text" name="q" id="input-busca"
                                 class="form-control rounded-pill ps-3 texto-buscador input-buscador"
                                 placeholder="Buscar..." autocomplete="off"
-                                value="<?php echo isset($_GET["q"]) ? htmlspecialchars($_GET["q"]) : " "; ?>">
+                                value="<?php echo isset($_GET["q"]) ? htmlspecialchars($_GET["q"]) : ""; ?>">
 
                             <button class="btn btn-lupa" type="submit">
                                 <i class="bi bi-search"></i>
@@ -66,7 +66,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-person-check-fill me-1"></i>
-                                <?php echo htmlspecialchars($_SESSION['usuario']['nome']); ?>
+                                <span class="d-none d-lg-inline"><?php echo htmlspecialchars($_SESSION['usuario']['nome']); ?></span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end shadow-sm bg-white">
                                 <li><a class="dropdown-item texto-verde" href="index.php?c=usuario&a=perfil"><i class="bi bi-person me-2"></i>O meu perfil</a></li>
@@ -80,6 +80,14 @@
                     <?php else: ?>
                         <li class="nav-item"><a class="nav-link" href="index.php?c=usuario&a=login"><i class="bi bi-person"></i></a></li>
                     <?php endif; ?>
+                </ul>
+            </div>
+            
+            <!-- Menú móbil (aparece en pantallas pequenas) -->
+            <div class="d-md-none w-100 mt-2">
+                <ul class="nav flex-wrap justify-content-around">
+                    <li class="nav-item"><a class="nav-link" href="index.php?c=producto&a=index">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.php?c=contacto&a=index">Contacto</a></li>
                 </ul>
             </div>
 

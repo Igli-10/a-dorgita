@@ -1,6 +1,7 @@
 .fondo-verde{
     background-color:#1B4332 ;
     color: #FFFFFF;;
+    width: 100%;
 }
 
 .fondo-verde .nav-link,.fondo-verde a,a.fondo-verde {
@@ -13,8 +14,21 @@
     background-color: transparent !important;
 }
 
+/* Navbar estilos */
+.navbar {
+    width: 100%;
+    padding: 0.5rem 0;
+}
+
+.navbar .container-fluid {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
 body{
     font-family: 'Times New Roman', Times, serif;
+    overflow-x: hidden;
 }
 
 .nav-link, .navbar-brand{
@@ -550,4 +564,110 @@ button[aria-expanded="true"] .icono-flecha {
     background-color: rgba(226, 35, 26, 0.1) !important;
     color: #E2231A !important;
     border: 1px solid rgba(226, 35, 26, 0.2);
+}
+
+/* Corrixe o comportamento do menú despregable en pantallas pequenas */
+@media (max-width: 767.98px) {
+    /* Header responsivo para móviles */
+    .navbar {
+        flex-wrap: wrap;
+        padding: 0.5rem 0;
+    }
+    
+    .navbar .container-fluid {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0.5rem;
+    }
+    
+    /* Logo en móbil */
+    .navbar-brand img {
+        width: 35px !important;
+        height: 35px !important;
+    }
+    
+    .navbar-brand {
+        font-size: 0.9rem;
+    }
+    
+    .navbar-left {
+        width: 50% !important;
+    }
+    
+    .navbar-right {
+        width: 50% !important;
+        justify-content: flex-end !important;
+        display: flex !important;
+    }
+    
+    /* Búsqueda en móbil máis pequena */
+    .container-fluid form {
+        width: auto;
+        margin: 0 !important;
+        order: 3;
+        flex-basis: 100%;
+    }
+    
+    .container-fluid form .input-group {
+        width: 100% !important;
+    }
+    
+    .container-fluid form input {
+        font-size: 0.75rem !important;
+    }
+    
+    /* Menú horizontal en móbil */
+    .nav {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+    }
+    
+    .nav-item {
+        flex: 0 1 auto;
+    }
+    
+    /* Iconas máis pequenas en móbil */
+    .nav-link {
+        padding: 0.5rem 0.5rem !important;
+        font-size: 0.85rem;
+    }
+    
+    .nav-link.fs-5 {
+        font-size: 1rem !important;
+    }
+    
+    .caixa-suxestions {
+        width: 100% !important;
+        max-width: 200px;
+    }
+    
+    .navbar-collapse {
+        background-color: #1B4332;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
+    
+    /* Búsqueda form máis pequena */
+    .input-group-sm {
+        width: 100px !important;
+    }
+}
+
+/* Tablet responsivo (768px - 991px) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .container-fluid form .input-group {
+        width: 120px !important;
+    }
+    
+    .navbar-brand {
+        font-size: 0.95rem;
+    }
+}
+
+/* Evita que o texto saia duplicado se tes dobres puntos e asegura consistencia */
+.fondo-verde {
+    background-color: #1B4332 !important;
+    color: #FFFFFF !important;
 }

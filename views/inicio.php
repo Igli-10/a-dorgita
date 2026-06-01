@@ -24,7 +24,7 @@ $idsFavoritos = $idsFavoritos ?? [];
             <div class="row">
                 <?php if (!empty($productos)): ?>
                     <?php foreach ($productos as $p): ?>
-                        <div class="col-md-4 mb-4">
+                        <div class="col-12 col-sm-6 col-md-4 mb-4">
                             <div class="card h-100 shadow-sm border-1" style="background-color: #FFFFFF;">
                                 <img src="public/img/<?php echo htmlspecialchars($p->getImagen()); ?>" class="card-img-top p-4" alt="<?php echo htmlspecialchars($p->getNome()); ?>">
 
